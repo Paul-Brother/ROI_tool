@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<!--062016--added a function to choose between car and plane travel. duplicated one function and reset some variables to account for the diference in co2 production and travel cost between air and ground travel. added a mode switcher; change the background canvas art depending on which mode is chosed. default is air. the menu text changes and the text in the descriptive copy to reflect the chosed choice. If it doesnt work, check that the computer is online; needs access to the google api to display the base graphic now. -->
+<!--060915
+added http://blueskymodel.org/air-mile has a robust method of computing co2 production, per passenger; works out to  0.24 pounds of CO2 per passenger per mile. added background graphics and some styling
+061615 figured out the svg graphic and sent samples to gs and cb
+061815 added doSomeRules function, not currently active
+070815  display date properly in the png and add salesperson dropdown 
+072415  add disclaimer copy from legal
+072815  modified disclaimer
+073115  modified disclaimer two lines, fix typo
+091815  added explicit left flush for text, which broke the display when centered 
+		removed an unused date reference. Changed the date picker function because
+        html5 date field is not supported is some common browsers.
+        removed the empty field on focus function for leo
+        minor text changes in instructions referencing the date field 
+-->
+<html>
+  <head>
+    <title>Omnijoin Meeting Cost Savings Calculator</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBH_6r3qjAzc42-O2AUF0vpKFBmc4Phh9c&v=3.exp&signed_in=true"></script>
+<style>
+.bint{cursor:pointer;}
+.bint:hover{
+	background-color: white;
+	}	
+.btw{
+	font-style: italic;
+	font-size: 10px;
+	}
+#canv{
+	border: thin gray solid;
+	}
+.clr{
+	clear:both;
+	}        
+#footie{
+	background-color:#9B9B9B;
+	font-size:9px;
+	margin-top:10px;
+	padding-left:10px;
+	color:white;
+	}        
+html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+		font-family: Arial, Helvetica, sans-serif;
+      }
+#info{
+    cursor:pointer;
+    font-size: 20px;
+    color: lawngreen;
+	}	
+
+#inputs {
+   	width: 200px;
+	float:left;
+      }
+input[type=text]{
+	 width:150px;
+	} 
+select{
+	 width:150px;
+	}
+input[type=date]{
+		width:150px;
+	}
+label{
+	width:100px;
+    display: inline-block;
+    float:left;
+	font-size:12px;
+	color:gray;
+	}
+.litl{
+	font-size:12px;
+	color:orange;
+	}
+#menu li {
+    display: inline;
+	color:gray;
+	padding-left:10px;
+	padding-right:10px;
+	border:thin gray solid;
+	}
+#menu{
+	text-align:center;
+	height:18px;
+	background-color:#DDDDDD;
+	margin-top:-21px;
+	margin-bottom:10px;
+}
+#menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;	
+}
+.red{
+	color:#FF0004;
+	}
+#showBiz{
+	float:right;
+ 	width:665px;
+	height:180px;
+	overflow: auto;
+	margin-bottom:20px;
+	padding-bottom:20px;
+	}
+#titel{
+	min-height:70px;
+	background:#9B9B9B;
+	text-align:center;
+	color:white;
+	padding-top:2px;
+	}
+.whichMode{
+    display:inline-block;
+    min-width:100px;
+    text-align: center;
+    color:white;
+    background-color: coral;
+    padding:5px;
+    border-radius:5px;
+    cursor:pointer;
+        }
+#wrapper{
+	padding:10px;
+	border: thin gray solid;
+	margin-left:auto;
+	margin-right:auto;
+	width:900px;
+	}        
+</style>
+      
+<script>
+var orig = [];
+var dest = [];
+var totalDist = 0;
+var distNum;
+var img = new Image();
+var imgx = new Image();
+var choosie = 'air';
+var aepm = 223,
+datx,
+n,
+iwtpf = 1.2,
+iarff = 1.9,
+gtpc = .0022,
+fareNum,
+totalAttendees = 10,
+totalDist,
+mon = 949,
+resolve,
+costSaving,
+toDist,
+hostie,
+short,
+shortSavings,
+largeNum = '95px',
+largeColor = '#148BB5',
+co2=.24,
+plural,
+ctx,
+version = "ojsave 062216",
+previousVersion = "ojsave 091815",
+attNum = 1;
+//---salesdetail. removed jay from the display list, left him in here as we are referencing by index
+var salesVolken = [['Barbara Hill','(908) 210-0210'],['Doug Carter','(951) 212-0042'],['Gary Sibley','(000) 000-0000'],['Jay Stepter','(310) 896-5814'],['Laura Bergamini','(858) 637-3403'],['Leo Perez','(858) 637-3405'],['Shane Boelter','(858) 637-3409']];
+var salesper,salesPhn;
+    
+//--- add the indiviudal sales people contact info-----
+    
+function salesDetail(){
+	switch($("#salsa").val()){
+		case 'Barbara':
+		salesPer=salesVolken[0][0];
+		salesPhn=salesVolken[0][1];
+		break;
+		case 'Doug':
+		salesPer=salesVolken[1][0];
+		salesPhn=salesVolken[1][1];
+		break;
+		case 'Gary':
+		salesPer=salesVolken[2][0];
+		salesPhn=salesVolken[2][1];
+		break;
+		case 'Jay':
+		salesPer=salesVolken[3][0];
+		salesPhn=salesVolken[3][1];
+		break;
+		case 'Laura':
+		salesPer=salesVolken[4][0];
+		salesPhn=salesVolken[4][1];
+		break;
+		case 'Leo':
+		salesPer=salesVolken[5][0];
+		salesPhn=salesVolken[5][1];
+		break;
+		case 'Shane':
+		salesPer=salesVolken[6][0];
+		salesPhn=salesVolken[6][1];
+		break;
+		}
+}
+
+//---interate the attendee number--------------
+
+function getAttNum(){
+	attNum = attNum + 1;
+	 }
+
+//---doc ready------------------------
+ 
+$(function(){
+
+$('#footie').text(version);	
+    
+//draw the picture in the canvas
+
+var canv = document.getElementById('canv');
+ctx = canv.getContext('2d');
+    //---by default the "plane" travel mode is offered
+imgx.src = "background.jpg";
+imgx.addEventListener("load", function() {
+ctx.drawImage(imgx, 0,0);
+
+});
+
+//---calculate button ------------
+    
+$('#calculate').click(function(){
+    //potentially switch the travel mode - default is air- then run calculation
+     switch (choosie){
+            case 'air':
+              	salesDetail();
+	calculateDistances();
+                break;
+            case 'ground':
+               //alert('ground travel initiated');
+             salesDetail();
+    calculateCarDistances();      
+                break;
+        }
+    
+
+	});
+    
+//---switch betweeen ground and air travel-------------------
+    
+$('.whichMode').click(function(){
+      choosie =  $(this).attr('id'); 
+        
+        switch (choosie){
+            case 'air':
+                $('#which').html('air');
+                $('#mode').html('Currently traveling by Plane');
+                imgx.src = "background.jpg";
+                break;
+            case 'ground':
+                $('#which').html('ground');
+                $('#mode').html('Currently traveling by Auto');
+                imgx.src = "background_drive.jpg";
+                break;
+        }
+        
+    });
+   
+//---show instructions---------------------------------------
+    
+$( "#instructions" ).click(function() {
+  $('#showBiz').html("<p>***new*** You must choose betweeen auto and plane modes. *** Pick travel mode from the previous screen. Choose a date for your meeting from the <strong>date field</strong> at left. You can run the calculator with a single host and attendee if you want. Put your host city and state or zip code in the 'Host' field and put your first attendees city and state in the 'Attendee 1' field. Note: this version will only locate and distance locations in the continental US. If there are additional attendees, click the 'Add an attendee' button above to display another attendee field, then enter the new attendee location in that field. Click the <strong>Calculate meeting specs</strong> button to run the calculation.</p>");
+});
+
+//---show provenance-----------------------------
+	
+$( "#prove" ).click(function() {
+	$('#showBiz').html("<p>Mileage data for air and ground travel is generated by calling the <strong><a href='https://developers.google.com/maps/documentation/distancematrix/'>Google Maps Distance Matrix API</a></strong> with an array of paired locations, the common location being the host's. Distances are measured from each attendee location to the host location and added for the total. In our scenario, each attendee has avoided travelling to the host's location by air for this meeting.</p><p><strong>CO2 production values for air travel</strong> come from <a href='http://blueskymodel.org/air-mile'>bueskymodel.org/air-mile</a> </p><p>On average, a passenger plane produces a little over 53 pounds of carbon dioxide per mile. This calculation requires considerable estimation and makes some generalizations and assumptions but the logic for determining CO2 production is highly defensible. It works out to about .24 lbs per passenger per mile. </p><p><strong>Cost of auto travel and associated CO2 production</strong> come from a recent AAA newsroom article newsroom.aaa.com/tag/driving-costs-per-mile/ and EPA publication 420f1404a.pdf entitled Greenhouse Gas Emissions from a Typical Passenger Vehicle respectively. Current average driving cost is 60.8 cents per mile. CO2 emissions from a gallon of gasoline on average 8,887 grams. At an average MPG of 21.6, that results 411 grams per mile. </p><p><strong>Average Cost per business trip</strong>  came from <a href = 'https://www.certify.com/Infographic-TheAverageCostOfBusinessTravel.aspx'>certify.com</a>. For an average domestic business trip requiring a flight, companies spend $949 per person. Sources:</p><p><a href='http://www.gbta.org/foundation/pressreleases/Pages/rls_041012.aspx'>http://www.gbta.org/foundation/pressreleases/Pages/rls_041012.aspx</a></p><p><a href='http://www.travelleadersgroup.com/business-travelers-save-nearly-23-on-advanced-airline-ticket-purchases-according-to-latest-data-from-travel-leaders-corporate/'>http://www.travelleadersgroup.com/business-travelers-save-nearly-23-on-advanced-airline-ticket-purchases-according-to-latest-data-from-travel-leaders-corporate/</a></p><p><a href='http://www.prnewswire.com/news-releases/buyers-expect-better-year-for-business-travel-but-rising-rates-and-tough-negotiations-loom-191005381.html'>www.prnewswire.com</a></p>")  
+});
+
+//add another attendee field----------------------
+
+$('#addAttendee').click(function(){
+	getAttNum();
+	
+	//alert($('#attendee'+toString(parseInt(attNum-1))).value());
+	//var minus= attNum-1;
+	//alert(minus);
+	//if($('#attendee'+minus).val()=='get Location');
+	//return();
+	if(attNum<totalAttendees){
+$( "#attendeeDiv").append("<div><label>Attendee "
+        + attNum
+        + "</label><input class = 'newAtt red' id ='attendee"
+        + attNum
+        +"' type= 'text' value='enter location' width='150'></div>");
+	}
+});
+
+//clear field on focus and remove red color--------------
+
+$("body").on("focus",".newAtt", function(){
+	$(this).removeClass( "red" );
+ 	//this.value = '';
+});
+
+});
+
+//---some rules about distance and costs, not currently enabled
+    
+function doSomeRules(){
+//based on some TBD rules 
+//short='0';
+//shortSavings = '0';
+//toDist = '0';
+}
+    
+//--- calculate distances for car travel -----------------
+    
+function calculateCarDistances() {
+//check if any fields are blank or have default settings
+//zero out any previous values
+totalDist= 0;
+distNum=0;
+resolve = 0;
+//blank the showbiz content
+$('#showBiz').html('');
+//get the host name
+hostie = $('#hostName').val();
+//look if the date was picked yet
+if($('#inputDate').val()==''){alert('When did this meeting occur?');
+	return;
+	}else{
+	//show number of attendees
+	if(attNum==1){plural='attendee'}
+	else{plural='attendees'};
+	//write the proper singular or plural
+	//$('#numAttendees').html(attNum+" "+plural);
+	//set the meeting date
+	datx=$('#inputDate').val();//get the value of the date field
+	
+	datx= datx.toString(); //turn it into a string
+	//for display in png properly
+	
+	//refer to n for the date strings
+	n= datx.split('-'); //turn into an array and split on the dash
+	
+	//$('#dat').html($('#inputDate').val()); not used 
+	//because issues with certain browsers
+	//clear the host and attendee arrays in case this is not 
+    //the first time submitting for the current browser session
+	orig = [];
+	dest = [];
+	//get the value of the host field if they exist
+	//and push into the arrays
+	//picked 10 arbitrarily for a reasonable number
+	//this is var totalAttendees which limits the 
+	//number of attendee fields you can create
+	
+	for (x=1; x<totalAttendees; x++){
+		if ($('#attendee'+x).length!=0){
+			if($('#attendee'+x).val()!='enter location'){
+			orig.push($('#attendee'+x).val());
+			dest.push($('#host').val());
+			}else
+			{alert('Missing an attendee location');
+			return;}
+			}
+		}
+	}
+	
+//google stuff
+  var service = new google.maps.DistanceMatrixService();
+  service.getDistanceMatrix(
+    {
+	  
+	  //my two arrays, one of which has the same thing in each index
+	  //google is expecting both an orgin and a destinaction 
+	  origins: orig,
+	  destinations: dest,
+	  travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
+      avoidHighways: false,
+      avoidTolls: false
+    }, callback2);
+    //callback to gets the mileage and assigns cost and co2 values for cars
+}
+    
+//---calculate distances for plane------------------------
+
+function calculateDistances() {
+//check if any fields are blank or have default settings
+//zero out any previous values
+totalDist= 0;
+distNum=0;
+resolve = 0;
+//blank the showbiz content
+$('#showBiz').html('');
+//get the host name
+hostie = $('#hostName').val();
+//look if the date was picked yet
+if($('#inputDate').val()==''){alert('When did this meeting occur?');
+	return;
+	}else{
+	//show results
+	//$('#results').slideDown();
+	//show number of attendees
+	if(attNum==1){plural='attendee'}
+	else{plural='attendees'};
+	//write the proper singular or plural
+	//$('#numAttendees').html(attNum+" "+plural);
+	//set the meeting date
+	datx=$('#inputDate').val();//get the value of the date field
+	
+	datx= datx.toString(); //turn it into a string
+	//for display in png properly
+	
+	//refer to n for the date strings
+	n= datx.split('-'); //turn into an array and split on the dash
+	
+	//$('#dat').html($('#inputDate').val()); not used 
+	
+	//clear the host and attendee arrays in csae this is not your first rodeo
+	orig = [];
+	dest = [];
+	//get the value of the host field if they exist
+	//and push into the arrays
+	//picked 10 arbitrarily for a reasonable number
+	//this is var totalAttendees which limits the 
+	//number of attendee fields you can create
+	
+	for (x=1; x<totalAttendees; x++){
+		if ($('#attendee'+x).length!=0){
+			if($('#attendee'+x).val()!='enter location'){
+			orig.push($('#attendee'+x).val());
+			dest.push($('#host').val());
+			}else
+			{alert('Missing an attendee location');
+			return;}
+			}
+		}
+	}
+	
+//google stuff---------------------------------------------------------------
+    
+  var service = new google.maps.DistanceMatrixService();
+  service.getDistanceMatrix(
+    {
+	  
+	  //my two arrays, one of which has the same thing in each index
+	  //google is expecting both an orgin and a destinaction 
+	  origins: orig,
+	  destinations: dest,
+	  travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
+      avoidHighways: false,
+      avoidTolls: false
+    }, callback);
+}
+        
+//---callback2 is car distance, costs and co2 production-------
+    
+    function callback2(response, status) {
+        //alert('callback to for car stuff');
+  if (status != google.maps.DistanceMatrixStatus.OK) {
+    alert('Error was: ' + status);
+  } else {
+    var origins = response.originAddresses;
+    var destinations = response.destinationAddresses;
+
+    for (var i = 0; i < orig.length; i++) {
+	  var results = response.rows[i].elements;
+	  //display the attendees and their distances
+       document.getElementById('showBiz').innerHTML +='<strong>Attendee '+ (Number(i)+1)+':</strong><br>'+ origins[i] + ' to ' + destinations[i]+ ': <span class="dis">' + results[i].distance.text + '</span><br>';	
+		distNum =(results[i].distance.text);
+		distNum = distNum.replace(' mi','')//get rid of the miles
+		distNum = distNum.replace(/[^\d\.\-]/g,"");
+		distNum = parseInt(distNum);
+		totalDist = Number(totalDist) + Number(distNum);
+        
+        //resolve is the var for CO2 for plane .24
+        co2 = 411;//grams produced per mile
+		resolve = Math.round(totalDist * co2);
+        //1 gram = 0.00220462 lbs
+        //change grams to lbs
+        resolve = (resolve * 0.0022462).toFixed(2);
+        
+        
+		short = resolve.toString();
+		
+		//make it short instead of resolve. need to add if there are more than 4 characters
+		if(short.length<4){short=short+".0"}
+		
+	}
+	//for car, per mile is       
+    var cpm = .608;//avg cost of driving per mile @ AAA
+      
+	costSaving = (totalDist * cpm).toFixed(2);
+	shortSavings = costSaving.toString();
+	//shortsavings instead of costsSaving. need to add if there are more than 4 characters
+	if(shortSavings.length<4){shortSavings=shortSavings+".0"}
+	toDist = totalDist.toString();
+	//if these lengths are more than 5 characters, reduce the size of the text
+	if(shortSavings.length>5||short.length>5||toDist.length>5){ largeNum = '65px'}
+            
+  }
+
+//---now KISS!--//
+
+	
+	//doSomeRules();
+	var DOMURL = window.URL || window.webkitURL || window;
+     
+    //switch the image based on the choosie var "air" or "ground"
+  	switch (choosie){
+        case "air":       
+            img.src = "background.jpg";
+            break;
+        case "ground":
+            img.src = "background_drive.jpg"
+            break;
+    }
+    
+    
+    var data = ''
+	var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+	var url = DOMURL.createObjectURL(svg);	
+  	var cx = document.querySelector("canvas").getContext("2d");
+	//clear the canvas
+	cx.clearRect(0, 0, canv.width, canv.height);
+	
+	var disclaimerx = 450;
+	var disclaimery = 625;
+	var disclaimer ="Business travel cost based on current AAA estimates for passenger cars.";
+	var disclaimer2="Greenhouse gasses based on current US Gov. data.";
+	var disclaimer3="Mileage generated by Google Maps Distance Matrix API (https://developers.google.com/maps/documentation/distancematrix/intro).";
+	
+  	img.addEventListener("load", function() {
+	  
+      cx.drawImage(img, 0,0);
+	  cx.font= "20px Arial";
+	  cx.fillStyle="#1b76bd";
+	  cx.shadowColor = 'white';
+	  cx.shadowOffsetX = 1;
+	  cx.shadowOffsetY = 1;
+	  cx.textAlign = 'left';
+	  cx.fillText("Your OmniJoin meeting hosted by "+hostie, 70,190);
+	  //
+	  cx.fillText("on "+ datx + " with "+attNum+" "+plural, 70,215);
+	  cx.fillText("potentially avoided:", 70,240);
+	  cx.fillText("Find out how to save even more!", 70,500);
+	   cx.fillText("Visit www.omnijoin.com", 70,530);
+	  cx.fillText("or call "+salesPer+" today at "+salesPhn, 70,560);
+	  cx.font = "bold "+largeNum+" Arial";
+	  cx.fillStyle=largeColor;
+	  cx.shadowColor = 'black';
+	  cx.shadowOffsetX = 2;
+	  cx.shadowOffsetY = 2;
+	  cx.fillText(shortSavings,60,360);
+	  cx.fillText(short,315,360);
+	  cx.fillText(toDist,625,360);
+	  cx.font = "bold 45px Arial";
+	  cx.fillText("$",35, 320);
+	  //now for the disclaimer
+	  cx.font = "12px Arial";
+	  cx.fillStyle = "#7cb0d5";
+	  cx.shadowOffsetX=0;
+	  cx.shadowColor="white";
+	  cx.textAlign = 'center';
+	  cx.fillText(disclaimer, disclaimerx, disclaimery);
+	  cx.fillText(disclaimer2, disclaimerx, disclaimery+14);
+	  cx.fillText(disclaimer3, disclaimerx, disclaimery+28);
+	  
+	  DOMURL.revokeObjectURL(url);
+	  img.src = url;
+  });
+
+}
+    
+//---callback is plane distance, costs and co2 producton-----
+function callback(response, status) {
+  if (status != google.maps.DistanceMatrixStatus.OK) {
+    alert('Error was: ' + status);
+  } else {
+    var origins = response.originAddresses;
+    var destinations = response.destinationAddresses;
+
+//---display the calculated  output
+   //json, give me a row for each item
+   //not showing time. goog.maps produces driving time not flying time
+   
+    for (var i = 0; i < orig.length; i++) {
+	  var results = response.rows[i].elements;
+	  //display the attendees and their distances
+       document.getElementById('showBiz').innerHTML +='<strong>Attendee '+ (Number(i)+1)+':</strong><br>'+ origins[i] + ' to ' + destinations[i]+ ': <span class="dis">' + results[i].distance.text + '</span><br>';	
+		
+		distNum =(results[i].distance.text);
+		//doing some tricks to get numbers
+		distNum = distNum.replace(' mi','')//get rid of the miles
+		distNum = distNum.replace(/[^\d\.\-]/g,"");
+		distNum = parseInt(distNum);
+		//total number distance
+		totalDist = Number(totalDist) + Number(distNum);
+        //resolve is the var for CO2
+		resolve = Math.round(totalDist * co2);
+		short = resolve.toString();
+		
+		//make it short instead of resolve. need to add if there are more than 4 characters
+		if(short.length<4){short=short+".0"}
+		//showMetheMoney();
+	}
+	
+	costSaving = mon * attNum;
+	shortSavings = costSaving.toString();
+	//shortsavings instead of costsSaving. need to add if there are more than 4 characters
+	if(shortSavings.length<4){shortSavings=shortSavings+".0"}
+	toDist = totalDist.toString();
+	//if these lengths are more than 5 characters, reduce the size of the text
+	if(shortSavings.length>5||short.length>5||toDist.length>5){ largeNum = '65px'}
+	//alert(toDist.length);
+  }
+
+
+
+
+//---now KISS!--//
+
+
+	
+	//doSomeRules();
+	var DOMURL = window.URL || window.webkitURL || window;
+	//var img = new Image();
+    
+    
+    //switch the image based on the choosie var "air" or "ground"
+  	switch (choosie){
+        case "air":       
+            img.src = "background.jpg";
+            break;
+        case "ground":
+            img.src = "background_drive.jpg"
+            break;
+    }
+    
+    
+    var data = ''
+	var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+	var url = DOMURL.createObjectURL(svg);	
+  	var cx = document.querySelector("canvas").getContext("2d");
+	//clear the canvas
+	cx.clearRect(0, 0, canv.width, canv.height);
+	
+	var disclaimerx = 450;
+	var disclaimery = 625;
+	var disclaimer ="Business travel cost assumes lost productivity and domestic flight for each attendee, averaging $949 per trip (certify.com). ";
+	var disclaimer2="Greenhouse gasses based on .24 lbs. per person per mile  (blueskymodel.org).";
+	var disclaimer3="Mileage generated by Google Maps Distance Matrix API (https://developers.google.com/maps/documentation/distancematrix/intro).";
+	
+  	img.addEventListener("load", function() {
+	  
+      cx.drawImage(img, 0,0);
+	  cx.font= "20px Arial";
+	  cx.fillStyle="#1b76bd";
+	  cx.shadowColor = 'white';
+	  cx.shadowOffsetX = 1;
+	  cx.shadowOffsetY = 1;
+	  
+	  cx.textAlign = 'left';
+	  cx.fillText("Your OmniJoin meeting hosted by "+hostie, 70,190);
+	  //cx.fillText("on "+ n[1]+"/" + n[2] + "/"+n[0]+ " with "+attNum+" "+plural, 70,215);
+	  cx.fillText("on "+ datx + " with "+attNum+" "+plural, 70,215);
+	  cx.fillText("potentially avoided:", 70,240);
+	  cx.fillText("Find out how to save even more!", 70,500);
+	   cx.fillText("Visit www.omnijoin.com", 70,530);
+	  cx.fillText("or call "+salesPer+" today at "+salesPhn, 70,560);
+	  cx.font = "bold "+largeNum+" Arial";
+	  cx.fillStyle=largeColor;
+	  cx.shadowColor = 'black';
+	  cx.shadowOffsetX = 2;
+	  cx.shadowOffsetY = 2;
+	  cx.fillText(shortSavings,60,360);
+	  cx.fillText(short,315,360);
+	  cx.fillText(toDist,625,360);
+	  cx.font = "bold 45px Arial";
+	  cx.fillText("$",35, 320);
+	  //now for the disclaimer
+	  cx.font = "12px Arial";
+	  cx.fillStyle = "#7cb0d5";
+	  cx.shadowOffsetX=0;
+	  cx.shadowColor="white";
+	  cx.textAlign = 'center';
+	  cx.fillText(disclaimer, disclaimerx, disclaimery);
+	  cx.fillText(disclaimer2, disclaimerx, disclaimery+14);
+	  cx.fillText(disclaimer3, disclaimerx, disclaimery+28);
+	  
+	  DOMURL.revokeObjectURL(url);
+	  img.src = url;
+  });
+
+}
+</script>
+
+  
+  </head>
+  <body>
+    
+    <div id="wrapper">
+    <div id="titel">
+      <h1>OmniJoin Meeting Cost Avoidance Calculator</h1></div>
+      <div id="menu"><ul>
+          <li id="mode" style="border:none; color: white">Currently travelling by Plane</li>
+      <li id="calculate" class="bint">Calculate
+          meeting specs</li>
+      <li id="addAttendee" class="bint">Add an attendee</li>
+      <li id="instructions" class="bint">Instructions</li>
+      <li id="prove" class="bint">Provenance</li>
+      </ul>
+          </div>
+          <div id="showBiz">
+              <p>Currently travelling by <span id=which>air</span>. Choose between <span class="whichMode" id="ground">ground</span> and <span class="whichMode" id="air">air</span> travel modes.</p><p>Enter your meeting date in the <strong>date field</strong> at left. Type your host name in the <strong>Host name</strong> field and their city and state or zip code in the <strong>Host location</strong> field. Put your first attendee's city and state in the <strong>Attendee 1</strong> field. If there are additional attendees, click the <strong>Add an attendee</strong> button above to display another attendee field, then enter the new attendee location in the new field. Click the <strong>Calculate meeting specs</strong> button to run the calculation.</p> <p>When you're satisfied, right click on the image below and save it to your computer. The generated .png file can be added to the body of an email or as an attachment.</p></div>
+    <div id="inputs">
+      <div id="dateSpot">
+            <label>Date</label><!--changed from date because not completely supported-->
+            <input id="inputDate" type="text" value="date"></input>
+        </div>
+        <div id="hostN">
+        <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Host name"> </input>
+       </div> 
+      <label>Host location</label><input id="host" class="newAtt" type="text" value ="San Diego, CA" ></input>
+      <div id="attendeeDiv">
+        <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
+        <div id="sales">
+        <label>Salesperson</label>
+        <select id="salsa">
+        <option value="Barbara">Barbara</option>
+        <option value="Doug">Doug</option>
+        <option value="Gary">Gary</option>
+  		<!--<option value="Jay">Jay</option>-->
+  		<option value="Laura">Laura</option>
+   		<option value="Leo">Leo</option> 
+     	<option value="Shane">Shane</option>
+	</select>
+</div>
+       </div> 
+       
+       <canvas id="canv" width="900" height="665"></canvas>
+      
+      
+       
+    <div class="clr"></div>
+    
+  <!--  results-->
+      <div id="footie"></div>
+      
+    
+ 
+</div></body>
+</html>
