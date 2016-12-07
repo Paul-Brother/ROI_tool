@@ -196,7 +196,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	</tbody></table></div>
 	<div class="totals"><span class="totalHead">TOTALS FOR THIS MEETING</span>
 	  <div class="boxlet"><p>Time wasted in transit</p>
-	  <h4>3.2 hrs.</h4>
+		  <h4> <span class="totTim"></span> min.</h4>
 	</div>
 	<div class="boxlet">
 	  <p>Distance<br/>Travelled</p>
@@ -207,7 +207,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	</div></div><div class="clearBoth"></div>
 		<div class="annual"><div class="totalHead">ANNUAL TOTALS <span>(12 meetings)</span></div>
 	<div class="boxlet annual"><p>Time wasted in transit</p>
-	  <h4>38.4 hrs.</h4>
+		<h4><span class="totTim2"></span> min.</h4>
 	</div>
 	<div class="boxlet annual">
 	  <p>Distance<br/>Travelled</p>
@@ -287,6 +287,8 @@ corporate office. All branches are within 45 minutes of the corporate office in 
               var num;
 			  var tim;
               var roundTrip;
+			  var totalTime=0;
+			  var totMeetRTtime=0;
 			  
 
             for (var i = 0; i < originList.length; i++) {
@@ -303,11 +305,18 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  
 				  
 				  
-				  //time for each attendee round trip 
+	//-----------------------time for each attendee round trip 
 				// alert(results[j].duration.text);
 				  tim=results[j].duration.text;
+				  //alert(tim);
 				 tim=parseFloat(tim.replace('mins',''));
-				  tim = tim*2;
+				  tim = tim*2; //each attendee round trip
+				  totMeetRTtime+=Number(tim);
+				  //alert(totalTime);
+				  //aggregate each totalTime to a new var called totMeetRTtime
+				  
+				  $('.totTim').html(totMeetRTtime);
+				  $('.totTim2').html(totMeetRTtime*meetingMultiplier);
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
                  // alert(totalDist);
@@ -318,8 +327,13 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  totalCost+=Number(cost);
 				  $('#driveCost').html(totalCost);
 				  $('#annualCost').html(totalCost*meetingMultiplier);
-				
+				  
+	//-----------------------------------------------------------------
      $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+tim+' minutes</td><td>'+num+' miles</td><td> $'+cost+'</td></tr>');
+				  
+				  
+				  
+				  
   
               //   $('.attendee').append(originList[i] + ' to ' + destinationList[j]);// +
                  //   ': ' + results[j].distance.text + ' in ' +
