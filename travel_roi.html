@@ -95,11 +95,12 @@ $(function() {
 		float:left;}
 		
 		.detailHead{
-		background-color:darkgray;
-		color:white;
+		//background-color:darkgray;
+		color:darkgray;
 		text-align:center;
-		height:35px;
-		font-size: 20px;}
+		min-height:35px;
+			padding-bottom:5px;
+		font-size: 16px;}
 		
 		h4{font-size:24pt;
 		margin-top:-10px;}
@@ -138,7 +139,7 @@ $(function() {
 			 
 }
 		tr:nth-child(even) {background-color: #f2f2f2}
-		td{padding: 15px;
+		td{padding: 5px;
     text-align: left;}
 		
 		.title{float:left;
@@ -180,9 +181,9 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 <div class="map" id="map"></div>
 <div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName"></span></strong><br/><span id="rsmEmail"></span><br/> for more information.</p></div></div>
 	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="100%"/></div>
-	<div id="details"><div class="detailHead">From point of origin to Bridgewater, NJ (round trip)</div>
+	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to <span id="destination"></span> (round trip)</div>
 	<div class="attendee"><table id="table1"><tbody><tr>
-	  <th>Attendee Location</th>
+	  <th style="white-space: nowrap;">Attendee Location</th>
 	  <th>Time<br>
 	  <span class= "rt">Round<br/>Trip</span></th>
 	  <th>Distance<br/><span class="rt">Round<br/>Trip</span>
@@ -207,14 +208,14 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	</div></div><div class="clearBoth"></div>
 		<div class="annual"><div class="totalHead">ANNUAL TOTALS <span>(12 meetings)</span></div>
 	<div class="boxlet annual"><p>Time wasted in transit</p>
-		<h4><span class="totTim2"></span> min.</h4>
+		<h4><span class="totTim2"></span> hrs.</h4>
 	</div>
 	<div class="boxlet annual">
 	  <p>Distance<br/>Travelled</p>
 		<h4><span class="miTotal">abc</span> mi.</h4>
 	</div>
 	<div class="boxlet annual"><p>*Cost<br/>incurred</p>
-	  <h4><sup>$</sup><span id='annualCost'></span><sup></sup></h4>
+	  <h4><sup>$</sup><span id="annualCost"></span><sup></sup></h4>
 	</div>
 	
 	</div>
@@ -230,12 +231,12 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 		  //alert('init');
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
-
+//-----------origins will poulate the origins list
         var origin1 = 'piscataway, nj';
-        var origin2 = 'somerville, nj';
+        var origin2 = 'denville, nj';
 		var origin3 = 'dunellen, nj';
         var destinationA = '200 Crossing Blvd,Bridgewater, NJ';
-        var destinationB = 'Bridgewater, NJ';
+        //var destinationB = 'Bridgewater, NJ';
 		var mileMultiplier = 0.54;
 		  var cost;
 
@@ -251,7 +252,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
-          origins: [origin1, origin2],
+          origins: [origin1, origin2, origin3, 'flemington, nj'],
           destinations: [destinationA],
           travelMode: 'DRIVING',
           unitSystem: google.maps.UnitSystem.IMPERIAL,
@@ -284,6 +285,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
             };
               //alert('before output');
               var totalDist=0;
+			  var meetingTotalDist=0;
               var num;
 			  var tim;
               var roundTrip;
@@ -298,12 +300,15 @@ corporate office. All branches are within 45 minutes of the corporate office in 
               for (var j = 0; j < results.length; j++) {
                 geocoder.geocode({'address': destinationList[j]},
                     showGeocodedAddressOnMap(true));
-				  //distance for each attendee round trip
+				  
+	//--------------distance for each attendee round trip
                   num=results[j].distance.text;
                   num=parseFloat(num.replace('km',''));
-                  num=num*2;
+                  num=Number(num*2);//round trip for this location only
 				  
-				  
+				  totalDist = totalDist+=num;
+				 
+				 // alert(totalDist);
 				  
 	//-----------------------time for each attendee round trip 
 				// alert(results[j].duration.text);
@@ -316,22 +321,28 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  //aggregate each totalTime to a new var called totMeetRTtime
 				  
 				  $('.totTim').html(totMeetRTtime);
-				  $('.totTim2').html(totMeetRTtime*meetingMultiplier);
+				  $('.totTim2').html((totMeetRTtime*meetingMultiplier)/60);
+				  $('#rtDistance').html(totalDist);
+				  $('.miTotal').html(totalDist*meetingMultiplier);
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
-                 // alert(totalDist);
+				  
+     // alert(totalDist);
                   roundTrip=totalDist*2;
                   roundTrip=roundTrip.toFixed(2);
-				  //attendee 
+				  
+			
 	//---------------------------------------------------------cost
 				  totalCost+=Number(cost);
 				  $('#driveCost').html(totalCost);
 				  $('#annualCost').html(totalCost*meetingMultiplier);
+				  $("#rt_distance").html(totalDist);
+				  
 				  
 	//-----------------------------------------------------------------
-     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+tim+' minutes</td><td>'+num+' miles</td><td> $'+cost+'</td></tr>');
+     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+tim+' min.</td><td>'+num+' mi.</td><td> $'+cost+'</td></tr>');
 				  
-				  
+				  $("#destination").html(destinationA);
 				  
 				  
   
