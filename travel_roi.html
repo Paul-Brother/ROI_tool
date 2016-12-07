@@ -9,7 +9,8 @@
 $(function() {
 // 12/05/16 production design    2 hours
 // 12/06/16 production design    3 hours
-
+//12/07/16 production  design    2.5 hours
+	//---rounded the distance multiplier to no decimals for asethetic.
 	
 	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['',''],['',''],['',''],['','']];
 	var industry="regional bank";
@@ -139,9 +140,10 @@ $(function() {
 			width:100%;
 			 
 }
+		th{min-width:100px;}
 		tr:nth-child(even) {background-color: #f2f2f2}
 		td{padding: 5px;
-    text-align: left;}
+    text-align: center;}
 		
 		.title{float:left;
 		width:650px;
@@ -168,6 +170,7 @@ $(function() {
   			justify-content:space-between;
 			border:thin gray solid;
 			padding-bottom:10px;
+			margin-top:10px;
 			background-color: whitesmoke;
   		}
 		
@@ -183,15 +186,15 @@ $(function() {
 	<div class="clearBoth"></div>
 	
 	</div>
-	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with 4 branches in New Jersey. The bank has monthly branch manager meetings at the
+	<div class="rightSide"><div class="desc"><strong><span class="client">First Bank</span></strong> is a <span class="indus">regional bank</span> with <span id="offices">99</span> offices in New Jersey. The bank has monthly branch manager meetings at the
 corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ</div>
 <div class="map" id="map"></div>
 <div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName"></span></strong><br/><span id="rsmEmail"></span><br/> for more information.</p></div></div>
 	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="100%"/></div>
-	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to <span id="destination"></span> (round trip)</div>
+	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to a meeting at <span id="destination"></span> (round trip)</div>
 	<div class="attendee"><table id="table1"><tbody><tr>
 	  <th style="white-space: nowrap;">Attendee Location</th>
-	  <th>Time<br>
+	  <th >Time<br>
 	  <span class= "rt">Round<br/>Trip</span></th>
 	  <th>Distance<br/><span class="rt">Round<br/>Trip</span>
 	  </th>
@@ -260,7 +263,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
-          origins: [origin1, origin2, origin3, 'flemington, nj'],
+          origins: [origin1, origin2, origin3, 'flemington, nj', 'far hills, nj'],
           destinations: [destinationA],
           travelMode: 'DRIVING',
           unitSystem: google.maps.UnitSystem.IMPERIAL,
@@ -300,7 +303,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 			  var totalTime=0;
 			  var totMeetRTtime=0;
 			  
-
+			  //alert(originList.length);
             for (var i = 0; i < originList.length; i++) {
               var results = response.rows[i].elements;
               geocoder.geocode({'address': originList[i]},
@@ -331,7 +334,8 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  $('.totTim').html(totMeetRTtime);
 				  $('.totTim2').html((totMeetRTtime*meetingMultiplier)/60);
 				  $('#rtDistance').html(totalDist);
-				  $('.miTotal').html(totalDist*meetingMultiplier);
+				  $('.miTotal').html((totalDist*meetingMultiplier).toFixed(0));
+				  $('#offices').html(originList.length);
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
 				  
