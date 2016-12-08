@@ -14,16 +14,16 @@ $(function() {
 	
 
 	
-	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['Barbara Hill','barbara.hill@brother.com'],['Doug','doug.carter@brother.com'],['Gary Sibley','gary.sobley@brother.com'],['Laura Bergamini','laura.bergamini@brother.com'],['Leo Perez','leo.perez@brother.com']];
+	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['Barbara Hill','barbara.hill@brother.com'],['Doug Carter','doug.carter@brother.com'],['Gary Sibley','gary.sibley@brother.com'],['Laura Bergamini','laura.bergamini@brother.com'],['Leo Perez','leo.perez@brother.com']];
 	var industry="regional bank";
 	var clientName="First Bank";
 	$('.indus').text(industry);
 	$('.client').text(clientName);
 	var frequency = 12;
-	$('#rsmName').text(rsms[0][0]);
+	$('#rsmName').text(rsms[1][0]);
 	//<a href="mailto:shayne.boelter@brother.com">shayne.boelter@brother.com</a>
 	
-	$('#rsmEmail').html('<a href="mailto:'+rsms[0][1]+'">'+rsms[0][1]+'</a>');
+	$('#rsmEmail').html('<a href="mailto:'+rsms[1][1]+'">'+rsms[1][1]+'</a>');
 	
  if(frequency == 0){
 	$(".annual").hide();
@@ -33,7 +33,53 @@ $(function() {
   $("#controls").hide("slow");
 });
 
+	$( "#salsa" ).change(function() {
+		
+  salesDetail();
 });
+	
+	
+	//---pick a sales person
+		var salesPer;
+	var salesEml;
+	function salesDetail(){
+	switch($("#salsa").val()){
+		case 'Barbara':
+		salesPer=rsms[1][0];
+		salesEml=rsms[1][1];
+		break;
+		case 'Doug':
+		salesPer=rsms[2][0];
+		salesEml=rsms[2][1];
+		break;
+		case 'Gary':
+		salesPer=rsms[3][0];
+		salesEml=rsms[3][1];
+		break;
+		case 'Laura':
+		salesPer=rsms[4][0];
+		salesEml=rsms[4][1];
+		break;
+		case 'Leo':
+		salesPer=rsms[5][0];
+		salesPhn=rsms[5][1];
+		break;
+		case 'Shane':
+		salesPer=rsms[0][0];
+		salesEml=rsms[0][1];
+		break;
+		}
+		//---do this 
+		$("#rsmName").text(salesPer);
+		$('#rsmEmail').html('<a href="mailto:'+salesEml+'">'+salesEml+'</a>');
+		
+}
+	
+	
+	
+});//end of docready
+
+	
 
 
 </script>
@@ -233,7 +279,7 @@ label{
       <div id="attendeeDiv">
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
         <div id="sales">
-        <label>Salesperson</label>
+        <label>RSM</label>
         <select id="salsa">
         <option value="Barbara">Barbara</option>
         <option value="Doug">Doug</option>
@@ -256,7 +302,7 @@ label{
 	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the
 corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ</div>
 <div class="map" id="map"></div>
-<div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName"></span></strong><br/><span id="rsmEmail"></span><br/> for more information.</p></div></div>
+<div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/> for more information.</p></div></div>
 	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="80%"/></div>
 	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
 	<div class="attendee"><table id="table1"><tbody><tr>
