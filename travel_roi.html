@@ -9,9 +9,12 @@
 $(function() {
 // 12/05/16 production design    2 hours
 // 12/06/16 production design    3 hours
+// 12/07/16 production design    2.5 hrs
+// 12/08/16 prodcution design    1.5 hrs
+	
 
 	
-	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['',''],['',''],['',''],['','']];
+	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['Barbara Hill','barbara.hill@brother.com'],['Doug','doug.carter@brother.com'],['Gary Sibley','gary.sobley@brother.com'],['Laura Bergamini','laura.bergamini@brother.com'],['Leo Perez','leo.perez@brother.com']];
 	var industry="regional bank";
 	var clientName="First Bank";
 	$('.indus').text(industry);
@@ -25,6 +28,10 @@ $(function() {
  if(frequency == 0){
 	$(".annual").hide();
  }
+	
+	$("#run").click(function() {
+  $("#controls").hide("slow");
+});
 
 });
 
@@ -43,7 +50,6 @@ $(function() {
 		
 		.boxlet{width:118px;
 		background-color:darkgray;
-		height:100px;
 		float:left;
 		margin-right:5px;
 		margin-left:5px;
@@ -58,8 +64,7 @@ $(function() {
 		.broLogo{float:right;
 		padding-right:160px;}
 		
-		#clientLogo{min-height:100px;
-		//background-color: lightgray;
+		#clientLogo{min-height:50px;
 			margin-left:60px;
 			margin-right:60px;
 			text-align:center;}
@@ -75,23 +80,24 @@ $(function() {
 			margin-right:auto;
 			min-height: 800px;
 			max-width:900px;
-		border: thin red solid;}
+		//border: thin red solid;}
 		
 		.desc{
 			padding-left:15px;
 			padding-right:15px;
 			text-align:center;
-			font-size:18px;
+			font-size:14px;
 			margin-bottom:10px;
 			margin-top:40px;}
-		
+		#destination{color:black;
+		font-weight: 600;}
 		.disclaimer{
 			display:block; 
 			width:100%;
-			min-height:25px;
+			//min-height:25px;
 			//border: thin red solid;
-			font-size:11px;
-		margin-top:10px;}
+			font-size:10px;
+		margin-top:5px;}
 		
 		.discText{width:500px;
 		float:left;}
@@ -102,9 +108,9 @@ $(function() {
 		text-align:center;
 		min-height:35px;
 			padding-bottom:5px;
-		font-size: 16px;}
+		font-size: 14px;}
 		
-		h4{font-size:24pt;
+		h4{font-size:20pt;
 		margin-top:-10px;}
 		.leftSide{float:left;
 		width:450px;
@@ -120,10 +126,14 @@ $(function() {
 		border: thin gray solid;
 		background-color:lightgray;}
 		
+		#meetHead{text-align:center;
+		margin-bottom:5px;}
+		
+		
 		.rightSide{float:right;
 		width:440px;
 		//border: thin red solid;
-		min-height:500px;
+		//min-height:500px;
 		}
 		
 		.rt{font-size:9pt;
@@ -132,6 +142,16 @@ $(function() {
 			line-height:1;
 			display:inline-block;
 		}
+		#run{width:100px;
+		color:white;
+		background-color:lightgrey;
+			text-align:center;
+		display:inline-block;
+		border-radius: 5px;
+		float:right;
+		cursor:pointer;}
+		
+		.shortName{font-size: 10pt;}
 		
 		.subTotal{font-weight:800;
 		}
@@ -145,8 +165,8 @@ $(function() {
     text-align: left;}
 		
 		.title{float:left;
-		width:650px;
-		font-size: 40px;
+		width:450px;
+		font-size: 30px;
 		text-align: right;}
 		
 		.titleBox{
@@ -224,19 +244,21 @@ label{
      	<option value="Shane">Shane</option>
 	</select>
 </div>
-       </div><div class="clearBoth"></div> </div>
+       </div>
+       <span id="run">RUN</span>
+       <div class="clearBoth"></div> </div>
 	<div class="titleBox">
-	<div class="logo"><img src="OmniJoin_meet_smarter_R-01.png" width="100%" alt="oj logo"/></div>
+	<div class="logo"><img src="OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
 	<div class="title">Travel ROI Calculator</div>
 	<div class="clearBoth"></div>
 	
 	</div>
-	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with 4 branches in New Jersey. The bank has monthly branch manager meetings at the
+	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the
 corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ</div>
 <div class="map" id="map"></div>
 <div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName"></span></strong><br/><span id="rsmEmail"></span><br/> for more information.</p></div></div>
-	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="100%"/></div>
-	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to <span id="destination"></span> (round trip)</div>
+	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="80%"/></div>
+	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
 	<div class="attendee"><table id="table1"><tbody><tr>
 	  <th style="white-space: nowrap;">Attendee Location</th>
 	  <th>Time<br>
@@ -250,25 +272,24 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	
 
 	</tbody></table></div>
-	<div class="totals">
-  		<span class="totalHead">TOTALS FOR THIS MEETING</span>
-	  		<div class="boxlet"><p>Time wasted in transit</p>
-			<h4> <span class="totTim"></span> min.</h4>
+	<div class="totals"><div id="meetHead">TOTALS FOR A MEETING ON [DATE] WITH [4] ATTENDEES</div>
+	  <div class="boxlet"><p>Time wasted in transit</p>
+			<h4> <span class="totTim"></span><span class="shortName"> Min.</span></h4>
 			</div>
 			<div class="boxlet">
 	  		<p>Distance<br/>Travelled</p>
-				<h4><span id="rt_distance">def</span> mi.</h4>
+				<h4><span id="rt_distance">def</span><span class="shortName"> mi.</span></h4>
 			</div>
 			<div class="boxlet"><p>*Cost<br/>incurred</p>
-	  		<h4><sup>$</sup><span id="driveCost"></span><sup></sup></h4>
+	  		<h4><span class="shortName"><sup>$</sup></span><span id="driveCost"></span><sup></sup></h4>
 			</div><div class="clearBoth"></div></div>
 		<div class="annual"><div class="totalHead">ANNUAL TOTALS <span>(12 meetings)</span></div>
 	<div class="boxlet annual"><p>Time wasted in transit</p>
-		<h4><span class="totTim2"></span> hrs.</h4>
+		<h4><span class="totTim2"></span> <span class="shortName">hrs.</span></h4>
 	</div>
 	<div class="boxlet annual">
 	  <p>Distance<br/>Travelled</p>
-		<h4><span class="miTotal">abc</span> mi.</h4>
+		<h4><span class="miTotal">abc</span><span class = "shortName">mi.</span></h4>
 	</div>
 	<div class="boxlet annual"><p>*Cost<br/>incurred</p>
 	  <h4><sup>$</sup><span id="annualCost"></span><sup></sup></h4>
@@ -292,7 +313,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
         var origin1 = 'piscataway, nj';
         var origin2 = 'denville, nj';
 		var origin3 = 'dunellen, nj';
-        var destinationA = '200 Crossing Blvd,Bridgewater, NJ';
+        var destinationA = '200 Crossing Blvd, Bridgewater, NJ';
         //var destinationB = 'Bridgewater, NJ';
 		var mileMultiplier = 0.54;
 		  var cost;
