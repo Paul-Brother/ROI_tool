@@ -41,7 +41,7 @@ $(function() {
 			color:black!important;
 		}
 		
-		.boxlet{width:148px;
+		.boxlet{width:118px;
 		background-color:darkgray;
 		height:100px;
 		float:left;
@@ -74,8 +74,8 @@ $(function() {
 			margin-left:auto;
 			margin-right:auto;
 			min-height: 800px;
-			width:1100px;
-		//border: thin red solid;}
+			max-width:900px;
+		border: thin red solid;}
 		
 		.desc{
 			padding-left:15px;
@@ -90,9 +90,10 @@ $(function() {
 			width:100%;
 			min-height:25px;
 			//border: thin red solid;
-			font-size:11px;}
+			font-size:11px;
+		margin-top:10px;}
 		
-		.discText{width:700px;
+		.discText{width:500px;
 		float:left;}
 		
 		.detailHead{
@@ -106,7 +107,7 @@ $(function() {
 		h4{font-size:24pt;
 		margin-top:-10px;}
 		.leftSide{float:left;
-		width:540px;
+		width:450px;
 		//border: thin red solid;
 		min-height:500px;}
 		
@@ -120,7 +121,7 @@ $(function() {
 		background-color:lightgray;}
 		
 		.rightSide{float:right;
-		width:550px;
+		width:440px;
 		//border: thin red solid;
 		min-height:500px;
 		}
@@ -170,13 +171,60 @@ $(function() {
 			padding-bottom:10px;
 			background-color: whitesmoke;
   		}
+		#controls{min-height:100px;
+			padding:5px;
+		border:thin gray solid;}
+		
+		#inputs {
+   	width: 200px;
+	float:left;
+      }
+input[type=text]{
+	 width:150px;
+	} 
+select{
+	 width:150px;
+	}
+input[type=date]{
+		width:150px;
+	}
+label{
+	width:100px;
+    display: inline-block;
+    float:left;
+	font-size:12px;
+	color:gray;
+	}
 		
 	</style>
 </head>
 
 <body>
 <div class="container">
-
+<div id="controls"><div id="inputs">
+      <div id="dateSpot">
+            <label>Date</label><!--changed from date because not completely supported-->
+            <input id="inputDate" type="text" value="date"></input>
+        </div>
+        <div id="hostN">
+        <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Host name"> </input>
+       </div> 
+      <label>Host location</label><input id="host" class="newAtt" type="text" value ="San Diego, CA" ></input>
+      <div id="attendeeDiv">
+        <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
+        <div id="sales">
+        <label>Salesperson</label>
+        <select id="salsa">
+        <option value="Barbara">Barbara</option>
+        <option value="Doug">Doug</option>
+        <option value="Gary">Gary</option>
+  		<!--<option value="Jay">Jay</option>-->
+  		<option value="Laura">Laura</option>
+   		<option value="Leo">Leo</option> 
+     	<option value="Shane">Shane</option>
+	</select>
+</div>
+       </div><div class="clearBoth"></div> </div>
 	<div class="titleBox">
 	<div class="logo"><img src="OmniJoin_meet_smarter_R-01.png" width="100%" alt="oj logo"/></div>
 	<div class="title">Travel ROI Calculator</div>
@@ -228,8 +276,9 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	
 	</div>
   </div></div>
-	<div class="clearBoth">&nbsp;</div>
+	<div class="clearBoth"></div>
 	<div class="disclaimer"><div class="discText">* This calculator uses the IRS 2016 Standard Mileage Rate of $0.54 to determine the cost of travel. This calculator is intended for illustrative purposes only. Brother International Corporation makes no representation, warranty or promise that these numbers are typical or easily achieved. Results may vary.</div><div class="broLogo"><img src="BrotherLogoBlue.png" width="150"  alt=""/></div>
+	<div class="clearBoth"></div>
 	
 	</div>
 </div>
