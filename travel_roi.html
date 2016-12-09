@@ -6,21 +6,6 @@
 <script>
 	var totalCost=0;
 	var meetingMultiplier=12;
-	var attNum = 1;
-	totalAttendees = 10;
-	
-	
-
-
-//clear field on focus and remove red color--------------
-
-//$("body").on("focus",".newAtt", function(){
-//	$(this).removeClass( "red" );
- 	//this.value = '';/
-//});
-
-//});
-	
 $(function() {
 // 12/05/16 production design    2 hours
 // 12/06/16 production design    3 hours
@@ -28,42 +13,6 @@ $(function() {
 // 12/08/16 prodcution design    2.5 hrs
 	
 
-	//---iterate the attendee number--------------
-
-function getAttNum(){
-	attNum = attNum + 1;
-	 };
-	
-	
-	$('#addAttendee').click(function(){
-		//alert('clicked');
-	getAttNum();
-		//alert(attNum);
-	
-	//alert($('#attendee'+toString(parseInt(attNum-1))).value());
-	var minus= attNum-1;
-	//alert(minus);
-	//if($('#attendee'+minus).val()=='get Location');
-	//return();
-	if(attNum<totalAttendees){
-		//alert('less than ten');
-$( "#attendeeDiv").append("<div><label>Attendee "
-       + attNum
-        + "</label><input class = 'newAtt red' id ='attendee"
-        + attNum
-        +"' type= 'text' value='enter location' width='150'></div>");
-	}
-});
-	
-	//clear field on focus and remove red color--------------
-
-$("body").on("focus",".newAtt", function(){
-	$(this).removeClass( "red" );
- 	this.value = '';
-});
-	
-	
-	
 	
 	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['Barbara Hill','barbara.hill@brother.com'],['Doug Carter','doug.carter@brother.com'],['Gary Sibley','gary.sibley@brother.com'],['Laura Bergamini','laura.bergamini@brother.com'],['Leo Perez','leo.perez@brother.com']];
 	var industry="regional bank";
@@ -256,11 +205,6 @@ label{
 
 #meetHead{text-align:center;
 	margin-bottom:5px;}
-	
-	.red{
-	color:#FF0004;
-	}
-	
 
 .rightSide{float:right;
 	width:440px;
@@ -367,8 +311,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 </div>
        </div>
        <span class="run" id="run">RUN</span>
-       <span class="run" id="update">UPDATE</span>
-       <span class="run" id="addAttendee">ADD ATTENDEE</span></form>
+       <span class="run" id="update">UPDATE</span></form>
        <div class="clearBoth"></div> </div>
 	<div class="titleBox">
 	<div class="logo"><img src="OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
