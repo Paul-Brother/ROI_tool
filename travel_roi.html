@@ -8,24 +8,19 @@
 	var meetingMultiplier=12;
 	var attNum = 1;
 	totalAttendees = 10;
+	var orig = [];
+	var dest = [];
 	
 	
-
-
-//clear field on focus and remove red color--------------
-
-//$("body").on("focus",".newAtt", function(){
-//	$(this).removeClass( "red" );
- 	//this.value = '';/
-//});
-
-//});
+	
+	
 	
 $(function() {
 // 12/05/16 production design    2 hours
 // 12/06/16 production design    3 hours
 // 12/07/16 production design    2.5 hrs
-// 12/08/16 prodcution design    2.5 hrs
+// 12/08/16 production design    2.5 hrs
+// 12/09/16 production design    1 hour
 	
 
 	//---iterate the attendee number--------------
@@ -85,8 +80,8 @@ $("body").on("focus",".newAtt", function(){
 
 	//hostName
 	$("#update").click(function() {
-  		alert($('#hostName').val());
-		alert($('#host').val());
+		calculateDistance();
+  		
 		
 });
 	
@@ -137,6 +132,30 @@ $("body").on("focus",".newAtt", function(){
 	
 });//end of docready
 
+	//calculate distance
+	function calculateDistance(){
+	orig = [];
+	dest = [];
+		alert("calcualte distance");
+		alert($('#hostName').val());
+		alert($('#host').val());
+	//get the value of the host field if they exist
+	//and push into the arrays
+	//picked 10 arbitrarily for a reasonable number
+	//this is var totalAttendees which limits the 
+	//number of attendee fields you can create
+	
+	for (x=1; x<totalAttendees; x++){
+		if ($('#attendee'+x).length!=0){
+			if($('#attendee'+x).val()!='enter location'){
+			orig.push($('#attendee'+x).val());
+			dest.push($('#host').val());
+			}else
+			{alert('Missing an attendee location');
+			return;}
+			}
+		}
+	}	
 	
 
 
