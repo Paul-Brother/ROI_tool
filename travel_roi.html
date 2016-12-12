@@ -21,6 +21,11 @@ $(function() {
 // 12/07/16 production design    2.5 hrs
 // 12/08/16 production design    2.5 hrs
 // 12/09/16 production design    1 hour
+
+	
+	
+	
+
 	
 
 	//---iterate the attendee number--------------
@@ -33,13 +38,12 @@ function getAttNum(){
 	$('#addAttendee').click(function(){
 		//alert('clicked');
 	getAttNum();
-		//alert(attNum);
-	
-	//alert($('#attendee'+toString(parseInt(attNum-1))).value());
 	var minus= attNum-1;
-	//alert(minus);
-	//if($('#attendee'+minus).val()=='get Location');
-	//return();
+	
+	//if($('#attendee'+minus).val()=='enter location'){
+		//alert('enter a location');
+		//return;};
+	
 	if(attNum<totalAttendees){
 		//alert('less than ten');
 $( "#attendeeDiv").append("<div><label>Attendee "
@@ -80,6 +84,7 @@ $("body").on("focus",".newAtt", function(){
 
 	//hostName
 	$("#update").click(function() {
+		//alert('clicked the update button');
 		calculateDistance();
   		
 		
@@ -132,20 +137,34 @@ $("body").on("focus",".newAtt", function(){
 	
 });//end of docready
 
-	//calculate distance
+	//----------------calculate distance
 	function calculateDistance(){
 	orig = [];
 	dest = [];
-		alert("calcualte distance");
-		alert($('#hostName').val());
-		alert($('#host').val());
-	//get the value of the host field if they exist
+		
+		
+		
+		//first make sure all the fields are filled in properly;
+		if($('#hostName').val()=="Host name"){
+			alert('enter Host name');
+			return;
+		}else{
+			//alert($('#hostName').val())
+			if($('#host').val()=="Destination"){
+				alert('enter destination');
+				return;
+			}else{
+				//alert($('#host').val());
+				//get the value of the host field if they exist
 	//and push into the arrays
 	//picked 10 arbitrarily for a reasonable number
 	//this is var totalAttendees which limits the 
 	//number of attendee fields you can create
-	
-	for (x=1; x<totalAttendees; x++){
+	// first check if the attendee fields are blank or filled with 'enter location'
+				
+				
+				
+				for (x=1; x<totalAttendees; x++){
 		if ($('#attendee'+x).length!=0){
 			if($('#attendee'+x).val()!='enter location'){
 			orig.push($('#attendee'+x).val());
@@ -154,8 +173,17 @@ $("body").on("focus",".newAtt", function(){
 			{alert('Missing an attendee location');
 			return;}
 			}
-		}
-	}	
+		alert(orig);
+		alert(dest);
+				
+				}}	
+			}
+		};
+		
+		
+	
+	
+	
 	
 
 
