@@ -3,9 +3,25 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
 
+
+
+
+
+
 <script>
+	
+// 12/05/16 production design    2 hours
+// 12/06/16 production design    3 hours
+// 12/07/16 production design    2.5 hrs
+// 12/08/16 production design    2.5 hrs
+// 12/09/16 production design    1 hour
+//12/12/16  production desing .75 hrs
+//12/13/16 removed date fields   4 hours
+//removed callback and added function to update button
+//
+	
 	var totalCost=0;
-	var meetingMultiplier=12;
+	var meetingMultiplier=0;
 	var attNum = 1;
 	totalAttendees = 10;
 	var orig = [];
@@ -17,21 +33,10 @@
 	
 	
 $(function() {
-// 12/05/16 production design    2 hours
-// 12/06/16 production design    3 hours
-// 12/07/16 production design    2.5 hrs
-// 12/08/16 production design    2.5 hrs
-// 12/09/16 production design    1 hour
-//12/12/16  production desing .75 hrs
-	//12/13/16 removed date fields
-	//removed callback and added function to update button
 
 	
 	
 	
-
-	
-
 	//---iterate the attendee number--------------
 
 function getAttNum(){
@@ -106,6 +111,13 @@ $("body").on("focus",".newAtt", function(){
   salesDetail();
 });
 	
+	
+	$( "#meets" ).change(function() {
+ 		meetingMultiplier = $("#meets").val();
+		$('#meetnums').html(meetingMultiplier);
+		meetingMultiplier=parseInt(meetingMultiplier);
+		alert(meetingMultiplier);
+});
 	
 	//---pick a sales person
 		var salesPer;
@@ -419,6 +431,22 @@ tr:nth-child(even) {background-color: #f2f2f2}
       <label>Host location</label><input id="host" class="newAtt" type="text" value ="Camden NJ" ></input>
       <div id="attendeeDiv">
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
+        <div id="meetMult">
+         <select id="meets">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+  		<option value="4">4</option>
+  		<option value="5">5</option>
+   		<option value="6">6</option> 
+       <option value="7">7</option> 
+       <option value="8">8</option> 
+       <option value="9">9</option> 
+       <option value="10">10</option> 
+       <option value="11">11</option> 
+       <option value="12">12</option> 
+        </select>
+        </div>
         <div id="sales">
         <label>RSM</label>
         <select id="salsa">
@@ -473,7 +501,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 			<div class="boxlet"><p>*Cost<br/>incurred</p>
 	  		<h4>$<span id="driveCost"></span><sup></sup></h4>
 			</div><div class="clearBoth"></div></div>
-		<div class="annual"><div class="totalHead">ANNUAL TOTALS <span>(12 meetings)</span></div>
+		<div class="annual"><div class="totalHead">ANNUAL TOTALS (<span id="meetnums">meet nums</span> meetings)</div>
 	<div class="boxlet annual"><p>Time wasted in transit</p>
 		<h4><span class="totTim2 warning"></span> <span class="shortName warning">hrs.</span></h4>
 	</div>
@@ -499,6 +527,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	 
 	 
       function initMap() {
+		 alert(meetingMultiplier+" inside initMap")
 		  
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
@@ -609,10 +638,33 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  //alert(totalTime);
 				  //aggregate each totalTime to a new var called totMeetRTtime
 				  
-				  $('.totTim').html(totMeetRTtime);
-				  $('.totTim2').html((totMeetRTtime*meetingMultiplier)/60);
+				  $('.totTim').html(totMeetRTtime.toFixed(2));
+				  $('.totTim2').html((totMeetRTtime*parseInt(meetingMultiplier)/60).toFixed(2));
 				  $('#rtDistance').html(totalDist.toFixed(0));
-				  $('.miTotal').html((totalDist*meetingMultiplier).toFixed(0));
+				  alert(totalDist+' = totalDist');
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  alert(meetingMultiplier+' = meetingMultiplier');		// meeting multiplier is undefined here!!
+				  $('.miTotal').html(totalDist*parseInt(meetingMultiplier));       // big red distance travelled
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
 				  
@@ -624,7 +676,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	//---------------------------------------------------------cost
 				  totalCost+=Number(cost);
 				  $('#driveCost').html(totalCost.toFixed(2));
-				  $('#annualCost').html((totalCost*meetingMultiplier).toFixed(0));
+				  $('#annualCost').html((totalCost*parseInt(meetingMultiplier)).toFixed(0));
 				  $("#rt_distance").html(totalDist.toFixed(0));
 				  
 				  
