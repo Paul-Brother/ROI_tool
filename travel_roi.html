@@ -68,13 +68,15 @@ $("body").on("focus",".newAtt", function(){
 	
 	
 	
-	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['Barbara Hill','barbara.hill@brother.com'],['Doug Carter','doug.carter@brother.com'],['Gary Sibley','gary.sibley@brother.com'],['Laura Bergamini','laura.bergamini@brother.com'],['Leo Perez','leo.perez@brother.com']];
+	var rsms=[['Shayne Boelter','shayne.boelter@brother.com','858-395-2416'],['Barbara Hill','barbara.hill@brother.com','908.210.0210'],['Doug Carter','doug.carter@brother.com','951-212-0042'],['Gary Sibley','gary.sibley@brother.com','000-000-0000'],['Laura Bergamini','laura.bergamini@brother.com','000-000-0000'],['Leo Perez','leo.perez@brother.com','858.637.3405']];
 	var industry="regional bank";
 	var clientName="First Bank";
 	$('.indus').text(industry);
 	$('.client').text(clientName);
 	var frequency = 12;
 	$('#rsmName').text(rsms[1][0]);
+	
+	$('#rsmPhone').text(rsms[1][2]);
 	
 	$('#rsmEmail').html('<a href="mailto:'+rsms[1][1]+'">'+rsms[1][1]+'</a>');
 	
@@ -84,6 +86,10 @@ $("body").on("focus",".newAtt", function(){
 	
 	$("#run").click(function() {
   $("#controls").hide("slow");
+});
+	
+	$("#OJ_logo").click(function() {
+  $("#controls").show("slow");
 });
 
 	//hostName
@@ -104,35 +110,43 @@ $("body").on("focus",".newAtt", function(){
 	//---pick a sales person
 		var salesPer;
 	var salesEml;
+	var salesPhn;
 	function salesDetail(){
 	switch($("#salsa").val()){
 		case 'Barbara':
 		salesPer=rsms[1][0];
 		salesEml=rsms[1][1];
+		salesPhn=rsms[1][2];
 		break;
 		case 'Doug':
 		salesPer=rsms[2][0];
 		salesEml=rsms[2][1];
+		salesPhn=rsms[2][2];
 		break;
 		case 'Gary':
 		salesPer=rsms[3][0];
 		salesEml=rsms[3][1];
+		salesPhn=rsms[3][2];
 		break;
 		case 'Laura':
 		salesPer=rsms[4][0];
 		salesEml=rsms[4][1];
+		salesPhn=rsms[4][2];
 		break;
 		case 'Leo':
 		salesPer=rsms[5][0];
-		salesPhn=rsms[5][1];
+		salesEml=rsms[5][1];
+		salesPhn=rsms[5][2];
 		break;
 		case 'Shane':
 		salesPer=rsms[0][0];
 		salesEml=rsms[0][1];
+		salesPhn=rsms[0][2];
 		break;
 		}
 		//---do this 
 		$("#rsmName").text(salesPer);
+		$("#rsmPhone").text(salesPhn);
 		$('#rsmEmail').html('<a href="mailto:'+salesEml+'">'+salesEml+'</a>');
 		
 }
@@ -170,7 +184,11 @@ $("body").on("focus",".newAtt", function(){
 				$('#table1').html('<table id="table1"><tbody><tr><th style="white-space: nowrap;">Attendee<br/>Location</th><th>Time<br><span class= "rt">Round<br/>Trip</span></th><th>Distance<br/><span class="rt">Round<br/>Trip</span></th><th>Cost*<br><span class="rt">Round<br/>Trip</span></th></tr></tbody></table>');
 				
 				
-		
+		$("#numAttendees").html(attNum);
+				if(attNum>1){
+					//add esses
+					$(".plural").html('s');
+				}
 				
 					initMap()
 					
@@ -302,6 +320,7 @@ label{
 	background-color:lightgray;}
 
 #meetHead{text-align:center;
+	font-size:16px;
 	margin-bottom:5px;}
 	
 	.red{
@@ -418,7 +437,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
        <span class="run" id="addAttendee">ADD ATTENDEE</span></form>
        <div class="clearBoth"></div> </div>
 	<div class="titleBox">
-	<div class="logo"><img src="OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
+	<div class="logo" id="OJ_logo"><img src="OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
 	<div class="title">Travel ROI Calculator</div>
 	<div class="clearBoth"></div>
 	
@@ -426,7 +445,8 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the
 corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ</div>
 <div class="map" id="map"></div>
-<div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/> for more information.</p></div></div>
+<div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
+<span id="rsmPhone">rsmPhone</span><br/> for more information.</p></div></div>
 	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="80%"/></div>
 	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
 	<div class="attendee"><table id="table1"><tbody><tr>
@@ -442,13 +462,13 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	
 
 	</tbody></table></div>
-	<div class="totals"><div id="meetHead">TOTALS FOR A MEETING ON [DATE] WITH [4] ATTENDEES</div>
+	<div class="totals"><div id="meetHead">TOTALS FOR A MEETING WITH <span id="numAttendees"></span> ATTENDEE<span class="plural" style="font-size:16pt"></span></div>
 	  <div class="boxlet"><p>Time wasted in transit</p>
 			<h4> <span class="totTim"></span><span class="shortName"> Min.</span></h4>
 			</div>
 			<div class="boxlet">
-	  		<p>Distance<br/>Travelled</p>
-				<h4><span id="rt_distance">def</span><span class="shortName"> mi.</span></h4>
+	  		<p>Distance<br/>Travelled Miles</p>
+				<h4><span id="rt_distance"></span><span class="shortName"> mi.</span></h4>
 			</div>
 			<div class="boxlet"><p>*Cost<br/>incurred</p>
 	  		<h4>$<span id="driveCost"></span><sup></sup></h4>
@@ -459,7 +479,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	</div>
 	<div class="boxlet annual">
 	  <p>Distance<br/>Travelled</p>
-		<h4><span class="miTotal warning">abc</span><span class = "shortName warning"> mi.</span></h4>
+		<h4><span class="miTotal warning"></span><span class = "shortName warning"> mi.</span></h4>
 	</div>
 	<div class="boxlet annual "><p>*Cost<br/>incurred</p>
 	  <h4 class="warning">$<span id="annualCost" class="warning"></span></h4>
@@ -479,42 +499,11 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	 
 	 
       function initMap() {
-		  //alert('init');
-		  //put stuff in origins
-		  // check if the attendee fields are blank or filled with 'enter location'
-				//totalAttendees is the largest number of attendees you can have
-		//while (x=1; x<totalAttendees; x++){
-		//	alert(x)
-		//if ($('#attendee'+x).length!=0){
-	//		if($('#attendee'+x).val()!='enter location'){
-
-	
-	//		}else
-	//		{alert('Missing an attendee location');
-	//		return;}
-	//		}
-	
-		//alert(dest);
-		//};
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		  
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
-//-----------origins will ppoulate the origins list
-        //var origin1 = 'piscataway, nj';
-        //var origin2 = 'denville, nj';
-		//var origin3 = 'dunellen, nj';
-        //var destinationA = '200 Crossing Blvd, Bridgewater, NJ';
-      
 		var mileMultiplier = 0.54;
-		  var cost;
-
+		var cost;
         var destinationIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
         var originIcon = 'https://chart.googleapis.com/chart?' +
@@ -524,7 +513,10 @@ corporate office. All branches are within 45 minutes of the corporate office in 
           zoom: 10
         });
         var geocoder = new google.maps.Geocoder;
-//-----------------------------------------------------------------------origins
+
+		  
+		  
+		  //-----------------------------------------------------------------------origins
 		  orig = [];
 		  
 		  
@@ -539,11 +531,6 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 			}
 		}
 	
-		  
-		  
-		
-		  
-		  
 		 
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
@@ -561,8 +548,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
           } else {
             var originList = response.originAddresses;
             var destinationList = response.destinationAddresses;
-            //var outputDiv = document.getElementById('output');
-            //outputDiv.innerHTML = '';
+    
             deleteMarkers(markersArray);
 
             var showGeocodedAddressOnMap = function(asDestination) {
@@ -580,7 +566,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
                 }
               };
             };
-              //alert('before output');
+              
               var totalDist=0;
 			  var meetingTotalDist=0;
               var num;
@@ -608,9 +594,15 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				 // alert(totalDist);
 				  
 	//-----------------------time for each attendee round trip 
-				// alert(results[j].duration.text);
-				  tim=results[j].duration.text;
-				  //alert(tim);
+				//alert(results[j].duration.text);  //ok
+				tim=results[j].duration.text;
+				//alert(tim); ok
+				if(tim.indexOf('hour')){
+					alert('has hours');//has hours
+					
+				}
+				  
+				  
 				 tim=parseFloat(tim.replace('mins',''));
 				  tim = tim*2; //each attendee round trip
 				  totMeetRTtime+=Number(tim);
@@ -619,8 +611,8 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  
 				  $('.totTim').html(totMeetRTtime);
 				  $('.totTim2').html((totMeetRTtime*meetingMultiplier)/60);
-				  $('#rtDistance').html(totalDist);
-				  $('.miTotal').html(totalDist*meetingMultiplier);
+				  $('#rtDistance').html(totalDist.toFixed(0));
+				  $('.miTotal').html((totalDist*meetingMultiplier).toFixed(0));
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
 				  
@@ -631,32 +623,24 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 			
 	//---------------------------------------------------------cost
 				  totalCost+=Number(cost);
-				  $('#driveCost').html(totalCost);
-				  $('#annualCost').html(totalCost*meetingMultiplier);
-				  $("#rt_distance").html(totalDist);
+				  $('#driveCost').html(totalCost.toFixed(2));
+				  $('#annualCost').html((totalCost*meetingMultiplier).toFixed(0));
+				  $("#rt_distance").html(totalDist.toFixed(0));
 				  
 				  
-	//-----------------------------------------------------------------
+	//-----------------------------------------------------------------adding the new attendee 
      $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+tim+' min.</td><td>'+num+' mi.</td><td> $'+cost+'</td></tr>');
 				  
 				  $("#destination").html(destinationA);
 				  
-				  
-  
-              //   $('.attendee').append(originList[i] + ' to ' + destinationList[j]);// +
-                 //   ': ' + results[j].distance.text + ' in ' +
-                  //  results[j].duration.text + '<br/>';
               }	
             }
           }	
-			//$('#table1 tbody').append('<tr class="subTotal"><td>totals</td><td>asdf</td><td>asdf</td><td>asdf</td></tr>'); 
         });
 		
       }
 
-		
-	
-		//alert(output.innerHTML);
+
 		
       function deleteMarkers(markersArray) {
         for (var i = 0; i < markersArray.length; i++) {
@@ -668,7 +652,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 		
 				
 				
-				//diz.innerHTML=div.innerHTML+'Total round trip distance travelled for all attendees is '+roundTrip+'miles.');
+	//diz.innerHTML=div.innerHTML+'Total round trip distance travelled for all attendees is '+roundTrip+'miles.');
 	 //removed &libraries=geometry&callback=initMap from the call below
     </script>
     <script async defer
