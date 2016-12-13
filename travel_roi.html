@@ -21,14 +21,14 @@
 //
 	
 	var totalCost=0;
-	var meetingMultiplier=0;
+	var meetingMultiplier=1;
 	var attNum = 1;
 	totalAttendees = 10;
 	var orig = [];
 	var dest = [];
 	var destinationA;
 	
-	
+  var description='<strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ';
 	
 	
 	
@@ -431,6 +431,10 @@ tr:nth-child(even) {background-color: #f2f2f2}
       <label>Host location</label><input id="host" class="newAtt" type="text" value ="Camden NJ" ></input>
       <div id="attendeeDiv">
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
+        <div id="descr">
+        <textarea cols="40" rows="5" name="descriptionText">
+First Bank is a regional bank with 000 offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
+</textarea></div>
         <div id="meetMult">
          <select id="meets">
         <option value="1">1</option>
