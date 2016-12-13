@@ -10,6 +10,7 @@
 	totalAttendees = 10;
 	var orig = [];
 	var dest = [];
+	var destinationA;
 	
 	
 	
@@ -21,6 +22,9 @@ $(function() {
 // 12/07/16 production design    2.5 hrs
 // 12/08/16 production design    2.5 hrs
 // 12/09/16 production design    1 hour
+//12/12/16  production desing .75 hrs
+	//12/13/16 removed date fields
+	//removed callback and added function to update button
 
 	
 	
@@ -86,7 +90,7 @@ $("body").on("focus",".newAtt", function(){
 	$("#update").click(function() {
 		//alert('clicked the update button');
 		calculateDistance();
-  		
+  		//initMap();
 		
 });
 	
@@ -137,9 +141,12 @@ $("body").on("focus",".newAtt", function(){
 	
 });//end of docready
 
-	//----------------calculate distance
+	//----------------calculate distance-----------------------------------------------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	function calculateDistance(){
-	orig = [];
+	//orig = [];
 	dest = [];
 		
 		
@@ -154,30 +161,23 @@ $("body").on("focus",".newAtt", function(){
 				alert('enter destination');
 				return;
 			}else{
-				//alert($('#host').val());
-				//get the value of the host field if they exist
-	//and push into the arrays
-	//picked 10 arbitrarily for a reasonable number
-	//this is var totalAttendees which limits the 
-	//number of attendee fields you can create
-	// first check if the attendee fields are blank or filled with 'enter location'
+				destinationA = $('#host').val();
+			
 				
 				
+			// unfill the table
 				
-				for (x=1; x<totalAttendees; x++){
-		if ($('#attendee'+x).length!=0){
-			if($('#attendee'+x).val()!='enter location'){
-			orig.push($('#attendee'+x).val());
-			dest.push($('#host').val());
-			}else
-			{alert('Missing an attendee location');
-			return;}
+				$('#table1').html('<table id="table1"><tbody><tr><th style="white-space: nowrap;">Attendee<br/>Location</th><th>Time<br><span class= "rt">Round<br/>Trip</span></th><th>Distance<br/><span class="rt">Round<br/>Trip</span></th><th>Cost*<br><span class="rt">Round<br/>Trip</span></th></tr></tbody></table>');
+				
+				
+		
+				
+					initMap()
+					
+				
 			}
-		alert(orig);
-		alert(dest);
-				
-				}}	
-			}
+	}
+			
 		};
 		
 		
@@ -390,14 +390,14 @@ tr:nth-child(even) {background-color: #f2f2f2}
      
      
      
-      <div id="dateSpot">
-            <label>Date</label><!--changed from date because not completely supported-->
+      <!--   <div id="dateSpot">
+         <label>Date</label>changed from date because not completely supported
             <input id="inputDate" type="date" value="date">
-        </div>
+        </div>-->
         <div id="hostN">
-        <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Host name"> </input>
+        <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Paul"> </input>
        </div> 
-      <label>Host location</label><input id="host" class="newAtt" type="text" value ="Destination" ></input>
+      <label>Host location</label><input id="host" class="newAtt" type="text" value ="Camden NJ" ></input>
       <div id="attendeeDiv">
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
         <div id="sales">
@@ -475,16 +475,43 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 </div>
  <script>
 	
+	 
+	 
+	 
       function initMap() {
 		  //alert('init');
+		  //put stuff in origins
+		  // check if the attendee fields are blank or filled with 'enter location'
+				//totalAttendees is the largest number of attendees you can have
+		//while (x=1; x<totalAttendees; x++){
+		//	alert(x)
+		//if ($('#attendee'+x).length!=0){
+	//		if($('#attendee'+x).val()!='enter location'){
+
+	
+	//		}else
+	//		{alert('Missing an attendee location');
+	//		return;}
+	//		}
+	
+		//alert(dest);
+		//};
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
-//-----------origins will poulate the origins list
-        var origin1 = 'piscataway, nj';
-        var origin2 = 'denville, nj';
-		var origin3 = 'dunellen, nj';
-        var destinationA = '200 Crossing Blvd, Bridgewater, NJ';
-        //var destinationB = 'Bridgewater, NJ';
+//-----------origins will ppoulate the origins list
+        //var origin1 = 'piscataway, nj';
+        //var origin2 = 'denville, nj';
+		//var origin3 = 'dunellen, nj';
+        //var destinationA = '200 Crossing Blvd, Bridgewater, NJ';
+      
 		var mileMultiplier = 0.54;
 		  var cost;
 
@@ -497,10 +524,32 @@ corporate office. All branches are within 45 minutes of the corporate office in 
           zoom: 10
         });
         var geocoder = new google.maps.Geocoder;
-
+//-----------------------------------------------------------------------origins
+		  orig = [];
+		  
+		  
+		  	for (x=1; x<totalAttendees; x++){
+		if ($('#attendee'+x).length!=0){
+			if($('#attendee'+x).val()!='enter location'){
+			orig.push($('#attendee'+x).val());
+			
+			}else
+			{alert('Missing an attendee location');
+			return;}
+			}
+		}
+	
+		  
+		  
+		
+		  
+		  
+		 
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
-          origins: [origin1, origin2, origin3, 'flemington, nj'],
+			
+		
+          origins: orig,
           destinations: [destinationA],
           travelMode: 'DRIVING',
           unitSystem: google.maps.UnitSystem.IMPERIAL,
@@ -620,9 +669,10 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				
 				
 				//diz.innerHTML=div.innerHTML+'Total round trip distance travelled for all attendees is '+roundTrip+'miles.');
+	 //removed &libraries=geometry&callback=initMap from the call below
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW9mvJDoxvAY0fUPLCl6IkXjxMMcAqKf0&libraries=geometry&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW9mvJDoxvAY0fUPLCl6IkXjxMMcAqKf0">
     </script>
 </body>
 </html>
