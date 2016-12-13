@@ -6,26 +6,185 @@
 <script>
 	var totalCost=0;
 	var meetingMultiplier=12;
+	var attNum = 1;
+	totalAttendees = 10;
+	var orig = [];
+	var dest = [];
+	
+	
+	
+	
+	
 $(function() {
 // 12/05/16 production design    2 hours
 // 12/06/16 production design    3 hours
+// 12/07/16 production design    2.5 hrs
+// 12/08/16 production design    2.5 hrs
+// 12/09/16 production design    1 hour
+
 	
-	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['',''],['',''],['',''],['','']];
+	
+	
+
+	
+
+	//---iterate the attendee number--------------
+
+function getAttNum(){
+	attNum = attNum + 1;
+	 };
+	
+	
+	$('#addAttendee').click(function(){
+		//alert('clicked');
+	getAttNum();
+	var minus= attNum-1;
+	
+	//if($('#attendee'+minus).val()=='enter location'){
+		//alert('enter a location');
+		//return;};
+	
+	if(attNum<totalAttendees){
+		//alert('less than ten');
+$( "#attendeeDiv").append("<div><label>Attendee "
+       + attNum
+        + "</label><input class = 'newAtt red' id ='attendee"
+        + attNum
+        +"' type= 'text' value='enter location' width='150'></div>");
+	}
+});
+	
+	//clear field on focus and remove red color--------------
+
+$("body").on("focus",".newAtt", function(){
+	$(this).removeClass( "red" );
+ 	this.value = '';
+});
+	
+	
+	
+	
+	var rsms=[['Shayne Boelter','shayne.boelter@brother.com'],['Barbara Hill','barbara.hill@brother.com'],['Doug Carter','doug.carter@brother.com'],['Gary Sibley','gary.sibley@brother.com'],['Laura Bergamini','laura.bergamini@brother.com'],['Leo Perez','leo.perez@brother.com']];
 	var industry="regional bank";
 	var clientName="First Bank";
 	$('.indus').text(industry);
 	$('.client').text(clientName);
 	var frequency = 12;
-	$('#rsmName').text(rsms[0][0]);
-	//<a href="mailto:shayne.boelter@brother.com">shayne.boelter@brother.com</a>
+	$('#rsmName').text(rsms[1][0]);
 	
-	$('#rsmEmail').html('<a href="mailto:'+rsms[0][1]+'">'+rsms[0][1]+'</a>');
+	$('#rsmEmail').html('<a href="mailto:'+rsms[1][1]+'">'+rsms[1][1]+'</a>');
 	
  if(frequency == 0){
 	$(".annual").hide();
  }
-
+	
+	$("#run").click(function() {
+  $("#controls").hide("slow");
 });
+
+	//hostName
+	$("#update").click(function() {
+		//alert('clicked the update button');
+		calculateDistance();
+  		
+		
+});
+	
+	
+	$( "#salsa" ).change(function() {
+		
+  salesDetail();
+});
+	
+	
+	//---pick a sales person
+		var salesPer;
+	var salesEml;
+	function salesDetail(){
+	switch($("#salsa").val()){
+		case 'Barbara':
+		salesPer=rsms[1][0];
+		salesEml=rsms[1][1];
+		break;
+		case 'Doug':
+		salesPer=rsms[2][0];
+		salesEml=rsms[2][1];
+		break;
+		case 'Gary':
+		salesPer=rsms[3][0];
+		salesEml=rsms[3][1];
+		break;
+		case 'Laura':
+		salesPer=rsms[4][0];
+		salesEml=rsms[4][1];
+		break;
+		case 'Leo':
+		salesPer=rsms[5][0];
+		salesPhn=rsms[5][1];
+		break;
+		case 'Shane':
+		salesPer=rsms[0][0];
+		salesEml=rsms[0][1];
+		break;
+		}
+		//---do this 
+		$("#rsmName").text(salesPer);
+		$('#rsmEmail').html('<a href="mailto:'+salesEml+'">'+salesEml+'</a>');
+		
+}
+	
+	
+	
+});//end of docready
+
+	//----------------calculate distance
+	function calculateDistance(){
+	orig = [];
+	dest = [];
+		
+		
+		
+		//first make sure all the fields are filled in properly;
+		if($('#hostName').val()=="Host name"){
+			alert('enter Host name');
+			return;
+		}else{
+			//alert($('#hostName').val())
+			if($('#host').val()=="Destination"){
+				alert('enter destination');
+				return;
+			}else{
+				//alert($('#host').val());
+				//get the value of the host field if they exist
+	//and push into the arrays
+	//picked 10 arbitrarily for a reasonable number
+	//this is var totalAttendees which limits the 
+	//number of attendee fields you can create
+	// first check if the attendee fields are blank or filled with 'enter location'
+				
+				
+				
+				for (x=1; x<totalAttendees; x++){
+		if ($('#attendee'+x).length!=0){
+			if($('#attendee'+x).val()!='enter location'){
+			orig.push($('#attendee'+x).val());
+			dest.push($('#host').val());
+			}else
+			{alert('Missing an attendee location');
+			return;}
+			}
+		alert(orig);
+		alert(dest);
+				
+				}}	
+			}
+		};
+		
+		
+	
+	
+	
+	
 
 
 </script>
@@ -35,156 +194,214 @@ $(function() {
 
 <meta charset="utf-8">
 <title>Travel ROI</title>
-	<style>
-		.annual{background-color:white!important;
-			color:black!important;
-		}
-		
-		.boxlet{width:150px;
-		background-color:darkgray;
-		height:100px;
-		float:left;
-		margin-right:5px;
-		margin-left:5px;
-		text-align:center;
-		color:white;
-		padding-left:10px;
-		padding-right:10px;
-		}
-		
-		.boxlet p{margin-top:-1px;}
-		
-		.broLogo{float:right;
-		padding-right:160px;}
-		.controls{min-height:100px;
-		
-		border:thin red solid;}
-		#clientLogo{min-height:100px;
-		//background-color: lightgray;
-			margin-left:60px;
-			margin-right:60px;
-			text-align:center;}
-		
-		.clearBoth{clear:both;}
-		
-		.contact{margin-top:15px;}
-		
-		.container{
-			font-family: Segoe, Segoe UI, DejaVu Sans, Trebuchet MS, Verdana," sans-serif";
-			display:block;
-			margin-left:auto;
-			margin-right:auto;
-			min-height: 800px;
-			width:1100px;
-		//border: thin red solid;}
-		
-		.desc{
-			padding-left:15px;
-			padding-right:15px;
-			text-align:center;
-			font-size:18px;
-			margin-bottom:10px;
-			margin-top:40px;}
-		
-		.disclaimer{
-			display:block; 
-			width:100%;
-			min-height:25px;
-			//border: thin red solid;
-			font-size:11px;}
-		
-		.discText{width:700px;
-		float:left;}
-		
-		.detailHead{
-		background-color:darkgray;
-		color:white;
-		text-align:center;
-		height:35px;
-		font-size: 20px;}
-		
-		h4{font-size:24pt;
-		margin-top:-10px;}
-		.leftSide{float:left;
-		width:540px;
-		//border: thin red solid;
-		min-height:500px;}
-		
-		.logo{width:300px;
-		float:right;
-		clear:both;}
-		
-		
-		.map{height:300px;
-		border: thin gray solid;
-		background-color:lightgray;}
-		
-		.rightSide{float:right;
-		width:550px;
-		//border: thin red solid;
-		min-height:500px;
-		}
-		
-		.rt{font-size:9pt;
-			text-align: center;
-			color:gray;
-			line-height:1;
-			display:inline-block;
-		}
-		
-		.subTotal{font-weight:800;
-		}
-		table,  td {
-   //border: 1px solid black;
-			width:100%;
-			 
+
+<style>
+.annual{background-color:white!important;
+	color:black!important;
 }
-		tr:nth-child(even) {background-color: #f2f2f2}
-		td{padding: 15px;
-    text-align: left;}
-		
-		.title{float:left;
-		width:650px;
-		font-size: 40px;
-		text-align: right;}
-		
-		.titleBox{
-			text-align: center;
-			color:darkgray;
-			min-height:50px;
-			clear:both;
-			//border:thin red solid;
-		}
-		.totalHead{float:left;
-			text-align: left;
-			height:24px;
-			margin-top:10px;
-			width:100%;
-			clear:both;}
-		
-		.totals{//display:flex;
-  			justify-content:space-between;
-  			//border:solid;}
-	</style>
+
+.boxlet{width:118px;
+	background-color:darkgray;
+	float:left;
+	margin-right:5px;
+	margin-left:5px;
+	text-align:center;
+	color:white;
+	padding-left:10px;
+	padding-right:10px;
+	max-height:90px;
+}
+
+.boxlet p{margin-top:-1px;}
+
+.broLogo{float:right;
+	padding-right:160px;}
+
+#clientLogo{min-height:50px;
+	margin-left:60px;
+	margin-right:60px;
+	text-align:center;}
+
+.clearBoth{clear:both;}
+
+.contact{margin-top:15px;}
+
+.container{
+	font-family: Segoe, Segoe UI, DejaVu Sans, Trebuchet MS, Verdana," sans-serif";
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	min-height: 800px;
+	max-width:900px;}
+	
+#controls{min-height:100px;
+	padding:5px;
+	}
+
+.desc{
+	padding-left:15px;
+	padding-right:15px;
+	text-align:center;
+	font-size:14px;
+	margin-bottom:10px;
+	margin-top:40px;}
+
+#destination{color:black;
+	font-weight: 600;}
+
+.disclaimer{
+	display:block; 
+	width:100%;
+	font-size:10px;
+	margin-top:5px;}
+
+.discText{width:500px;
+	float:left;}
+
+.detailHead{
+	color:darkgray;
+	text-align:center;
+	min-height:35px;
+	padding-bottom:5px;
+	font-size: 14px;}
+
+h4{font-size:20pt;
+	margin-top:-10px;}
+
+#inputs {
+	width: 200px;
+	float:left;
+  }
+
+input[type=text]{
+	width:150px;
+} 
+
+input[type=date]{
+	width:150px;
+}
+
+label{
+	width:100px;
+	display: inline-block;
+	float:left;
+	font-size:12px;
+	color:gray;
+}
+
+.leftSide{float:left;
+	width:450px;
+	min-height:500px;}
+
+.logo{width:300px;
+	float:right;
+	clear:both;}
+
+.map{height:300px;
+	border: thin gray solid;
+	background-color:lightgray;}
+
+#meetHead{text-align:center;
+	margin-bottom:5px;}
+	
+	.red{
+	color:#FF0004;
+	}
+	
+
+.rightSide{float:right;
+	width:440px;
+	}
+
+.rt{font-size:9pt;
+	text-align: center;
+	color:gray;
+	line-height:1;
+	display:inline-block;
+	}
+.run{width:100px;
+	color:white;
+	background-color:lightgrey;
+	text-align:center;
+	display:inline-block;
+	border-radius: 5px;
+	float:right;
+	margin-left:5px;
+	cursor:pointer;}
+
+select{
+	width:150px;
+}
+
+.shortName{font-size: 10pt;}
+
+.subTotal{font-weight:800;
+	}
+
+table,  td {
+		width:100%;
+		font-size: 12pt;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2}
+	td{padding: 5px;
+	text-align: left;
+	min-width:80px;
+	font-size:12pt;}
+
+.title{float:left;
+	width:450px;
+	font-size: 30px;
+	text-align: right;}
+
+.titleBox{
+	text-align: center;
+	color:darkgray;
+	min-height:50px;
+	clear:both;
+	}
+.totalHead{
+	display:block;
+	text-align: left;
+	height:24px;
+	margin-top:10px;
+	padding-left:10px;
+	clear:both;}
+
+.totals{
+	justify-content:space-between;
+	border:thin gray solid;
+	padding-bottom:10px;
+	background-color: whitesmoke;
+	}
+.warning{color:crimson;}
+
+</style>
 </head>
 
 <body>
 <div class="container">
-<div class="controls">controls go here
-
-<div id="inputs">
+<div id="controls"><form>
+     <div id="inputs">
+     
+     
+     
+     <!--controls-->
+     
+     
+     
       <div id="dateSpot">
             <label>Date</label><!--changed from date because not completely supported-->
-            <input id="inputDate" type="text" value="date"></input>
+            <input id="inputDate" type="date" value="date">
         </div>
         <div id="hostN">
         <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Host name"> </input>
        </div> 
-      <label>Host location</label><input id="host" class="newAtt" type="text" value ="San Diego, CA" ></input>
+      <label>Host location</label><input id="host" class="newAtt" type="text" value ="Destination" ></input>
       <div id="attendeeDiv">
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
         <div id="sales">
-        <label>Salesperson</label>
+        <label>RSM</label>
         <select id="salsa">
         <option value="Barbara">Barbara</option>
         <option value="Doug">Doug</option>
@@ -195,22 +412,25 @@ $(function() {
      	<option value="Shane">Shane</option>
 	</select>
 </div>
-       </div> 
-</div>
+       </div>
+       <span class="run" id="run">RUN</span>
+       <span class="run" id="update">UPDATE</span>
+       <span class="run" id="addAttendee">ADD ATTENDEE</span></form>
+       <div class="clearBoth"></div> </div>
 	<div class="titleBox">
-	<div class="logo"><img src="OmniJoin_meet_smarter_R-01.png" width="100%" alt="oj logo"/></div>
+	<div class="logo"><img src="OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
 	<div class="title">Travel ROI Calculator</div>
 	<div class="clearBoth"></div>
 	
 	</div>
-	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with 4 branches in New Jersey. The bank has monthly branch manager meetings at the
+	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the
 corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ</div>
 <div class="map" id="map"></div>
-<div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName"></span></strong><br/><span id="rsmEmail"></span><br/> for more information.</p></div></div>
-	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="100%"/></div>
-	<div id="details"><div class="detailHead">From point of origin to Bridgewater, NJ (round trip)</div>
+<div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/> for more information.</p></div></div>
+	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="80%"/></div>
+	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
 	<div class="attendee"><table id="table1"><tbody><tr>
-	  <th>Attendee Location</th>
+	  <th style="white-space: nowrap;">Attendee<br/>Location</th>
 	  <th>Time<br>
 	  <span class= "rt">Round<br/>Trip</span></th>
 	  <th>Distance<br/><span class="rt">Round<br/>Trip</span>
@@ -222,33 +442,34 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	
 
 	</tbody></table></div>
-	<div class="totals"><span class="totalHead">TOTALS FOR THIS MEETING</span>
+	<div class="totals"><div id="meetHead">TOTALS FOR A MEETING ON [DATE] WITH [4] ATTENDEES</div>
 	  <div class="boxlet"><p>Time wasted in transit</p>
-	  <h4>3.2 hrs.</h4>
-	</div>
-	<div class="boxlet">
-	  <p>Distance<br/>Travelled</p>
-	  <h4>138 mi.</h4>
-	</div>
-	<div class="boxlet"><p>*Cost<br/>incurred</p>
-	  <h4><sup>$</sup><span id="driveCost"></span><sup></sup></h4>
-	</div></div><div class="clearBoth"></div>
+			<h4> <span class="totTim"></span><span class="shortName"> Min.</span></h4>
+			</div>
+			<div class="boxlet">
+	  		<p>Distance<br/>Travelled</p>
+				<h4><span id="rt_distance">def</span><span class="shortName"> mi.</span></h4>
+			</div>
+			<div class="boxlet"><p>*Cost<br/>incurred</p>
+	  		<h4>$<span id="driveCost"></span><sup></sup></h4>
+			</div><div class="clearBoth"></div></div>
 		<div class="annual"><div class="totalHead">ANNUAL TOTALS <span>(12 meetings)</span></div>
 	<div class="boxlet annual"><p>Time wasted in transit</p>
-	  <h4>38.4 hrs.</h4>
+		<h4><span class="totTim2 warning"></span> <span class="shortName warning">hrs.</span></h4>
 	</div>
 	<div class="boxlet annual">
 	  <p>Distance<br/>Travelled</p>
-	  <h4>1656 mi.</h4>
+		<h4><span class="miTotal warning">abc</span><span class = "shortName warning"> mi.</span></h4>
 	</div>
-	<div class="boxlet annual"><p>*Cost<br/>incurred</p>
-	  <h4><sup>$</sup><span id='annualCost'></span><sup></sup></h4>
+	<div class="boxlet annual "><p>*Cost<br/>incurred</p>
+	  <h4 class="warning">$<span id="annualCost" class="warning"></span></h4>
 	</div>
 	
 	</div>
   </div></div>
-	<div class="clearBoth">&nbsp;</div>
+	<div class="clearBoth"></div>
 	<div class="disclaimer"><div class="discText">* This calculator uses the IRS 2016 Standard Mileage Rate of $0.54 to determine the cost of travel. This calculator is intended for illustrative purposes only. Brother International Corporation makes no representation, warranty or promise that these numbers are typical or easily achieved. Results may vary.</div><div class="broLogo"><img src="BrotherLogoBlue.png" width="150"  alt=""/></div>
+	<div class="clearBoth"></div>
 	
 	</div>
 </div>
@@ -258,12 +479,12 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 		  //alert('init');
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
-
+//-----------origins will poulate the origins list
         var origin1 = 'piscataway, nj';
-        var origin2 = 'somerville, nj';
+        var origin2 = 'denville, nj';
 		var origin3 = 'dunellen, nj';
-        var destinationA = '200 Crossing Blvd,Bridgewater, NJ';
-        var destinationB = 'Bridgewater, NJ';
+        var destinationA = '200 Crossing Blvd, Bridgewater, NJ';
+        //var destinationB = 'Bridgewater, NJ';
 		var mileMultiplier = 0.54;
 		  var cost;
 
@@ -279,7 +500,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
-          origins: [origin1, origin2],
+          origins: [origin1, origin2, origin3, 'flemington, nj'],
           destinations: [destinationA],
           travelMode: 'DRIVING',
           unitSystem: google.maps.UnitSystem.IMPERIAL,
@@ -312,9 +533,12 @@ corporate office. All branches are within 45 minutes of the corporate office in 
             };
               //alert('before output');
               var totalDist=0;
+			  var meetingTotalDist=0;
               var num;
 			  var tim;
               var roundTrip;
+			  var totalTime=0;
+			  var totMeetRTtime=0;
 			  
 
             for (var i = 0; i < originList.length; i++) {
@@ -324,30 +548,51 @@ corporate office. All branches are within 45 minutes of the corporate office in 
               for (var j = 0; j < results.length; j++) {
                 geocoder.geocode({'address': destinationList[j]},
                     showGeocodedAddressOnMap(true));
-				  //distance for each attendee round trip
+				  
+	//--------------distance for each attendee round trip
                   num=results[j].distance.text;
                   num=parseFloat(num.replace('km',''));
-                  num=num*2;
+                  num=Number(num*2);//round trip for this location only
 				  
+				  totalDist = totalDist+=num;
+				 
+				 // alert(totalDist);
 				  
-				  
-				  //time for each attendee round trip 
+	//-----------------------time for each attendee round trip 
 				// alert(results[j].duration.text);
 				  tim=results[j].duration.text;
+				  //alert(tim);
 				 tim=parseFloat(tim.replace('mins',''));
-				  tim = tim*2;
+				  tim = tim*2; //each attendee round trip
+				  totMeetRTtime+=Number(tim);
+				  //alert(totalTime);
+				  //aggregate each totalTime to a new var called totMeetRTtime
+				  
+				  $('.totTim').html(totMeetRTtime);
+				  $('.totTim2').html((totMeetRTtime*meetingMultiplier)/60);
+				  $('#rtDistance').html(totalDist);
+				  $('.miTotal').html(totalDist*meetingMultiplier);
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
-                 // alert(totalDist);
+				  
+     // alert(totalDist);
                   roundTrip=totalDist*2;
                   roundTrip=roundTrip.toFixed(2);
-				  //attendee 
+				  
+			
 	//---------------------------------------------------------cost
 				  totalCost+=Number(cost);
 				  $('#driveCost').html(totalCost);
 				  $('#annualCost').html(totalCost*meetingMultiplier);
-				
-     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+tim+' minutes</td><td>'+num+' miles</td><td> $'+cost+'</td></tr>');
+				  $("#rt_distance").html(totalDist);
+				  
+				  
+	//-----------------------------------------------------------------
+     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+tim+' min.</td><td>'+num+' mi.</td><td> $'+cost+'</td></tr>');
+				  
+				  $("#destination").html(destinationA);
+				  
+				  
   
               //   $('.attendee').append(originList[i] + ' to ' + destinationList[j]);// +
                  //   ': ' + results[j].distance.text + ' in ' +
