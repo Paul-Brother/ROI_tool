@@ -3,11 +3,6 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
 
-
-
-
-
-
 <script>
 	
 // 12/05/16 production design    2 hours
@@ -18,24 +13,31 @@
 //12/12/16  production desing .75 hrs
 //12/13/16 removed date fields   4 hours
 //removed callback and added function to update button
-//12/14/16 figured out the time issue. google sends text and seconds both so you can access the data for manipulation- round trip, multiple annual meetings, hours and seconds estimate.			1 hour
+//12/14/16 						1 hour
+//figured out the time issue. google sends text and seconds both so you can access the data for manipulation- round trip, multiple annual meetings, hours and seconds estimate.
 	
 	var totalCost=0;
 	var meetingMultiplier=1;
 	var attNum = 1;
-	totalAttendees = 10;
+	var totalAttendees = 10;
 	var orig = [];
 	var dest = [];
 	var destinationA;
+	var salesPer;
+	var salesEml;
+	var salesPhn;
 	
-  var description='<strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ';
+  	var description='<strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ';
 	
+	var rsms=[['Shayne Boelter','shayne.boelter@brother.com','858-395-2416'],['Barbara Hill','barbara.hill@brother.com','908.210.0210'],['Doug Carter','doug.carter@brother.com','951-212-0042'],['Gary Sibley','gary.sibley@brother.com','000-000-0000'],['Laura Bergamini','laura.bergamini@brother.com','000-000-0000'],['Leo Perez','leo.perez@brother.com','858.637.3405']];
 	
+	var industry="regional bank";
+	
+	var clientName="First Bank";
+	
+	var frequency = 12;
 	
 $(function() {
-
-	
-	
 	
 	//---iterate the attendee number--------------
 
@@ -43,18 +45,15 @@ function getAttNum(){
 	attNum = attNum + 1;
 	 };
 	
-	
-	$('#addAttendee').click(function(){
+
+	//---add attendee-----------------------------
+$('#addAttendee').click(function(){
 		//alert('clicked');
 	getAttNum();
 	var minus= attNum-1;
 	
-	//if($('#attendee'+minus).val()=='enter location'){
-		//alert('enter a location');
-		//return;};
-	
 	if(attNum<totalAttendees){
-		//alert('less than ten');
+		//appending the attendee field to the bottom of the attendee div in the form
 $( "#attendeeDiv").append("<div><label>Attendee "
        + attNum
         + "</label><input class = 'newAtt red' id ='attendee"
@@ -63,7 +62,7 @@ $( "#attendeeDiv").append("<div><label>Attendee "
 	}
 });
 	
-	//clear field on focus and remove red color--------------
+	//clear the attendee field on focus and remove red color--------------
 
 $("body").on("focus",".newAtt", function(){
 	$(this).removeClass( "red" );
@@ -71,46 +70,42 @@ $("body").on("focus",".newAtt", function(){
 });
 	
 	
+	//---set some values in the diplay page
 	
-	
-	var rsms=[['Shayne Boelter','shayne.boelter@brother.com','858-395-2416'],['Barbara Hill','barbara.hill@brother.com','908.210.0210'],['Doug Carter','doug.carter@brother.com','951-212-0042'],['Gary Sibley','gary.sibley@brother.com','000-000-0000'],['Laura Bergamini','laura.bergamini@brother.com','000-000-0000'],['Leo Perez','leo.perez@brother.com','858.637.3405']];
-	var industry="regional bank";
-	var clientName="First Bank";
 	$('.indus').text(industry);
 	$('.client').text(clientName);
-	var frequency = 12;
 	$('#rsmName').text(rsms[1][0]);
-	
 	$('#rsmPhone').text(rsms[1][2]);
-	
 	$('#rsmEmail').html('<a href="mailto:'+rsms[1][1]+'">'+rsms[1][1]+'</a>');
 	
+	//--determine whether the "annual" section should be shown------------------
  if(frequency == 0){
 	$(".annual").hide();
  }
+	
+	//---hide the input fields----------------------------------------------
 	
 	$("#run").click(function() {
   $("#controls").hide("slow");
 });
 	
+	//---------------------------------------------------------------------
 	$("#OJ_logo").click(function() {
   $("#controls").show("slow");
 });
 
-	//hostName
+	//------------------------------------------------------------------------
 	$("#update").click(function() {
-		//alert('clicked the update button');
+		//calculateDistance also has the google function
 		calculateDistance();
-  		//initMap();
-		
 });
 	
-	
+	//---get the saleman data---------------------------------------------------
 	$( "#salsa" ).change(function() {
 		
   salesDetail();
 });
-	
+	//---get the number of annual meetings - defautl is 1---------------------------
 	
 	$( "#meets" ).change(function() {
  		meetingMultiplier = $("#meets").val();
@@ -119,10 +114,8 @@ $("body").on("focus",".newAtt", function(){
 		//alert(meetingMultiplier);
 });
 	
-	//---pick a sales person
-		var salesPer;
-	var salesEml;
-	var salesPhn;
+	//---pick a sales person--------------------------------------------------
+
 	function salesDetail(){
 	switch($("#salsa").val()){
 		case 'Barbara':
@@ -167,6 +160,8 @@ $("body").on("focus",".newAtt", function(){
 	
 });//end of docready
 
+	
+	
 	//----------------calculate distance-----------------------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -174,17 +169,12 @@ $("body").on("focus",".newAtt", function(){
 	function calculateDistance(){
 		
 		//-----------------------------------------------------------description text updates from textbox
-		$('.desc').html($("#descriptionText").val());
-		
-		
-	//orig = [];
-		
+	$('.desc').html($("#descriptionText").val());
 		
 	dest = [];
+			
 		
-		
-		
-		//first make sure all the fields are filled in properly;
+	//---first make sure all the fields are filled in properly-----------------------------------
 		if($('#hostName').val()=="Host name"){
 			alert('enter Host name');
 			return;
@@ -197,35 +187,23 @@ $("body").on("focus",".newAtt", function(){
 				destinationA = $('#host').val();
 			
 				
-				
-			// unfill the table
+	//---unfill the table so it can be reset with new data----------------------------------------
 				
 				$('#table1').html('<table id="table1"><tbody><tr><th style="white-space: nowrap;">Attendee<br/>Location</th><th>Time<br><span class= "rt">Round<br/>Trip</span></th><th>Distance<br/><span class="rt">Round<br/>Trip</span></th><th>Cost*<br><span class="rt">Round<br/>Trip</span></th></tr></tbody></table>');
 				
-				
 		$("#numAttendees").html(attNum);
 				if(attNum>1){
-					//add esses
+		//---add esses---------------------------------------------------------------------------
 					$(".plural").html('s');
 				}
-				
+		//---this is the google function
 					initMap()
-					
 				
-			}
 	}
-			
-		};
+	}			
+	};
 		
-		
-	
-	
-	
-	
-
-
 </script>
-
 
 
 
@@ -342,11 +320,10 @@ label{
 	font-size:16px;
 	margin-bottom:5px;}
 	
-	.red{
+.red{
 	color:#FF0004;
 	}
 	
-
 .rightSide{float:right;
 	width:440px;
 	}
@@ -357,6 +334,7 @@ label{
 	line-height:1;
 	display:inline-block;
 	}
+	
 .run{width:100px;
 	color:white;
 	background-color:lightgrey;
@@ -398,6 +376,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	min-height:50px;
 	clear:both;
 	}
+	
 .totalHead{
 	display:block;
 	text-align: left;
@@ -412,6 +391,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	padding-bottom:10px;
 	background-color: whitesmoke;
 	}
+	
 .warning{color:crimson;}
 
 </style>
@@ -426,12 +406,6 @@ tr:nth-child(even) {background-color: #f2f2f2}
      
      <!--controls-->
      
-     
-     
-      <!--   <div id="dateSpot">
-         <label>Date</label>changed from date because not completely supported
-            <input id="inputDate" type="date" value="date">
-        </div>-->
         <div id="hostN">
         <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Paul"> </input>
        </div> 
@@ -441,7 +415,8 @@ tr:nth-child(even) {background-color: #f2f2f2}
         <div id="descr">
         <textarea cols="40" rows="5" name="descriptionText" id="descriptionText">
 First Bank is a regional bank with 000 offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
-</textarea></div>
+</textarea>
+       </div>
         <div id="meetMult">
          <select id="meets">
         <option value="1">1</option>
@@ -458,6 +433,7 @@ First Bank is a regional bank with 000 offices in New Jersey. The bank has month
        <option value="12">12</option> 
         </select>
         </div>
+        
         <div id="sales">
         <label>RSM</label>
         <select id="salsa">
@@ -473,33 +449,46 @@ First Bank is a regional bank with 000 offices in New Jersey. The bank has month
        <span class="run" id="run">RUN</span>
        <span class="run" id="update">UPDATE</span>
        <span class="run" id="addAttendee">ADD ATTENDEE</span></form>
-       <div class="clearBoth"></div> </div>
+       <div class="clearBoth"></div> 
+       
+       </div>
+	
 	<div class="titleBox">
 	<div class="logo" id="OJ_logo"><img src="OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
 	<div class="title">Travel ROI Calculator</div>
 	<div class="clearBoth"></div>
-	
 	</div>
-	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the
-corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ</div>
+	
+	
+	<div class="rightSide">
+		<div class="desc"><strong><span class="client"></span></strong> is a 
+			<span class="indus"></span> with <span id="officeNum">000</span></div>
 <div class="map" id="map"></div>
 <div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
 <span id="rsmPhone">rsmPhone</span><br/> for more information.</p></div></div>
-	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="80%"/></div>
-	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
-	<div class="attendee"><table id="table1"><tbody><tr>
-	  <th style="white-space: nowrap;">Attendee<br/>Location</th>
-	  <th>Time<br>
-	  <span class= "rt">Round<br/>Trip</span></th>
-	  <th>Distance<br/><span class="rt">Round<br/>Trip</span>
-	  </th>
-	  <th>Cost*<br><span class="rt">Round<br/>Trip</span>
-	  </th>
-	  </tr>
 	
 	
-
-	</tbody></table></div>
+	
+	<div class="leftSide">
+		<div id="clientLogo">
+			<img src="FirstBank.JPG" width="80%"/>
+			</div>
+	<div id="details">
+		<div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
+		<div class="attendee">
+		<table id="table1">
+  			<tbody>
+  			<tr><th style="white-space: nowrap;">Attendee<br/>Location</th>
+	  		<th>Time<br>
+	  		<span class= "rt">Round<br/>Trip</span></th>
+	  		<th>Distance<br/><span class="rt">Round<br/>Trip</span>
+	  		</th>
+	  		<th>Cost*<br><span class="rt">Round<br/>Trip</span>
+	  		</th>
+	  		</tr>
+			</tbody>
+		</table>
+		</div>
 	<div class="totals"><div id="meetHead">TOTALS FOR A MEETING WITH <span id="numAttendees"></span> ATTENDEE<span class="plural" style="font-size:16pt"></span></div>
 	  <div class="boxlet"><p>Time wasted in transit</p>
 			<h4> <span class="totTim"></span><span class="shortName"> Min.</span></h4>
