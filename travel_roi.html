@@ -18,7 +18,7 @@
 //12/12/16  production desing .75 hrs
 //12/13/16 removed date fields   4 hours
 //removed callback and added function to update button
-//
+//12/14/16 figured out the time issue. google sends text and seconds both so you can access the data for manipulation- round trip, multiple annual meetings, hours and seconds estimate.			1 hour
 	
 	var totalCost=0;
 	var meetingMultiplier=1;
@@ -628,21 +628,33 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  
 	//-----------------------time for each attendee round trip 
 				//alert(results[j].duration.text);  //ok
-				tim=results[j].duration.text;
-				//alert(tim); ok
-				if(tim.indexOf('hour')){
-					alert('has hours');//has hours
-					
-				}
+				tim=results[j].duration.value;
+				  //"value" gives seconds and "text" gives the text alternative
+				alert(tim +" seconds of duration");
+				  
+				  var bigMinutes = (tim/60);
+				  var bigHours = Math.floor(bigMinutes/60);
+				  var littleMinutes  = Math.round(bigMinutes-(bigHours*60));
+				  alert (bigHours+" hour "+littleMinutes+" min.");
+				  //now we have total minutes one way
+				  //round trip
+				  var rtMinutes = (tim/60)*2;
+				  var rtHours = Math.floor(rtMinutes/60);
+				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));
+				  //rtMinutes is the round trip time for each attendee
+				  var rtTimeEach = rtHours+" hrs. "+rtLittleMinutes+" min"
 				  
 				  
-				 tim=parseFloat(tim.replace('mins',''));
-				  tim = tim*2; //each attendee round trip
-				  totMeetRTtime+=Number(tim);
+				 //tim=parseFloat(tim.replace('mins',''));
+				  //tim = tim*2; //each attendee round trip
+				  totMeetRTtime+= bigMinutes;//minutes aggregated
 				  //alert(totalTime);
 				  //aggregate each totalTime to a new var called totMeetRTtime
 				  
+				 
 				  $('.totTim').html(totMeetRTtime.toFixed(2));
+				 
+				  
 				  $('.totTim2').html((totMeetRTtime*parseInt(meetingMultiplier)/60).toFixed(2));
 				  $('#rtDistance').html(totalDist.toFixed(0));
 				  alert(totalDist+' = totalDist');
@@ -685,7 +697,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  
 				  
 	//-----------------------------------------------------------------adding the new attendee 
-     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+tim+' min.</td><td>'+num+' mi.</td><td> $'+cost+'</td></tr>');
+     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+rtTimeEach+'</td><td>'+num+' mi.</td><td> $'+cost+'</td></tr>');
 				  
 				  $("#destination").html(destinationA);
 				  
