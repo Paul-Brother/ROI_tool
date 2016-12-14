@@ -116,7 +116,7 @@ $("body").on("focus",".newAtt", function(){
  		meetingMultiplier = $("#meets").val();
 		$('#meetnums').html(meetingMultiplier);
 		meetingMultiplier=parseInt(meetingMultiplier);
-		alert(meetingMultiplier);
+		//alert(meetingMultiplier);
 });
 	
 	//---pick a sales person
@@ -172,7 +172,14 @@ $("body").on("focus",".newAtt", function(){
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	function calculateDistance(){
+		
+		//-----------------------------------------------------------description text updates from textbox
+		$('.desc').html($("#descriptionText").val());
+		
+		
 	//orig = [];
+		
+		
 	dest = [];
 		
 		
@@ -432,7 +439,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
       <div id="attendeeDiv">
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
         <div id="descr">
-        <textarea cols="40" rows="5" name="descriptionText">
+        <textarea cols="40" rows="5" name="descriptionText" id="descriptionText">
 First Bank is a regional bank with 000 offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
 </textarea></div>
         <div id="meetMult">
@@ -457,7 +464,6 @@ First Bank is a regional bank with 000 offices in New Jersey. The bank has month
         <option value="Barbara">Barbara</option>
         <option value="Doug">Doug</option>
         <option value="Gary">Gary</option>
-  		<!--<option value="Jay">Jay</option>-->
   		<option value="Laura">Laura</option>
    		<option value="Leo">Leo</option> 
      	<option value="Shane">Shane</option>
@@ -531,7 +537,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	 
 	 
       function initMap() {
-		 alert(meetingMultiplier+" inside initMap")
+		 //alert(meetingMultiplier+" inside initMap")
 		  
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
@@ -630,12 +636,12 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				//alert(results[j].duration.text);  //ok
 				tim=results[j].duration.value;
 				  //"value" gives seconds and "text" gives the text alternative
-				alert(tim +" seconds of duration");
+				//alert(tim +" seconds of duration");
 				  
 				  var bigMinutes = (tim/60);
 				  var bigHours = Math.floor(bigMinutes/60);
 				  var littleMinutes  = Math.round(bigMinutes-(bigHours*60));
-				  alert (bigHours+" hour "+littleMinutes+" min.");
+				  //alert (bigHours+" hour "+littleMinutes+" min.");
 				  //now we have total minutes one way
 				  //round trip
 				  var rtMinutes = (tim/60)*2;
@@ -647,17 +653,17 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  
 				 //tim=parseFloat(tim.replace('mins',''));
 				  //tim = tim*2; //each attendee round trip
-				  totMeetRTtime+= bigMinutes;//minutes aggregated
+				  totMeetRTtime+= (bigMinutes*2) ;// roundtrip minutes aggregatedf
 				  //alert(totalTime);
-				  //aggregate each totalTime to a new var called totMeetRTtime
+				  //aggregate each totalTime to a new var called totMeetRTtime which will be minutes
 				  
-				 
+				 //---------------------------------------------------------------------------------------------------------------------------------totTim
 				  $('.totTim').html(totMeetRTtime.toFixed(2));
 				 
 				  
 				  $('.totTim2').html((totMeetRTtime*parseInt(meetingMultiplier)/60).toFixed(2));
 				  $('#rtDistance').html(totalDist.toFixed(0));
-				  alert(totalDist+' = totalDist');
+				 // alert(totalDist+' = totalDist');
 				  
 				  
 				  
@@ -679,7 +685,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  
 				  
 				  
-				  alert(meetingMultiplier+' = meetingMultiplier');		// meeting multiplier is undefined here!!
+				 // alert(meetingMultiplier+' = meetingMultiplier');		// meeting multiplier is undefined here!!
 				  $('.miTotal').html(totalDist*parseInt(meetingMultiplier));       // big red distance travelled
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
