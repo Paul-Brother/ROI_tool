@@ -19,6 +19,8 @@
 //12/13/16 removed date fields   4 hours
 //removed callback and added function to update button
 //12/14/16 figured out the time issue. google sends text and seconds both so you can access the data for manipulation- round trip, multiple annual meetings, hours and seconds estimate.			1 hour
+//12/19/16  added contact name var
+//				
 	
 	var totalCost=0;
 	var meetingMultiplier=1;
@@ -27,6 +29,8 @@
 	var orig = [];
 	var dest = [];
 	var destinationA;
+	var contName;
+	var clientName;
 	
   var description='<strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ';
 	
@@ -75,7 +79,7 @@ $("body").on("focus",".newAtt", function(){
 	
 	var rsms=[['Shayne Boelter','shayne.boelter@brother.com','858-395-2416'],['Barbara Hill','barbara.hill@brother.com','908.210.0210'],['Doug Carter','doug.carter@brother.com','951-212-0042'],['Gary Sibley','gary.sibley@brother.com','000-000-0000'],['Laura Bergamini','laura.bergamini@brother.com','000-000-0000'],['Leo Perez','leo.perez@brother.com','858.637.3405']];
 	var industry="regional bank";
-	var clientName="First Bank";
+	clientName = 
 	$('.indus').text(industry);
 	$('.client').text(clientName);
 	var frequency = 12;
@@ -195,8 +199,14 @@ $("body").on("focus",".newAtt", function(){
 				return;
 			}else{
 				destinationA = $('#host').val();
-			
+				//host name is filled in properly
 				
+				contName = $('#hostName').val();
+				//alert(contName);
+				$('#contactName').html(contName);
+			
+				clientName = $('cliName').val();
+				$('#client').html(clientName);
 				
 			// unfill the table
 				
@@ -350,7 +360,9 @@ label{
 .rightSide{float:right;
 	width:440px;
 	}
-
+#rsmData{
+	text-align: center;
+	}
 .rt{font-size:9pt;
 	text-align: center;
 	color:gray;
@@ -432,6 +444,9 @@ tr:nth-child(even) {background-color: #f2f2f2}
          <label>Date</label>changed from date because not completely supported
             <input id="inputDate" type="date" value="date">
         </div>-->
+        <div id="clientN">
+        <label>Client Name</label> <input id="cliName" class="newAtt" type="text" value="First Bank"> </input>
+       </div> 
         <div id="hostN">
         <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Paul"> </input>
        </div> 
@@ -480,10 +495,10 @@ First Bank is a regional bank with 000 offices in New Jersey. The bank has month
 	<div class="clearBoth"></div>
 	
 	</div>
-	<div class="rightSide"><div class="desc"><strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the
+	<div class="rightSide"><div class="desc"><strong><span id="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the
 corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ</div>
 <div class="map" id="map"></div>
-<div class="contact desc"><p><span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
+<div class="contact" id="rsmData"><p><span id="contactName" class=''>ContactName</span>, <span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
 <span id="rsmPhone">rsmPhone</span><br/> for more information.</p></div></div>
 	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="80%"/></div>
 	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
