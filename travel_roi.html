@@ -178,7 +178,8 @@ $("body").on("focus",".newAtt", function(){
 	function calculateDistance(){
 		
 		//-----------------------------------------------------------description text updates from textbox
-		$('.desc').html($("#descriptionText").val());
+		
+		//---client name
 		
 		
 	//orig = [];
@@ -205,9 +206,11 @@ $("body").on("focus",".newAtt", function(){
 				//alert(contName);
 				$('#contactName').html(contName);
 			
-				clientName = $('cliName').val();
-				$('#client').html(clientName);
-				
+				clientName = $('#cliName').val();
+				//alert(clientName);//ok
+				//$('#client').html(clientName);
+				$('.desc').html($("#descriptionText").val());
+				$('.desc').prepend(clientName);
 			// unfill the table
 				
 				$('#table1').html('<table id="table1"><tbody><tr><th style="white-space: nowrap;">Attendee<br/>Location</th><th>Time<br><span class= "rt">Round<br/>Trip</span></th><th>Distance<br/><span class="rt">Round<br/>Trip</span></th><th>Cost*<br><span class="rt">Round<br/>Trip</span></th></tr></tbody></table>');
@@ -455,7 +458,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
         <div id="descr">
         <textarea cols="40" rows="5" name="descriptionText" id="descriptionText">
-First Bank is a regional bank with 000 offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
+ is a regional bank with 000 offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
 </textarea></div>
         <div id="meetMult">
          <select id="meets">
