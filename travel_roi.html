@@ -19,8 +19,10 @@
 //12/13/16 removed date fields   4 hours
 //removed callback and added function to update button
 //12/14/16 figured out the time issue. google sends text and seconds both so you can access the data for manipulation- round trip, multiple annual meetings, hours and seconds estimate.			1 hour
-//12/19/16  added contact name var
-//				
+//12/19/16  added contact name var  .5 hrs
+//12/20/16 instructions, ready to share for input
+//total hrs: 17.25
+	
 	
 	var totalCost=0;
 	var meetingMultiplier=1;
@@ -179,12 +181,7 @@ $("body").on("focus",".newAtt", function(){
 		
 		//-----------------------------------------------------------description text updates from textbox
 		
-		//---client name
-		
-		
-	//orig = [];
-		
-		
+	//--set me back to zero baby, else you will get some unexpected results
 	dest = [];
 		
 		
@@ -202,13 +199,17 @@ $("body").on("focus",".newAtt", function(){
 				destinationA = $('#host').val();
 				//host name is filled in properly
 				
+				
 				contName = $('#hostName').val();
 				//alert(contName);
 				$('#contactName').html(contName);
 			
 				clientName = $('#cliName').val();
 				//alert(clientName);//ok
-				//$('#client').html(clientName);
+				//alert($('#hostlogo_url').val());
+				// put this in the url getter for the logo image
+				$('#clilog').attr('src',$('#hostlogo_url').val());
+				
 				$('.desc').html($("#descriptionText").val());
 				$('.desc').prepend(clientName);
 			// unfill the table
@@ -249,7 +250,15 @@ $("body").on("focus",".newAtt", function(){
 .annual{background-color:white!important;
 	color:black!important;
 }
-
+	#leftControl{border: thin red solid;}
+	#midControl{
+		//border: thin red solid;
+	float:right;
+	width:400px;}
+	#rightControl{thin red solid;
+	float:right;
+	width:150px;}
+	
 .boxlet{width:118px;
 	background-color:darkgray;
 	float:left;
@@ -379,6 +388,8 @@ label{
 	display:inline-block;
 	border-radius: 5px;
 	float:right;
+	margin-bottom:10px;
+	padding-bottom:4px;
 	margin-left:5px;
 	cursor:pointer;}
 
@@ -434,22 +445,26 @@ tr:nth-child(even) {background-color: #f2f2f2}
 
 <body>
 <div class="container">
-<div id="controls"><form>
-     <div id="inputs">
-     
-     
-     
-     <!--controls-->
-     
-     
-     
-      <!--   <div id="dateSpot">
-         <label>Date</label>changed from date because not completely supported
-            <input id="inputDate" type="date" value="date">
-        </div>-->
+<div id="controls">
+    <div id="rightControl">
+       <span class="run" id="run">RUN</span>
+       <span class="run" id="update">UPDATE</span>
+       <span class="run" id="addAttendee">ADD ATTENDEE</span></div>
+	<div id="midControl"><h5>Instructions</h5>
+		<p>Please enter the client company <strong>name</strong>. On request I will send you the url to add in the <strong>host logo field</strong> in the form <strong><span style="font-size: 12px">http://blog.brothercloud.com/podcast/nameofLogo.JPG</span></strong>. enter it into the logo url field. The <strong>host name</strong> is your contact at the company. The <strong>host location</strong> is the home office. The <strong>first attendee</strong> address goes in the attendee 1 field. you can enter zip code, street addresses or town/city and state abbeviation; the tool is pretty forgiving but if there is no result, an entry error is the likely problem. Use the <strong>add attendee</strong> button to add attendees one at a time. The description appears above the map- just write a simple desciption, using the provided example if you like. "<strong>Meetings/yr</strong>" is a simple multiplier, choose 1 to 12, and choose your name from the <strong>RSM dropdown</strong>. this has your contact info too. Click the <strong>update</strong> button to update the page with your own data. Click the <strong>"run"</strong> button to hide these controls so you can make a screenshot of the page, and click the <strong>omnijon logo</strong> to show the entry fields if they are hidden</p>
+	</div>
+       
+       
+      <div id="leftcontrol"> 
+       <div id="inputs">
         <div id="clientN">
         <label>Client Name</label> <input id="cliName" class="newAtt" type="text" value="First Bank"> </input>
        </div> 
+       
+       <div id="hostLogo">
+        <label>Host logo url</label> <input  style="width:310px" id="hostlogo_url" class="newAtt" type="text" value="http://blog.brothercloud.com/podcast/FirstBank.JPG"> </input>
+       </div> 
+       
         <div id="hostN">
         <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Paul"> </input>
        </div> 
@@ -458,9 +473,10 @@ tr:nth-child(even) {background-color: #f2f2f2}
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
         <div id="descr">
         <textarea cols="40" rows="5" name="descriptionText" id="descriptionText">
- is a regional bank with 000 offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
+ is [insert industry type] with [insert number of offices] in [insert state or locale]. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
 </textarea></div>
         <div id="meetMult">
+        <label>Meetings/yr.</label>
          <select id="meets">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -487,23 +503,21 @@ tr:nth-child(even) {background-color: #f2f2f2}
      	<option value="Shane">Shane</option>
 	</select>
 </div>
-       </div>
-       <span class="run" id="run">RUN</span>
-       <span class="run" id="update">UPDATE</span>
-       <span class="run" id="addAttendee">ADD ATTENDEE</span></form>
-       <div class="clearBoth"></div> </div>
+      </div>
+     
+      
+       <div class="clearBoth" style="padding-top: 10px;"><hr/></div> </div></div>
 	<div class="titleBox">
-	<div class="logo" id="OJ_logo"><img src="OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
+	<div class="logo" id="OJ_logo"><img src="http://blog.brothercloud.com/podcast/OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
 	<div class="title">Travel ROI Calculator</div>
-	<div class="clearBoth"></div>
+	<div class="clearBoth">
 	
-	</div>
-	<div class="rightSide"><div class="desc"><strong><span id="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the
-corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ</div>
+	</div></div>
+	<div class="rightSide"><div class="desc"></div>
 <div class="map" id="map"></div>
 <div class="contact" id="rsmData"><p><span id="contactName" class=''>ContactName</span>, <span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
 <span id="rsmPhone">rsmPhone</span><br/> for more information.</p></div></div>
-	<div class="leftSide"><div id="clientLogo"><img src="FirstBank.JPG" width="80%"/></div>
+	<div class="leftSide"><div id="clientLogo"><img id='clilog'  width="80%"/></div>
 	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
 	<div class="attendee"><table id="table1"><tbody><tr>
 	  <th style="white-space: nowrap;">Attendee<br/>Location</th>
@@ -544,7 +558,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 	</div>
   </div></div>
 	<div class="clearBoth"></div>
-	<div class="disclaimer"><div class="discText">* This calculator uses the IRS 2016 Standard Mileage Rate of $0.54 to determine the cost of travel. This calculator is intended for illustrative purposes only. Brother International Corporation makes no representation, warranty or promise that these numbers are typical or easily achieved. Results may vary.</div><div class="broLogo"><img src="BrotherLogoBlue.png" width="150"  alt=""/></div>
+	<div class="disclaimer"><div class="discText">* This calculator uses the IRS 2016 Standard Mileage Rate of $0.54 to determine the cost of travel. This calculator is intended for illustrative purposes only. Brother International Corporation makes no representation, warranty or promise that these numbers are typical or easily achieved. Results may vary.</div><div class="broLogo"><img src="http://blog.brothercloud.com/podcast/BrotherLogoBlue.png" width="150"  alt=""/></div>
 	<div class="clearBoth"></div>
 	
 	</div>
@@ -703,7 +717,7 @@ corporate office. All branches are within 45 minutes of the corporate office in 
 				  
 				  
 				  
-				 // alert(meetingMultiplier+' = meetingMultiplier');		// meeting multiplier is undefined here!!
+				
 				  $('.miTotal').html(totalDist*parseInt(meetingMultiplier));       // big red distance travelled
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
