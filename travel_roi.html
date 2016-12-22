@@ -22,6 +22,7 @@
 //12/19/16  added contact name var  .5 hrs
 //12/20/16 instructions, ready to share for input
 //total hrs: 17.25
+//12/21/16 production design
 	
 	
 	var totalCost=0;
@@ -33,6 +34,7 @@
 	var destinationA;
 	var contName;
 	var clientName;
+	var indie;
 	
   var description='<strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ';
 	
@@ -122,7 +124,7 @@ $("body").on("focus",".newAtt", function(){
  		meetingMultiplier = $("#meets").val();
 		$('#meetnums').html(meetingMultiplier);
 		meetingMultiplier=parseInt(meetingMultiplier);
-		//alert(meetingMultiplier);
+		alert("meeting multiplier = "+meetingMultiplier);
 });
 	
 	//---pick a sales person
@@ -212,10 +214,22 @@ $("body").on("focus",".newAtt", function(){
 				
 				$('.desc').html($("#descriptionText").val());
 				$('.desc').prepend(clientName);
-			// unfill the table
+				
+				indie = $('#hostIndus').val();
+				alert ('indie value is '+indie);
+				$('#indus').html(indie);
+			
+				// unfill the table
 				
 				$('#table1').html('<table id="table1"><tbody><tr><th style="white-space: nowrap;">Attendee<br/>Location</th><th>Time<br><span class= "rt">Round<br/>Trip</span></th><th>Distance<br/><span class="rt">Round<br/>Trip</span></th><th>Cost*<br><span class="rt">Round<br/>Trip</span></th></tr></tbody></table>');
 				
+				//get meetingMultiplier value
+				meetingMultiplier = $("#meets").val();
+				//put the meeting multiplier into #meetnums 
+				$('#meetnums').html(meetingMultiplier);
+				alert("meeting multiplier = "+meetingMultiplier);
+				//then parse the value to a number for multiplying attendee values with
+				meetingMultiplier=parseInt(meetingMultiplier);
 				
 		$("#numAttendees").html(attNum);
 				if(attNum>1){
@@ -468,8 +482,13 @@ tr:nth-child(even) {background-color: #f2f2f2}
         <div id="hostN">
         <label>Host name</label> <input id="hostName" class="newAtt" type="text" value="Paul"> </input>
        </div> 
+       <div>
       <label>Host location</label><input id="host" class="newAtt" type="text" value ="Camden NJ" ></input>
-      <div id="attendeeDiv">
+	</div>
+      <div>
+      <label>Host Industry</label><input id="hostIndus" class="newAtt" type="text" value ="minor dieties" ></input>
+	</div>
+       <div id="attendeeDiv">
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
         <div id="descr">
         <textarea cols="40" rows="5" name="descriptionText" id="descriptionText">
@@ -515,7 +534,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	</div></div>
 	<div class="rightSide"><div class="desc"></div>
 <div class="map" id="map"></div>
-<div class="contact" id="rsmData"><p><span id="contactName" class=''>ContactName</span>, <span class="indus"></span>s are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
+<div class="contact" id="rsmData"><p><span id="contactName" class=''>ContactName</span>, <span id = "indus"></span> are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
 <span id="rsmPhone">rsmPhone</span><br/> for more information.</p></div></div>
 	<div class="leftSide"><div id="clientLogo"><img id='clilog'  width="80%"/></div>
 	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
@@ -534,7 +553,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	</tbody></table></div>
 	<div class="totals"><div id="meetHead">TOTALS FOR A MEETING WITH <span id="numAttendees"></span> ATTENDEE<span class="plural" style="font-size:16pt"></span></div>
 	  <div class="boxlet"><p>Time wasted in transit</p>
-			<h4> <span class="totTim"></span><span class="shortName"> Min.</span></h4>
+			<h4> <span id="totTim"></span><span class="shortName"> Min.</span></h4>
 			</div>
 			<div class="boxlet">
 	  		<p>Distance<br/>Travelled Miles</p>
@@ -637,7 +656,10 @@ tr:nth-child(even) {background-color: #f2f2f2}
                 }
               };
             };
-              
+          
+			  
+			  
+			  
               var totalDist=0;
 			  var meetingTotalDist=0;
               var num;
@@ -656,44 +678,66 @@ tr:nth-child(even) {background-color: #f2f2f2}
                     showGeocodedAddressOnMap(true));
 				  
 	//--------------distance for each attendee round trip
+	//---------------------------------------------------
+				  
                   num=results[j].distance.text;
-                  num=parseFloat(num.replace('km',''));
+                  num=parseFloat(num.replace('mi',''));
                   num=Number(num*2);//round trip for this location only
 				  
 				  totalDist = totalDist+=num;
 				 
-				 // alert(totalDist);
+				 //alert('the total round-trip distance for this attendee for this meeting is '+totalDist+' miles.');// 159.6 
 				  
 	//-----------------------time for each attendee round trip 
 				//alert(results[j].duration.text);  //ok
 				tim=results[j].duration.value;
 				  //"value" gives seconds and "text" gives the text alternative
-				//alert(tim +" seconds of duration");
+				//alert("seconds of duration for this attendee for this meeting is "+tim); //5030
 				  
-				  var bigMinutes = (tim/60);
-				  var bigHours = Math.floor(bigMinutes/60);
-				  var littleMinutes  = Math.round(bigMinutes-(bigHours*60));
-				  //alert (bigHours+" hour "+littleMinutes+" min.");
+				  var bigMinutes = (tim/60); //number of minutes for this trip, not round trip
+				  var bigHours = Math.floor(bigMinutes/60);//number of hours for this trip, not round trip
+				  var littleMinutes  = Math.round(bigMinutes-(bigHours*60));//remainder minutes for this trip after subtracting minutes inside hours.
+				  
+				  //alert (bigHours+" hour "+littleMinutes+" min."); // 1 hour 24 min. for this example
 				  //now we have total minutes one way
+				  
 				  //round trip
-				  var rtMinutes = (tim/60)*2;
-				  var rtHours = Math.floor(rtMinutes/60);
-				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));
-				  //rtMinutes is the round trip time for each attendee
-				  var rtTimeEach = rtHours+" hrs. "+rtLittleMinutes+" min"
+				  var rtMinutes = (tim/60)*2; //seconds divided by 60 * two for round trip minutes
+				  var rtHours = Math.floor(rtMinutes/60);//gives round trip hours
+				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));// remainder round trip minutes for this trip after subtracting minutes inside hours. 
+				  
+				  //rtTimeEach is the round trip time for each attendee
+				  var rtTimeEach = rtHours+" hrs. "+rtLittleMinutes+" min";
+				  alert("round trip time for this attendee is "+rtTimeEach);
 				  
 				  
 				 //tim=parseFloat(tim.replace('mins',''));
 				  //tim = tim*2; //each attendee round trip
-				  totMeetRTtime+= (bigMinutes*2) ;// roundtrip minutes aggregatedf
-				  //alert(totalTime);
-				  //aggregate each totalTime to a new var called totMeetRTtime which will be minutes
+				  totMeetRTtime += (bigMinutes*2) ;// roundtrip minutes aggregated. this starts with 0 at inception and is incremented by each attendee.
+				  //this number is not rounded here.
+				  alert("total meeting round trip time for this meeting is "+totMeetRTtime+ "minutes.");
 				  
+				  
+				  
+				  //---here starts the issue
 				 //---------------------------------------------------------------------------------------------------------------------------------totTim
-				  $('.totTim').html(totMeetRTtime.toFixed(2));
+				  
+				  //currently total round trip minutes for all attendees
+				  //get hours
+				  var meetingHours = Math.floor(totMeetRTtime/60);
+				  
+				  var meetingMinutes = Math.round(totMeetRTtime-(meetingHours*60));
+				  //----------------------------------------------------------------------start here on thursday do the units seperately as spans
+				  var time1= meetingHours+" <span style='font-size:10px;'>hrs.<span> "+meetingMinutes+" min.";
+				  
+				  $('#totTim').html(time1);
+				  //currently minutes
+				  
 				 
 				  
 				  $('.totTim2').html((totMeetRTtime*parseInt(meetingMultiplier)/60).toFixed(2));
+				  
+				  
 				  $('#rtDistance').html(totalDist.toFixed(0));
 				 // alert(totalDist+' = totalDist');
 				  
