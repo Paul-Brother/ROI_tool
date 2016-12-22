@@ -23,7 +23,9 @@
 //12/20/16 instructions, ready to share for input
 //total hrs: 17.25
 //12/21/16 production design   1hr
-//12/22/16 production corrections 
+//12/22/16 production corrections 2 hrs
+	
+//total hrs to date: 20.25
 	
 	
 	
@@ -47,22 +49,19 @@ $(function() {
 
 	
 	
-	
-	//---iterate the attendee number--------------
+//---iterate the attendee number--------------
 
 function getAttNum(){
 	attNum = attNum + 1;
 	 };
 	
 	
-	$('#addAttendee').click(function(){
+$('#addAttendee').click(function(){
 		//alert('clicked');
 	getAttNum();
 	var minus= attNum-1;
 	
-	//if($('#attendee'+minus).val()=='enter location'){
-		//alert('enter a location');
-		//return;};
+	
 	
 	if(attNum<totalAttendees){
 		//alert('less than ten');
@@ -100,9 +99,7 @@ $("body").on("focus",".newAtt", function(){
 	$(".annual").hide();
  }
 	
-	//$("#run").click(function() {
-  //$("#controls").hide("slow");
-//});
+
 	
 	$("#OJ_logo").click(function() {
   $("#controls").show("slow");
@@ -110,9 +107,9 @@ $("body").on("focus",".newAtt", function(){
 
 	//hostName
 	$("#update").click(function() {
-		//alert('clicked the update button');
+	
 		calculateDistance();
-  		//initMap();
+  		
 		
 });
 	
@@ -127,7 +124,7 @@ $("body").on("focus",".newAtt", function(){
  		meetingMultiplier = $("#meets").val();
 		$('#meetnums').html(meetingMultiplier);
 		meetingMultiplier=parseInt(meetingMultiplier);
-		//alert("meeting multiplier = "+meetingMultiplier);
+	
 });
 	
 	//---pick a sales person
@@ -178,25 +175,24 @@ $("body").on("focus",".newAtt", function(){
 	
 });//end of docready
 
-	//----------------calculate distance-----------------------------------------------------------------------------------------------------------------
-	//-----------------------------------------------------------------------------------------------------------------------------------------------------
-	//------------------------------------------------------------------------------------------------------------------------------------------------------
-	
+	//----------------calculate distance----------------------
+	//--------------------------------------------------------
+	//--------------------------------------------------------	
 	function calculateDistance(){
 		
-		//-----------------------------------------------------------description text updates from textbox
+	//--------------------description text updates from textbox
 		
 	//--set me back to zero baby, else you will get some unexpected results
 	dest = [];
 		
 		
 		
-		//first make sure all the fields are filled in properly;
+	//first make sure all the fields are filled in properly;
 		if($('#hostName').val()=="Host name"){
 			alert('enter Host name');
 			return;
 		}else{
-			//alert($('#hostName').val())
+			
 			if($('#host').val()=="Destination"){
 				alert('enter destination');
 				return;
