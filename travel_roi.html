@@ -22,7 +22,10 @@
 //12/19/16  added contact name var  .5 hrs
 //12/20/16 instructions, ready to share for input
 //total hrs: 17.25
-//12/21/16 production design
+//12/21/16 production design   1hr
+//12/22/16 production corrections 
+	
+	
 	
 	
 	var totalCost=0;
@@ -97,9 +100,9 @@ $("body").on("focus",".newAtt", function(){
 	$(".annual").hide();
  }
 	
-	$("#run").click(function() {
-  $("#controls").hide("slow");
-});
+	//$("#run").click(function() {
+  //$("#controls").hide("slow");
+//});
 	
 	$("#OJ_logo").click(function() {
   $("#controls").show("slow");
@@ -124,7 +127,7 @@ $("body").on("focus",".newAtt", function(){
  		meetingMultiplier = $("#meets").val();
 		$('#meetnums').html(meetingMultiplier);
 		meetingMultiplier=parseInt(meetingMultiplier);
-		alert("meeting multiplier = "+meetingMultiplier);
+		//alert("meeting multiplier = "+meetingMultiplier);
 });
 	
 	//---pick a sales person
@@ -216,7 +219,7 @@ $("body").on("focus",".newAtt", function(){
 				$('.desc').prepend(clientName);
 				
 				indie = $('#hostIndus').val();
-				alert ('indie value is '+indie);
+				//alert ('indie value is '+indie);
 				$('#indus').html(indie);
 			
 				// unfill the table
@@ -227,7 +230,7 @@ $("body").on("focus",".newAtt", function(){
 				meetingMultiplier = $("#meets").val();
 				//put the meeting multiplier into #meetnums 
 				$('#meetnums').html(meetingMultiplier);
-				alert("meeting multiplier = "+meetingMultiplier);
+				//alert("meeting multiplier = "+meetingMultiplier);
 				//then parse the value to a number for multiplying attendee values with
 				meetingMultiplier=parseInt(meetingMultiplier);
 				
@@ -236,6 +239,8 @@ $("body").on("focus",".newAtt", function(){
 					//add esses
 					$(".plural").html('s');
 				}
+				
+				$("#controls").hide("slow");
 				
 					initMap()
 					
@@ -265,13 +270,15 @@ $("body").on("focus",".newAtt", function(){
 	color:black!important;
 }
 	#leftControl{border: thin red solid;}
+	
 	#midControl{
-		//border: thin red solid;
 	float:right;
 	width:400px;}
-	#rightControl{thin red solid;
+	
+	#rightControl{
+		//border:thin red solid;
 	float:right;
-	width:150px;}
+	width:110px;}
 	
 .boxlet{width:118px;
 	background-color:darkgray;
@@ -342,12 +349,12 @@ h4{font-size:20pt;
 	margin-top:-10px;}
 
 #inputs {
-	width: 200px;
+	width: 310px;
 	float:left;
   }
 
 input[type=text]{
-	width:150px;
+	width:310px;
 } 
 
 input[type=date]{
@@ -377,8 +384,16 @@ label{
 #meetHead{text-align:center;
 	font-size:16px;
 	margin-bottom:5px;}
-	
-	.red{
+#midControl{
+	//border:thin red solid;
+	width:400px;
+	max-height: 400px;
+	overflow: scroll;
+	overflow-x: hidden;
+	padding:10px;
+	}
+	#OJ_logo{cursor:pointer;}	
+.red{
 	color:#FF0004;
 	}
 	
@@ -408,7 +423,7 @@ label{
 	cursor:pointer;}
 
 select{
-	width:150px;
+	width:310px;
 }
 
 .shortName{font-size: 10pt;}
@@ -450,6 +465,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	justify-content:space-between;
 	border:thin gray solid;
 	padding-bottom:10px;
+	margin-top:10px;
 	background-color: whitesmoke;
 	}
 .warning{color:crimson;}
@@ -461,11 +477,31 @@ tr:nth-child(even) {background-color: #f2f2f2}
 <div class="container">
 <div id="controls">
     <div id="rightControl">
-       <span class="run" id="run">RUN</span>
+       <!--<span class="run" id="run">RUN</span>-->
        <span class="run" id="update">UPDATE</span>
        <span class="run" id="addAttendee">ADD ATTENDEE</span></div>
-	<div id="midControl"><h5>Instructions</h5>
-		<p>Please enter the client company <strong>name</strong>. On request I will send you the url to add in the <strong>host logo field</strong> in the form <strong><span style="font-size: 12px">http://blog.brothercloud.com/podcast/nameofLogo.JPG</span></strong>. enter it into the logo url field. The <strong>host name</strong> is your contact at the company. The <strong>host location</strong> is the home office. The <strong>first attendee</strong> address goes in the attendee 1 field. you can enter zip code, street addresses or town/city and state abbeviation; the tool is pretty forgiving but if there is no result, an entry error is the likely problem. Use the <strong>add attendee</strong> button to add attendees one at a time. The description appears above the map- just write a simple desciption, using the provided example if you like. "<strong>Meetings/yr</strong>" is a simple multiplier, choose 1 to 12, and choose your name from the <strong>RSM dropdown</strong>. this has your contact info too. Click the <strong>update</strong> button to update the page with your own data. Click the <strong>"run"</strong> button to hide these controls so you can make a screenshot of the page, and click the <strong>omnijon logo</strong> to show the entry fields if they are hidden</p>
+	<div id="midControl">
+	  <h5 style="text-align: center; display:inline-block; width:100%; height:25px;background-color:darkgray;color:white;padding-top:7px">INSTRUCTIONS</h5>
+		<p>Client Name:<br>
+	    Please enter the client company <strong>name</strong>. <br>
+	    Host Logo URL:<br>
+On request I will send you the url to add in the <strong>host logo field<span style="font-size: 12px">. </span></strong>Enter it into the Host logo url field. <br>
+Host Name:<br>
+The <strong>host name</strong> is your contact at the target company. Host Location:<br>
+The <strong>host location</strong> is the home office. You can enter a street address, city/town and state, or zip code. <br>
+First Attendee:
+<br>
+	  The <strong>first meeting attendee</strong> address goes in the attendee 1 field. you can enter zip code, street addresses or town/city and state abbeviation; the tool is pretty forgiving but if there is no result, an entry error is the likely problem. <br>
+	  Add Attendee:<br>
+Use the <strong>add attendee</strong> button to add attendees one at a time. Click the &quot;add attendee&quot; button and put the attendee origin address, city/town and state or zipcode. <br>
+Description: <br>
+The description appears above the map- just write a simple desciption, using the provided example if you like. Meetings/yr.<br>
+"<strong>Meetings/yr</strong>" is a simple multiplier, choose 1 to 12. RSM:<br>
+Choose your name from the <strong>RSM dropdown</strong>. This has your phone and email  too. <br>
+Update:<br>
+Click the <strong>update</strong> button to update the page with your own data. <strong><br>
+redux:<br>
+</strong>click the <strong>omnijon logo</strong> to show the entry fields if they are hidden so you can modify your results, then click &quot;update&quot; button again</p>
 	</div>
        
        
@@ -485,13 +521,13 @@ tr:nth-child(even) {background-color: #f2f2f2}
        <div>
       <label>Host location</label><input id="host" class="newAtt" type="text" value ="Camden NJ" ></input>
 	</div>
-      <div>
-      <label>Host Industry</label><input id="hostIndus" class="newAtt" type="text" value ="minor dieties" ></input>
+      <div style="margin-bottom:10px;">
+      <label>Host Industry</label><input id="hostIndus" class="newAtt" type="text" value ="default industry" ></input>
 	</div>
-       <div id="attendeeDiv">
+       <div id="attendeeDiv" style="margin-bottom:10px;">
         <label>Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
         <div id="descr">
-        <textarea cols="40" rows="5" name="descriptionText" id="descriptionText">
+        <textarea cols="42" rows="5" name="descriptionText" id="descriptionText">
  is [insert industry type] with [insert number of offices] in [insert state or locale]. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
 </textarea></div>
         <div id="meetMult">
@@ -553,7 +589,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	</tbody></table></div>
 	<div class="totals"><div id="meetHead">TOTALS FOR A MEETING WITH <span id="numAttendees"></span> ATTENDEE<span class="plural" style="font-size:16pt"></span></div>
 	  <div class="boxlet"><p>Time wasted in transit</p>
-			<h4> <span id="totTim"></span><span class="shortName"> Min.</span></h4>
+			<h4> <span id="totTim"></span></h4>
 			</div>
 			<div class="boxlet">
 	  		<p>Distance<br/>Travelled Miles</p>
@@ -574,7 +610,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	  <h4 class="warning">$<span id="annualCost" class="warning"></span></h4>
 	</div>
 	
-	</div>
+		</div><div class="clearBoth"></div>
   </div></div>
 	<div class="clearBoth"></div>
 	<div class="disclaimer"><div class="discText">* This calculator uses the IRS 2016 Standard Mileage Rate of $0.54 to determine the cost of travel. This calculator is intended for illustrative purposes only. Brother International Corporation makes no representation, warranty or promise that these numbers are typical or easily achieved. Results may vary.</div><div class="broLogo"><img src="http://blog.brothercloud.com/podcast/BrotherLogoBlue.png" width="150"  alt=""/></div>
@@ -707,28 +743,30 @@ tr:nth-child(even) {background-color: #f2f2f2}
 				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));// remainder round trip minutes for this trip after subtracting minutes inside hours. 
 				  
 				  //rtTimeEach is the round trip time for each attendee
-				  var rtTimeEach = rtHours+" hrs. "+rtLittleMinutes+" min";
-				  alert("round trip time for this attendee is "+rtTimeEach);
+				  var rtTimeEach = rtHours+" hrs. "+rtLittleMinutes;
+				 // alert("round trip time for this attendee is "+rtTimeEach);
 				  
 				  
 				 //tim=parseFloat(tim.replace('mins',''));
 				  //tim = tim*2; //each attendee round trip
 				  totMeetRTtime += (bigMinutes*2) ;// roundtrip minutes aggregated. this starts with 0 at inception and is incremented by each attendee.
 				  //this number is not rounded here.
-				  alert("total meeting round trip time for this meeting is "+totMeetRTtime+ "minutes.");
+			//	  alert("total meeting round trip time for this meeting is "+totMeetRTtime+ "minutes.");
 				  
 				  
 				  
-				  //---here starts the issue
+				
 				 //---------------------------------------------------------------------------------------------------------------------------------totTim
 				  
 				  //currently total round trip minutes for all attendees
 				  //get hours
 				  var meetingHours = Math.floor(totMeetRTtime/60);
 				  
+				  
 				  var meetingMinutes = Math.round(totMeetRTtime-(meetingHours*60));
 				  //----------------------------------------------------------------------start here on thursday do the units seperately as spans
-				  var time1= meetingHours+" <span style='font-size:10px;'>hrs.<span> "+meetingMinutes+" min.";
+				  
+				  var time1= "<span style='font-size:24px;'>"+meetingHours+"</span><span style='font-size:10px;'>hrs.<span> <span style='font-size:24px;'>"+meetingMinutes+"</span> <span style='font-size:10px;'>min.<span> ";
 				  
 				  $('#totTim').html(time1);
 				  //currently minutes
@@ -762,7 +800,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 				  
 				  
 				
-				  $('.miTotal').html(totalDist*parseInt(meetingMultiplier));       // big red distance travelled
+				  $('.miTotal').html((totalDist*parseInt(meetingMultiplier)).toFixed(2));       // big red distance travelled
 				  cost = mileMultiplier*num;
 				 cost=cost.toFixed(2);
 				  
