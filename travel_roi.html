@@ -493,30 +493,31 @@ tr:nth-child(even) {background-color: #f2f2f2}
        <span class="run" id="addAttendee">ADD ATTENDEE</span></div>
 	<div id="midControl">
 	  <h5 style="text-align: center; display:inline-block; width:100%; height:25px;background-color:darkgray;color:white;padding-top:7px; margin-top:-10px; margin-bottom:-10px;">INSTRUCTIONS</h5>
-		<p><span class='sig' id="sig1">Client Name</span><br>
+		<p><span class="sig" id="sig1">Client Name</span><br>
 	    Please enter the lead's company <strong>name</strong>. <br>
-		  <span class='sig'>Host Logo URL</span><br>
-On request I will send you the url to add in the <strong>host logo field<span style="font-size: 12px">. </span></strong>Enter it into the Host logo url field. It will replace the default roi calculator logo. as an example, enter<br>
-http://blog.brothercloud.com/podcast/FirstBank.JPG<br>
+		  <span class="sig">Host Logo URL</span><br>
+On request I will send you the url to add in the <strong>host logo field<span style="font-size: 12px">. </span></strong>Enter it into the Host logo url field. It will replace the default roi calculator logo. as an example, replace the existing address in the url box with the string below:<br>
+			<strong>http://blog.brothercloud.com/podcast/FirstBank.JPG</strong><br>
 in the field and click the UPDATE button.
-<br>
-		  <span class='sig'>Host Name</span><br>
+You can have a customized output with your prospect's logo on it like this. <br>
+		  <span class="sig">Host Name</span><br>
 The <strong>host name</strong> is your contact at the target company. <br/>
-		  <span class='sig'>Host Location</span><br>
+		  <span class="sig">Host Location</span><br>
 The <strong>host location</strong> is their home office, or the destination for the meeting attendees. You can enter a street address, city/town and state, or zip code. <br>
-		  <span class='sig'>First Attendee</span>
+		  <span class="sig">First Attendee</span>
 <br>
 	  The <strong>first meeting attendee</strong> address goes in the attendee 1 field. You can enter zip code, street addresses or town/city and state abbeviation; the tool is pretty forgiving but if there is no result, an entry error is the likely problem. <br>
-		  <span class='sig'>Add Attendee</span><br>
+		  <span class="sig">Add Attendee</span><br>
 Use the <strong>add attendee</strong> button to add attendees one at a time. Click the &quot;ADD ATTENDEE&quot; button and put the attendee origin address, city/town and state or zipcode. <br>
-		  <span class='sig'>Description</span> <br>
+		  <span class="sig">Description</span> <br>
 The description appears above the map- just write a simple desciption, using the provided example if you like.<br>
-		  <span class='sig'>Meetings/yr</span><br/>
-			"Meetings/yr" is a simple multiplier for the number of meetings the lead might have per year. Choose 1 to 12. <br><span class='sig'>RSM</span><br>
+		  <span class="sig">Meetings/yr</span><br/>
+			"Meetings/yr" is a simple multiplier for the number of meetings the lead might have per year. Choose 1 to 12. <br>
+			<span class="sig">RSM</span><br>
 Choose your name from the <strong>RSM dropdown</strong>. This populates your phone and email into the display. <br>
-		  <span class='sig'>Update</span><br>
+		  <span class="sig">Update</span><br>
 Click the <strong>update</strong> button to update the page with your own data. You can do this as many times as you like but there are some restrictions from google, so you may see a warning message.<strong><br>
-			<span class='sig'>revise</span><br>
+			<span class="sig">revise</span><br>
 </strong>Click the <strong>omnijon logo</strong> below to show the entry fields if they are hidden so you can modify your results, then click the &quot;update&quot; button again</p>
 	</div>
        
@@ -524,24 +525,24 @@ Click the <strong>update</strong> button to update the page with your own data. 
       <div id="leftcontrol"> 
        <div id="inputs">
         <div id="clientN">
-        <label class="sig">Client Name</label> <input id="cliName" class="newAtt" type="text" value="First Bank"> </input>
+        <label class="sig">Client Name</label> <input id="cliName" class="newAtt" type="text" value="First Bank"/>
        </div> 
        
        <div id="hostLogo">
-        <label class="sig">Host logo url</label> <input  style="width:310px" id="hostlogo_url" class="newAtt" type="text" value="http://blog.brothercloud.com/podcast/FirstBank.JPG"> </input>
+        <label class="sig">Host logo url</label> <input  style="width:310px" id="hostlogo_url" class="newAtt" type="text" value="http://blog.brothercloud.com/podcast/default_roi_image.jpg"/>
        </div> 
        
         <div id="hostN">
-        <label class=sig>Host name</label> <input id="hostName" class="newAtt" type="text" value="Paul"> </input>
+        <label class="sig">Host name</label> <input id="hostName" class="newAtt" type="text" value="Paul"/>
        </div> 
        <div>
-      <label class="sig">Host location</label><input id="host" class="newAtt" type="text" value ="Camden NJ" ></input>
+      <label class="sig">Host location</label><input id="host" class="newAtt" type="text" value ="Camden NJ" />
 	</div>
       <div style="margin-bottom:10px;">
-      <label class="sig">Host Industry</label><input id="hostIndus" class="newAtt" type="text" value ="default industries" ></input>
+      <label class="sig">Host Industry</label><input id="hostIndus" class="newAtt" type="text" value ="default industries" />
 	</div>
        <div id="attendeeDiv" style="margin-bottom:10px;">
-        <label class="sig">Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" ></input></div>
+        <label class="sig">Attendee 1</label><input id="attendee1" class="newAtt" type="text" value ="Bridgewater, NJ" /></div>
         <div id="descr">
         <textarea cols="42" rows="5" name="descriptionText" id="descriptionText">
  is [insert industry type] with [insert number of offices] in [insert state or locale]. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in Bridgewater, NJ
@@ -586,9 +587,9 @@ Click the <strong>update</strong> button to update the page with your own data. 
 	</div></div>
 	<div class="rightSide"><div class="desc"></div>
 <div class="map" id="map"></div>
-<div class="contact" id="rsmData"><p><span id="contactName" class=''>ContactName</span>, <span id = "indus"></span> are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
+<div class="contact" id="rsmData"><p><span id="contactName" >ContactName</span>, <span id = "indus"></span> are utilizing<br/>OmniJoin Private Cloud to host secure meetings<br/>that can save time and money.</p><p>Contact your OmniJoin representative<br><strong><span id="rsmName">rsmName</span></strong><br/><span id="rsmEmail">rsmEmail</span><br/>
 <span id="rsmPhone">rsmPhone</span><br/> for more information.</p></div></div>
-	<div class="leftSide"><div id="clientLogo"><img id='clilog'  width="80%"/></div>
+	<div class="leftSide"><div id="clientLogo"><img id="clilog"  width="80%"/></div>
 	<div id="details"><div class="detailHead">Time, distance and cost of travel from origin points to<br/><span id="destination"></span> (round trip)</div>
 	<div class="attendee"><table id="table1"><tbody><tr>
 	  <th style="white-space: nowrap;">Attendee<br/>Location</th>
@@ -794,26 +795,6 @@ Click the <strong>update</strong> button to update the page with your own data. 
 				  
 				  $('#rtDistance').html(totalDist.toFixed(0));
 				 // alert(totalDist+' = totalDist');
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
 				  
 				
 				  $('.miTotal').html((totalDist*parseInt(meetingMultiplier)).toFixed(2));       // big red distance travelled
