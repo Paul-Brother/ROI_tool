@@ -465,32 +465,31 @@ tr:nth-child(even) {background-color: #f2f2f2}
        <span class="run" id="addAttendee">ADD ATTENDEE</span></div>
 	<div id="midControl">
 	  <h5 style="text-align: center; display:inline-block; width:100%; height:25px;background-color:darkgray;color:white;padding-top:7px; margin-top:-10px; margin-bottom:-10px;">INSTRUCTIONS</h5>
-		<p><span class="sig" id="sig1">Client Name</span><br>
+	  <p><span class="sig" id="sig1">Client Name</span><br>
 	    Please enter the lead's company <strong>name</strong>. <br>
-		  <span class="sig">Host Logo URL</span><br>
-On request I will send you the url to add in the <strong>host logo field<span style="font-size: 12px">. </span></strong>Enter it into the Host logo url field. It will replace the default roi calculator logo. as an example, replace the existing address in the url box with the string below:<br>
-			<strong>http://blog.brothercloud.com/podcast/FirstBank.JPG</strong><br>
-in the field and click the UPDATE button.
-You can have a customized output with your prospect's logo on it like this. <br>
-		  <span class="sig">Host Name</span><br>
-The <strong>host name</strong> is your contact at the target company. <br/>
-		  <span class="sig">Host Location</span><br>
-The <strong>host location</strong> is their home office, or the destination for the meeting attendees. You can enter a street address, city/town and state, or zip code. <br>
-		  <span class="sig">First Attendee</span>
-<br>
-	  The <strong>first meeting attendee</strong> address goes in the attendee 1 field. You can enter zip code, street addresses or town/city and state abbeviation; the tool is pretty forgiving but if there is no result, an entry error is the likely problem. <br>
-		  <span class="sig">Add Attendee</span><br>
-Use the <strong>add attendee</strong> button to add attendees one at a time. Click the &quot;ADD ATTENDEE&quot; button and put the attendee origin address, city/town and state or zipcode. <br>
-		  <span class="sig">Description</span> <br>
-The description appears above the map- just write a simple desciption, using the provided example if you like.<br>
-		  <span class="sig">Meetings/yr</span><br/>
-			"Meetings/yr" is a simple multiplier for the number of meetings the lead might have per year. Choose 1 to 12. <br>
-			<span class="sig">RSM</span><br>
-Choose your name from the <strong>RSM dropdown</strong>. This populates your phone and email into the display. <br>
-		  <span class="sig">Update</span><br>
-Click the <strong>update</strong> button to update the page with your own data. You can do this as many times as you like but there are some restrictions from google, so you may see a warning message.<strong><br>
-			<span class="sig">revise</span><br>
-</strong>Click the <strong>omnijon logo</strong> below to show the entry fields if they are hidden so you can modify your results, then click the &quot;update&quot; button again</p>
+  <span class="sig">Host Logo URL</span><br>
+	    On request I will send you the url to add in the <strong>host logo field<span style="font-size: 12px">. </span></strong>Enter it into the Host logo url field. It will replace the default roi calculator logo. as an example, replace the existing address in the url box with the string below:<br>
+  <strong>http://blog.brothercloud.com/podcast/FirstBank.JPG</strong><br>
+	    in the field and click the UPDATE button.
+	    You can have a customized output with your prospect's logo on it like this. <br>
+  <span class="sig">Host Name</span><br>
+	    The <strong>host name</strong> is your contact at the target company. <br>
+  <span class="sig">Host Location</span><br>
+	    The <strong>host location</strong> is their home office, or the destination for the meeting attendees. You can enter a street address, city/town and state, or zip code. <br>
+  <span class="sig">First Attendee</span> <br>
+	    The <strong>first meeting attendee</strong> address goes in the attendee 1 field. You can enter zip code, street addresses or town/city and state abbeviation; the tool is pretty forgiving but if there is no result, an entry error is the likely problem. <br>
+  <span class="sig">Add Attendee</span><br>
+	    Use the <strong>add attendee</strong> button to add attendees one at a time. Click the &quot;ADD ATTENDEE&quot; button and put the attendee origin address, city/town and state or zipcode. <br>
+  <span class="sig">Description</span> <br>
+	    The description appears above the map- just write a simple desciption, using the provided example if you like.<br>
+  <span class="sig">Meetings/yr</span><br>
+  &quot;Meetings/yr&quot; is a simple multiplier for the number of meetings the lead might have per year. Choose 1 to 12. <br>
+  <span class="sig">RSM</span><br>
+	    Choose your name from the <strong>RSM dropdown</strong>. This populates your phone and email into the display. <br>
+  <span class="sig">Update</span><br>
+	    Click the <strong>update</strong> button to update the page with your own data. You can do this as many times as you like but there are some restrictions from google, so you may see a warning message.<strong><br>
+  <span class="sig">revise</span><br>
+</strong>Click the <strong>omnijon logo</strong> below to show the entry fields if they are hidden so you can modify your results, then click the &quot;update&quot; button again.</p>To solve: the calculator is built for local distances only. Results for distances greater than 999 miles are incorrect. 
 	</div>
        
        
@@ -701,11 +700,12 @@ Click the <strong>update</strong> button to update the page with your own data. 
 				  
 	//--------------distance for each attendee round trip
 	//---------------------------------------------------
-				  
-                  num=results[j].distance.text;
-                  num=parseFloat(num.replace('mi',''));
-                  num=Number(num*2);//round trip for this location only
-				  
+				  //------------------------------------------------------------------changed text for value
+                  num=results[j].distance.value;//this number is meters
+				  //  alert('distance for this attendee is'+ num)
+                 // num=parseFloat(num.replace('mi',''));
+                  num=Number(num*2);//round trip for this location only in meters
+				  num = num/1609.34 //divide by meters per mile to get miles and fractions of a mile
 				  totalDist = totalDist+=num;
 				 
 				 //alert('the total round-trip distance for this attendee for this meeting is '+totalDist+' miles.');// 159.6 
@@ -783,7 +783,7 @@ Click the <strong>update</strong> button to update the page with your own data. 
 				  
 				  
 	//-----------------------------------------------------------------adding the new attendee 
-     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+rtTimeEach+'</td><td>'+num+' mi.</td><td> $'+cost+'</td></tr>');
+     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+rtTimeEach+'</td><td>'+num.toFixed(2)+' mi.</td><td> $'+cost+'</td></tr>');
 				  
 				  $("#destination").html(destinationA);
 				  
