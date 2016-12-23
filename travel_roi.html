@@ -23,7 +23,7 @@
 //12/20/16 instructions, ready to share for input
 //total hrs: 17.25
 //12/21/16 production design   1hr
-//12/22/16 production corrections  3 hrs alos figured out how to get a previous version when successive commits are damaged. 
+//12/22/16 production corrections  3 hrs also figured out how to get a previous version when successive commits are damaged. 
 //---you can find it using the online repositiory and copying an assembled previous version 
 
 	
@@ -180,7 +180,6 @@ $("body").on("focus",".newAtt", function(){
 	
 	function calculateDistance(){
 		
-	//---------------------------------------------------description text updates from textbox
 		
 	//---------------------set me back to zero baby, else you will get some unexpected results
 	dest = [];
@@ -189,13 +188,13 @@ $("body").on("focus",".newAtt", function(){
 		
 		//first make sure all the fields are filled in properly;
 		
-		if($('#cliName').val()==""){
+		if($('#cliName').val()==""||$('#hostName').val()=="client name"){
 			alert('Enter client name');
 			return;
 		}
 		else
 		
-		if($('#hostName').val()=="Host name"){
+		if($('#hostName').val()=="Host name"||$('#hostName').val()==""){
 			alert('Enter Host name');
 			return;
 		}else{
@@ -231,32 +230,30 @@ $("body").on("focus",".newAtt", function(){
 				
 				//get meetingMultiplier value
 				meetingMultiplier = $("#meets").val();
+				
 				//put the meeting multiplier into #meetnums 
 				$('#meetnums').html(meetingMultiplier);
 				//alert("meeting multiplier = "+meetingMultiplier);
 				//then parse the value to a number for multiplying attendee values with
 				meetingMultiplier=parseInt(meetingMultiplier);
+				//plural meets
+				if(meetingMultiplier>1){$('#pluralMeets').html('s');}
 				
 		$("#numAttendees").html(attNum);
 				if(attNum>1){
 					//add esses
 					$(".plural").html('s');
+					alert('should be showing esses');
 				}
+				//alert($('#meets').val());
 				
 				$("#controls").hide("slow");
 				
 					initMap()
-					
-				
+								
 			}
-	}
-			
+	}	
 		};
-		
-		
-	
-	
-	
 	
 </script>
 
@@ -280,6 +277,20 @@ $("body").on("focus",".newAtt", function(){
 		//border:thin red solid;
 	float:right;
 	width:110px;}
+	.big{font-size:30px;
+	font-weight:bold;}
+	
+	.bigred{
+		
+		display:block;
+		//margin:auto;
+		min-width:150px;
+		background-color:white;
+		color:white!important;
+		text-align:center;
+		border-radius: 10px;
+		border: medium red solid;
+	}
 	
 .boxlet{width:118px;
 	background-color:darkgray;
@@ -334,7 +345,8 @@ $("body").on("focus",".newAtt", function(){
 	text-align:center;
 	min-height:35px;
 	padding-bottom:5px;
-	font-size: 14px;}
+	font-size: 14px;
+	border:thin gray solid;}
 h4{font-size:20pt;
 	margin-top:-10px;}
 #inputs {
@@ -552,7 +564,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
        <div class="clearBoth" style="padding-top: 10px;"><hr/></div> </div></div>
 	<div class="titleBox">
 	<div class="logo" id="OJ_logo"><img src="http://blog.brothercloud.com/podcast/OmniJoin_meet_smarter_R-01.png" width="60%" alt="oj logo"/></div>
-	<div class="title">Travel ROI Calculator</div>
+	<div class="title">Ground Travel ROI Calculator</div>
 	<div class="clearBoth">
 	
 	</div></div>
@@ -586,19 +598,17 @@ tr:nth-child(even) {background-color: #f2f2f2}
 			<div class="boxlet"><p>*Cost<br/>incurred</p>
 	  		<h4>$<span id="driveCost"></span><sup></sup></h4>
 			</div><div class="clearBoth"></div></div>
-		<div class="annual"><div class="totalHead">ANNUAL TOTALS (<span id="meetnums">meet nums</span> meetings)</div>
-	<div class="boxlet annual"><p>Time wasted in transit</p>
-		<h4><span class="totTim2 warning"></span> <span class="shortName warning">hrs.</span></h4>
+		<div class="annual"><div class="totalHead">ANNUAL TOTALS (<span id="meetnums">meet nums</span> meeting<span class="pluralMeets"></span>)</div>
+	<div class=" annual big">Time wasted in transit:
+		<div class="bigred"><span class="totTim2 warning"></span> <span class="shortName warning">hrs.</span></div>
 	</div>
-	<div class="boxlet annual">
-	  <p>Distance<br/>Travelled</p>
-		<h4><span class="miTotal warning"></span><span class = "shortName warning"> mi.</span></h4>
+	<div class="annual big">
+		Distance Travelled:<div class="bigred"> <span class="miTotal warning"></span><span class = "shortName warning"> mi.</span></div>
 	</div>
-	<div class="boxlet annual "><p>*Cost<br/>incurred</p>
-	  <h4 class="warning">$<span id="annualCost" class="warning"></span></h4>
+			<div class=" annual big">*Cost incurred: <div class=" bigred"><span class="warning">$</span><span id="annualCost" class="warning"></span>
 	</div>
 	
-		</div><div class="clearBoth"></div>
+			</div></div><div class="clearBoth"></div>
   </div></div>
 	<div class="clearBoth"></div>
 	<div class="disclaimer"><div class="discText">* This calculator uses the IRS 2016 Standard Mileage Rate of $0.54 to determine the cost of travel. This calculator is intended for illustrative purposes only. Brother International Corporation makes no representation, warranty or promise that these numbers are typical or easily achieved. Results may vary.</div><div class="broLogo"><img src="http://blog.brothercloud.com/podcast/BrotherLogoBlue.png" width="150"  alt=""/></div>
