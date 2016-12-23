@@ -23,7 +23,9 @@
 //12/20/16 instructions, ready to share for input
 //total hrs: 17.25
 //12/21/16 production design   1hr
-//12/22/16 production corrections 
+//12/22/16 production corrections  3 hrs alos figured out how to get a previous version when successive commits are damaged. 
+//---you can find it using the online repositiory and copying an assembled previous version 
+
 	
 	
 	
@@ -108,8 +110,7 @@ $("body").on("focus",".newAtt", function(){
 	$("#update").click(function() {
 		//alert('clicked the update button');
 		calculateDistance();
-  		//initMap();
-		
+  		
 });
 	
 	
@@ -175,26 +176,32 @@ $("body").on("focus",".newAtt", function(){
 	
 });//end of docready
 	//----------------calculate distance-----------------------------------------------------------------------------------------------------------------
-	//-----------------------------------------------------------------------------------------------------------------------------------------------------
-	//------------------------------------------------------------------------------------------------------------------------------------------------------
+
 	
 	function calculateDistance(){
 		
-		//-----------------------------------------------------------description text updates from textbox
+	//---------------------------------------------------description text updates from textbox
 		
-	//--set me back to zero baby, else you will get some unexpected results
+	//---------------------set me back to zero baby, else you will get some unexpected results
 	dest = [];
 		
 		
 		
 		//first make sure all the fields are filled in properly;
+		
+		if($('#cliName').val()==""){
+			alert('Enter client name');
+			return;
+		}
+		else
+		
 		if($('#hostName').val()=="Host name"){
-			alert('enter Host name');
+			alert('Enter Host name');
 			return;
 		}else{
 			//alert($('#hostName').val())
 			if($('#host').val()=="Destination"){
-				alert('enter destination');
+				alert('Enter destination');
 				return;
 			}else{
 				destinationA = $('#host').val();
@@ -202,7 +209,7 @@ $("body").on("focus",".newAtt", function(){
 				
 				
 				contName = $('#hostName').val();
-				//alert(contName);
+				
 				$('#contactName').html(contName);
 			
 				clientName = $('#cliName').val();
