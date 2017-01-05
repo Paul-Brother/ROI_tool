@@ -264,8 +264,8 @@ $("body").on("focus",".newAtt", function(){
 <title>Travel ROI</title>
 
 <style>
-.annual{background-color:white!important;
-	color:black!important;
+.annual{//background-color:white!important;
+	//color:black!important;
 }
 	#leftControl{border: thin red solid;}
 	
@@ -285,11 +285,11 @@ $("body").on("focus",".newAtt", function(){
 		display:block;
 		//margin:auto;
 		min-width:150px;
-		background-color:white;
-		color:white!important;
+		background-color:darkred;
+		//color:white!important;
 		text-align:center;
 		border-radius: 10px;
-		border: medium red solid;
+		//border: medium red solid;
 	}
 	
 .boxlet{width:118px;
@@ -465,6 +465,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 	background-color: whitesmoke;
 	}
 .warning{color:crimson;}
+	.white{color:white;}
 </style>
 </head>
 
@@ -598,14 +599,14 @@ tr:nth-child(even) {background-color: #f2f2f2}
 			<div class="boxlet"><p>*Cost<br/>incurred</p>
 	  		<h4>$<span id="driveCost"></span><sup></sup></h4>
 			</div><div class="clearBoth"></div></div>
-		<div class="annual"><div class="totalHead">ANNUAL TOTALS (<span id="meetnums">meet nums</span> meeting<span class="pluralMeets"></span>)</div>
+		<div class="annual"><div class="totalHead">ANNUAL TOTALS (<span id="meetnums">meet nums</span> meeting<span id="pluralMeets"></span>)</div>
 	<div class=" annual big">Time wasted in transit:
-		<div class="bigred"><span class="totTim2 warning"></span> <span class="shortName warning">hrs.</span></div>
+		<div class="bigred "><span class="totTim2 white"></span> <span class="shortName white">hrs.</span></div>
 	</div>
 	<div class="annual big">
-		Distance Travelled:<div class="bigred"> <span class="miTotal warning"></span><span class = "shortName warning"> mi.</span></div>
+		Distance Travelled:<div class="bigred"> <span class="miTotal white"></span><span class = "shortName white"> mi.</span></div>
 	</div>
-			<div class=" annual big">*Cost incurred: <div class=" bigred"><span class="warning">$</span><span id="annualCost" class="warning"></span>
+			<div class=" annual big">*Cost incurred: <div class=" bigred"><span class="white">$</span><span id="annualCost" class="white"></span>
 	</div>
 	
 			</div></div><div class="clearBoth"></div>
