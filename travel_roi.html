@@ -243,7 +243,7 @@ $("body").on("focus",".newAtt", function(){
 				if(attNum>1){
 					//add esses
 					$(".plural").html('s');
-					alert('should be showing esses');
+					//alert('should be showing esses');
 				}
 				//alert($('#meets').val());
 				
@@ -601,10 +601,10 @@ tr:nth-child(even) {background-color: #f2f2f2}
 			</div><div class="clearBoth"></div></div>
 		<div class="annual"><div class="totalHead">ANNUAL TOTALS (<span id="meetnums">meet nums</span> meeting<span id="pluralMeets"></span>)</div>
 	<div class=" annual big">Time wasted in transit:
-		<div class="bigred "><span class="totTim2 white"></span> <span class="shortName white">hrs.</span></div>
+		<div class="bigred "><span class="totTim2 white"></span> <span class="shortName white"> hrs. </span><span class="totTim3 white"></span> <span class="shortName white"> min. </span></div>
 	</div>
 	<div class="annual big">
-		Distance Travelled:<div class="bigred"> <span class="miTotal white"></span><span class = "shortName white"> mi.</span></div>
+		Distance Travelled:<div class="bigred"> <span class="miTotal white"> </span><span class = "shortName white"> mi.</span></div>
 	</div>
 			<div class=" annual big">*Cost incurred: <div class=" bigred"><span class="white">$</span><span id="annualCost" class="white"></span>
 	</div>
@@ -759,7 +759,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 				  //get hours
 				  var meetingHours = Math.floor(totMeetRTtime/60);
 				  
-				  
+				  //get minutes
 				  var meetingMinutes = Math.round(totMeetRTtime-(meetingHours*60));
 				  //----------------------------------------------------------------------start here on thursday do the units seperately as spans
 				  
@@ -769,8 +769,27 @@ tr:nth-child(even) {background-color: #f2f2f2}
 				  //currently minutes
 				  
 				 
+				  //total time is currently hours and percentage of hours
+				  //alert("total meeting hours for all attendees multiplied by the meeting multiplier is "+(totMeetRTtime*parseInt(meetingMultiplier))/60);
 				  
-				  $('.totTim2').html((totMeetRTtime*parseInt(meetingMultiplier)/60).toFixed(2));
+				  var hourPercent= (totMeetRTtime*parseInt(meetingMultiplier))/60;
+				  //alert(math.floor(hourPercent));
+				 
+				  alert(hourPercent);//ok 2.794444444443
+				 // alert(Math.floor(hourPercent));//2 this is hours correctly
+				  var justHours=Math.floor(hourPercent);
+				  //alert(justHours);
+				  var justMinutes=Math.round(totMeetRTtime*parseInt(meetingMultiplier)-(justHours*60));//minutes
+				  
+				  
+				  //alert(("total meeting hours for all attendees multiplied by the meeting multiplier is "+hourPercent);
+				  //alert("total meeting hours"+math.floor((totMeetRTtime*parseInt(meetingMultiplier))/60));
+				  
+				  //$('.totTim2').html((totMeetRTtime*parseInt(meetingMultiplier)/60).toFixed(2));
+				  //added a new class span for minutes
+				   $('.totTim2').html(justHours);
+				  $('.totTim3').html(justMinutes);
+				  
 				  
 				  
 				  $('#rtDistance').html(totalDist.toFixed(0));
