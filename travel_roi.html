@@ -27,7 +27,7 @@
 //---you can find it using the online repositiory and copying an assembled previous version 
 //1/5/17---changed the way the total time is displayed, to hours and minutes rather than hours and percentages of an hour. also I modify the style of the generated table data depending on how many attendees there are. if more than three, the font gets smaller. However you can, with a little maneuvering, save the pdf in a larger size- like tabloid- and simply crop the result to an atractive shape
 	//1.5 hrs
-//  1/6/17 corrected an error in reporting where cost incurred was incrementing meeting totals incorrectly	
+//  1/6/17 corrected an error in reporting where cost incurred was incrementing meeting totals incorrectly	1 hr.
 	
 	
 	
@@ -42,6 +42,7 @@
 	var contName;
 	var clientName;
 	var indie;
+	var frequency = 12;
 	
   var description='<strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ';
 	
@@ -58,13 +59,9 @@ function getAttNum(){
 	
 	
 	$('#addAttendee').click(function(){
-		//alert('clicked');
+	
 	getAttNum();
 	var minus= attNum-1;
-	
-	//if($('#attendee'+minus).val()=='enter location'){
-		//alert('enter a location');
-		//return;};
 	
 	if(attNum<totalAttendees){
 		//alert('less than ten');
@@ -86,24 +83,40 @@ $("body").on("focus",".newAtt", function(){
 	
 	
 	var rsms=[['Shayne Boelter','shayne.boelter@brother.com','858-395-2416'],['Barbara Hill','barbara.hill@brother.com','908.210.0210'],['Doug Carter','doug.carter@brother.com','951-212-0042'],['Gary Sibley','gary.sibley@brother.com','000-000-0000'],['Laura Bergamini','laura.bergamini@brother.com','000-000-0000'],['Leo Perez','leo.perez@brother.com','858.637.3405']];
+	
 	var industry="regional bank";
-	clientName = 
+	
+	//clientName = 
+	
 	$('.indus').text(industry);
+	
 	$('.client').text(clientName);
-	var frequency = 12;
+	
+	
 	$('#rsmName').text(rsms[1][0]);
 	
 	$('#rsmPhone').text(rsms[1][2]);
 	
 	$('#rsmEmail').html('<a href="mailto:'+rsms[1][1]+'">'+rsms[1][1]+'</a>');
 	
- if(frequency == 0){
-	$(".annual").hide();
- }
 	
-	//$("#run").click(function() {
-  //$("#controls").hide("slow");
-//});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+
 	
 	$("#OJ_logo").click(function() {
   $("#controls").show("slow");
@@ -257,6 +270,21 @@ function resizeMe(){
 					$(".plural").html('s');
 					//alert('should be showing esses');
 				}
+				
+				
+				
+				
+				
+					
+	//hide the annual section if theres only one? annual meeting
+	//alert("meetingMultiplier is "+meetingMultiplier);
+ if(meetingMultiplier == 1){
+	$(".annual").hide();
+ }else{
+	 $(".annual").show();
+ }
+				
+				
 				
 				
 				
