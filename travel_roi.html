@@ -25,7 +25,9 @@
 //12/21/16 production design   1hr
 //12/22/16 production corrections  3 hrs also figured out how to get a previous version when successive commits are damaged. 
 //---you can find it using the online repositiory and copying an assembled previous version 
-
+//1/5/17---changed the way the total time is displayed, to hours and minutes rather than hours and percentages of an hour. also I modify the style of the generated table data depending on how many attendees there are. if more than three, the font gets smaller. However you can, with a little maneuvering, save the pdf in a larger size- like tabloid- and simply crop the result to an atractive shape
+	//1.5 hrs
+	
 	
 	
 	
@@ -176,7 +178,16 @@ $("body").on("focus",".newAtt", function(){
 	
 });//end of docready
 	//----------------calculate distance-----------------------------------------------------------------------------------------------------------------
-
+function resizeMe(){
+	//---------------------------------------------------------------------------------------------------------------------------
+				//alert($('#meets').val());
+				//change the default style of the table if there are too many attendees
+				if(attNum>3){
+				//	alert('too many attendees for one page!');
+					$("#table1 .child").css({ fontSize: 9 }); 
+					
+				}
+}
 	
 	function calculateDistance(){
 		
@@ -240,12 +251,14 @@ $("body").on("focus",".newAtt", function(){
 				if(meetingMultiplier>1){$('#pluralMeets').html('s');}
 				
 		$("#numAttendees").html(attNum);
+				
 				if(attNum>1){
 					//add esses
 					$(".plural").html('s');
 					//alert('should be showing esses');
 				}
-				//alert($('#meets').val());
+				
+				
 				
 				$("#controls").hide("slow");
 				
@@ -765,6 +778,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
 				  
 				  var time1= "<span style='font-size:24px;'>"+meetingHours+"</span><span style='font-size:10px;'>hrs.<span> <span style='font-size:24px;'>"+meetingMinutes+"</span> <span style='font-size:10px;'>min.<span> ";
 				  
+				  
 				  $('#totTim').html(time1);
 				  //currently minutes
 				  
@@ -813,7 +827,13 @@ tr:nth-child(even) {background-color: #f2f2f2}
 				  
 				  
 	//-----------------------------------------------------------------adding the new attendee 
-     $('#table1 tbody').append('<tr class="child"><td>'+originList[i]+'</td><td>'+rtTimeEach+'</td><td>'+num.toFixed(2)+' mi.</td><td> $'+cost+'</td></tr>');
+				  
+				  resizeMe();
+				  
+				  
+     $('#table1 tbody').append('<tr class="child"><td class="child">'+originList[i]+'</td><td class="child">'+rtTimeEach+'</td><td class="child">'+num.toFixed(2)+' mi.</td><td class="child"> $'+cost+'</td></tr>');
+				  //check if too big
+				  resizeMe();
 				  
 				  $("#destination").html(destinationA);
 				  
