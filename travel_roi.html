@@ -27,7 +27,7 @@
 //---you can find it using the online repositiory and copying an assembled previous version 
 //1/5/17---changed the way the total time is displayed, to hours and minutes rather than hours and percentages of an hour. also I modify the style of the generated table data depending on how many attendees there are. if more than three, the font gets smaller. However you can, with a little maneuvering, save the pdf in a larger size- like tabloid- and simply crop the result to an atractive shape
 	//1.5 hrs
-	
+//  1/6/17 corrected an error in reporting where cost incurred was incrementing meeting totals incorrectly	
 	
 	
 	
@@ -641,7 +641,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
 		var mileMultiplier = 0.54;
-		var cost;
+		var cost = 0;
         var destinationIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
         var originIcon = 'https://chart.googleapis.com/chart?' +
@@ -705,7 +705,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
           
 			  
 			  
-			  
+			  totalCost=0;
               var totalDist=0;
 			  var meetingTotalDist=0;
               var num;
@@ -732,6 +732,19 @@ tr:nth-child(even) {background-color: #f2f2f2}
 				  num = num/1609.34 //divide by meters per mile to get miles and fractions of a mile
 				  totalDist = totalDist+=num;
 				 
+				  //define total cost here?
+				  //moved from 850
+				  
+				  //alert('num is '+ num +"and mileMultiplier is "+mileMultiplier);
+				  
+				  cost = mileMultiplier*num;
+				  cost=cost.toFixed(2);
+				  totalCost+=Number(cost);
+				  
+				  
+				  
+				  
+				  
 				 //alert('the total round-trip distance for this attendee for this meeting is '+totalDist+' miles.');// 159.6 
 				  
 	//-----------------------time for each attendee round trip 
@@ -811,17 +824,38 @@ tr:nth-child(even) {background-color: #f2f2f2}
 				  
 				
 				  $('.miTotal').html((totalDist*parseInt(meetingMultiplier)).toFixed(2));       // big red distance travelled
-				  cost = mileMultiplier*num;
-				 cost=cost.toFixed(2);
+				 
+				  
+				  
+				  
 				  
      // alert(totalDist);
                   roundTrip=totalDist*2;
                   roundTrip=roundTrip.toFixed(2);
 				  
 			
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
 	//---------------------------------------------------------cost
-				  totalCost+=Number(cost);
-				  $('#driveCost').html(totalCost.toFixed(2));
+				  
+				//  cost = mileMultiplier*num;
+				//  cost=cost.toFixed(2);
+				//  totalCost+=Number(cost);
+				  
+				  $('#driveCost').html(totalCost.toFixed(2));//wrong - needs to the aggregate of each of the round trip costs above.
+				  
 				  $('#annualCost').html((totalCost*parseInt(meetingMultiplier)).toFixed(0));
 				  $("#rt_distance").html(totalDist.toFixed(0));
 				  
