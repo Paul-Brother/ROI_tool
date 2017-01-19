@@ -774,12 +774,10 @@ td {
         var markersArray = [];
 		var mileMultiplier = 0.54;
 		var cost = 0;
-        //var destinationIcon = 'https://chart.googleapis.com/chart?' +
-          //  'chst=d_map_pin_letter&chld=D|FE9D2C|000000';
-		var destinationIcon = 'http://blog.brothercloud.com/podcast/map_icon.png';
-		  
+        var destinationIcon = 'https://chart.googleapis.com/chart?' +
+            'chst=d_map_pin_letter&chld=D|FF0000|000000';
         var originIcon = 'https://chart.googleapis.com/chart?' +
-            'chst=d_map_pin_letter&chld=A|33B6C3|ffffff';
+            'chst=d_map_pin_letter&chld=O|FFFF00|000000';
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 55.53, lng: 9.4},
           zoom: 10
@@ -788,10 +786,8 @@ td {
 		  
 		  
 		  //-----------------------------------------------------------------------origins
-		  // first orig is empty
 		  orig = [];
 		  
-		  // now push the entered locations into orig while there are attendees to push
 		  
 		  	for (x=1; x<totalAttendees; x++){
 		if ($('#attendee'+x).length!=0){
@@ -803,18 +799,9 @@ td {
 			return;}
 			}
 		}
-		  
-	// now i have an array of attendee addresses
+	
 		 
-		 // orig=['dunellen nj','bridgewater nj', 'middlesex, nj','edison nj','metuchen, nj','monroe township nj',"trenton, nj","allentown, pa","easton, pa","princeton, nj","livingston,nj","bedminster, nj"];
-		  
-		  //attNum = 12;
         var service = new google.maps.DistanceMatrixService;
-		  
-		  
-		  
-		  
-		  //this currenly has all the addresses in the orig array
         service.getDistanceMatrix({
 			
 		
@@ -828,8 +815,6 @@ td {
           if (status !== 'OK') {
             alert('Error was: ' + status);
           } else {
-			  
-			  if(orig.length>5){alert(orig)};
             var originList = response.originAddresses;
             var destinationList = response.destinationAddresses;
     
@@ -1015,7 +1000,7 @@ td {
               }	
             }
           }	
-        }); //end of service.getDistanceMatrix
+        });
 		
       }
 		
