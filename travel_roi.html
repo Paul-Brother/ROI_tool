@@ -28,6 +28,7 @@
 // 	total 23.5 hrs
 
 // 01/18/17 ovequery is still an issue. this guy says wait a little between queries: http://stackoverflow.com/questions/2419219/how-do-i-geocode-20-addresses-without-receiving-an-over-query-limit-response with a timeout function so to spread them outy. also here, kind of the same idea, a delay between the queries: https://www.sitepoint.com/community/t/google-maps-api-v3-limits/38322/5
+	//01/20/17  added an alert which seems to pause, to some degree the speed of the query. the overquery still shows up but I am able to display 12 results in a single request now. a new issue seems to be some sort of rounding error at higher numbers of attendees/greater frequency of meetings.
 	
 	var totalCost=0;
 	var meetingMultiplier=1;
@@ -624,7 +625,7 @@ td {
         </div>
         <div id="hostN">
           <label class="sig">Host name</label>
-          <input id="hostName" class="newAtt" type="text" value="Paul"/>
+          <input id="hostName" class="newAtt" type="text" value="Mr. Limpet"/>
         </div>
         <div>
           <label class="sig">Host location</label>
