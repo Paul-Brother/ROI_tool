@@ -872,11 +872,13 @@ td {
 	//--------------distance for each attendee round trip
 	//---------------------------------------------------
 				  //------------------------------------------------------------------changed text for value
+				  
                   num=results[j].distance.value;//this number is meters
 				  //  alert('distance for this attendee is'+ num)
                  // num=parseFloat(num.replace('mi',''));
                   num=Number(num*2);//round trip for this location only in meters
 				  num = num/1609.34 //divide by meters per mile to get miles and fractions of a mile
+				  
 				  totalDist = totalDist+=num;
 				 
 				  //define total cost here?
@@ -900,29 +902,36 @@ td {
 	//-----------------------time for each attendee round trip 
 				//alert(results[j].duration.text);  //ok
 				tim=results[j].duration.value;
-				  //"value" gives seconds and "text" gives the text alternative
+				//"value" gives seconds and "text" gives the text alternative
 				//alert("seconds of duration for this attendee for this meeting is "+tim); //5030
-				  
-				  var bigMinutes = (tim/60); //number of minutes for this trip, not round trip
-				  var bigHours = Math.floor(bigMinutes/60);//number of hours for this trip, not round trip
-				  var littleMinutes  = Math.round(bigMinutes-(bigHours*60));//remainder minutes for this trip after subtracting minutes inside hours.
-				  
+	//---1/24 added math round for bigMinutes			  
+				var bigMinutes = Math.round(tim/60); //number of minutes for this trip, not round trip
+				  alert('big minutes is '+bigMinutes);
+				var bigHours = Math.floor(bigMinutes/60);//number of hours for this trip, not round trip
+				  alert('bigHours is'+bigHours);
+				var littleMinutes  = Math.round(bigMinutes-(bigHours*60));//remainder minutes for this trip after subtracting minutes inside hours.
+				  alert('little minutes is '+littleMinutes);
 				  //alert (bigHours+" hour "+littleMinutes+" min."); // 1 hour 24 min. for this example
 				  //now we have total minutes one way
-				  
+	//---1/24 added math round for rtMinutes			  
 				  //round trip
-				  var rtMinutes = (tim/60)*2; //seconds divided by 60 * two for round trip minutes
-				  var rtHours = Math.floor(rtMinutes/60);//gives round trip hours
-				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));// remainder round trip minutes for this trip after subtracting minutes inside hours. 
+				  var rtMinutes = Math.round(tim/60)*2; //seconds divided by 60 * two for round trip minutes
+				  alert ('round trip minutes'+rtMinutes);
 				  
+				  var rtHours = Math.floor(rtMinutes/60);//gives round trip hours
+				  alert('round trip hours'+rtHours);
+				  
+				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));// remainder round trip minutes for this trip after subtracting minutes inside hours. 
+				  alert('round trip little minutes '+rtLittleMinutes)
 				  //rtTimeEach is the round trip time for each attendee
 				  var rtTimeEach = rtHours+" hrs. "+rtLittleMinutes;
-				 // alert("round trip time for this attendee is "+rtTimeEach);
+				 //alert("round trip time  is "+rtTimeEach);
 				  
 				  
 				 //tim=parseFloat(tim.replace('mins',''));
 				  //tim = tim*2; //each attendee round trip
 				  totMeetRTtime += (bigMinutes*2) ;// roundtrip minutes aggregated. this starts with 0 at inception and is incremented by each attendee.
+				  alert('total meeting minutes for each attendee, aggregated is '+totMeetRTtime);
 				  //this number is not rounded here.
 			//	  alert("total meeting round trip time for this meeting is "+totMeetRTtime+ "minutes.");
 				  
@@ -934,7 +943,7 @@ td {
 				  //currently total round trip minutes for all attendees
 				  //get hours
 				  var meetingHours = Math.floor(totMeetRTtime/60);
-				  
+				  alert ('aggregate meeting hours is '+meetingHours);
 				  //get minutes
 				  var meetingMinutes = Math.round(totMeetRTtime-(meetingHours*60));
 				  //----------------------------------------------------------------------start here on thursday do the units seperately as spans
