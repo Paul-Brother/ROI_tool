@@ -29,6 +29,8 @@
 
 // 01/18/17 ovequery is still an issue. this guy says wait a little between queries: http://stackoverflow.com/questions/2419219/how-do-i-geocode-20-addresses-without-receiving-an-over-query-limit-response with a timeout function so to spread them outy. also here, kind of the same idea, a delay between the queries: https://www.sitepoint.com/community/t/google-maps-api-v3-limits/38322/5
 	//01/20/17  added an alert which seems to pause, to some degree the speed of the query. the overquery still shows up but I am able to display 12 results in a single request now. a new issue seems to be some sort of rounding error at higher numbers of attendees/greater frequency of meetings.
+//03/10/17 added a new field for cloud type and added a fillable span for the type of business under the map. still to do: change the value of the icon for the attendees, per Shayne's request. 45 minutes
+	
 	
 	var totalCost=0;
 	var meetingMultiplier=1;
@@ -40,6 +42,7 @@
 	var contName;
 	var clientName;
 	var indie;
+	var cloudType="private";
 	var frequency = 12;
 	
   var description='<strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ';
@@ -134,6 +137,15 @@ $("body").on("focus",".newAtt", function(){
 		
   salesDetail();
 });
+	
+	
+	
+	$("#cloudy").change(function(){
+		cloudType = $("#cloudy").val();
+		//alert(cloudType);
+		$("#sortOfCloud").html(cloudType);
+	})
+	
 	
 	
 	$( "#meets" ).change(function() {
@@ -244,6 +256,10 @@ function resizeMe(){
 				
 				$('.desc').html($("#descriptionText").val());
 				$('.desc').prepend(clientName);
+				
+				
+				//----------------------------------------------host industry
+				
 				
 				indie = $('#hostIndus').val();
 				//alert ('indie value is '+indie);
@@ -391,7 +407,7 @@ function resizeMe(){
 	padding-left: 15px;
 	padding-right: 15px;
 	text-align: center;
-	font-size: 14px;
+	font-size: 16px;
 	margin-bottom: 10px;
 	margin-top: 40px;
 }
@@ -611,7 +627,7 @@ td {
         <span class="sig">Update</span><br>
         Click the <strong>UPDATE</strong> button to update the page with your own data. There are some restrictions from google, so you may see a warning message about data use. <strong><br>
         <span class="sig">revise</span><br>
-        </strong>Click the <strong>OmniJoin logo</strong> in the resulting page below to show the entry fields again. You can modify your input fields, then click the <strong>UPDATE</strong> button again to see the results.    </p>
+		  </strong>Click the <strong>OmniJoin logo</strong> in the resulting page below to show the entry fields again. You can modify your input fields, then click the <strong>UPDATE</strong> button again to see the results.    </p><p>You can now pick the "cloud type" to display below the map. Hybrid. Public or Private.</p>
     </div>
     <div id="leftcontrol">
       <div id="inputs">
@@ -633,7 +649,7 @@ td {
         </div>
         <div style="margin-bottom:10px;">
           <label class="sig">Host Industry</label>
-          <input id="hostIndus" class="newAtt" type="text" value ="default industries" />
+          <input id="hostIndus" class="newAtt" type="html" value ="[default industries]" />
         </div>
         <div id="attendeeDiv" style="margin-bottom:10px;">
           <label class="sig">Attendee 1</label>
@@ -672,6 +688,17 @@ td {
             <option value="Shane">Shane</option>
           </select>
         </div>
+        
+         <div id="cloud">
+          <label class="sig">Cloud Type</label>
+          <select id="cloudy">
+            <option value="Hybrid">Hybrid</option>
+            <option value="Public">Public</option>
+            <option value="Private">Private</option>
+          </select>
+        </div>
+        
+        
       </div>
       <div class="clearBoth" style="padding-top: 10px;">
         
@@ -687,8 +714,8 @@ td {
     <div class="desc"></div>
     <div class="map" id="map"></div>
     <div class="contact" id="rsmData">
-      <p><span id="contactName" >ContactName</span>, <span id = "indus"></span> are utilizing<br/>
-        OmniJoin Private Cloud to host secure meetings<br/>
+      <p><span id = "indus"></span> are utilizing<br/>
+		  OmniJoin <span id="sortOfCloud">[which cloud]</span> Cloud to host secure meetings<br/>
         that can save time and money.</p>
       <p>Contact your OmniJoin representative<br>
         <strong><span id="rsmName">rsmName</span></strong><br/>
@@ -774,12 +801,18 @@ td {
         var markersArray = [];
 		var mileMultiplier = 0.54;
 		var cost = 0;
+		  
+		 
+		  
+		  
         //var destinationIcon = 'https://chart.googleapis.com/chart?' +
           //  'chst=d_map_pin_letter&chld=D|FE9D2C|000000';
 		var destinationIcon = 'http://blog.brothercloud.com/podcast/map_icon.png';
 		  
-        var originIcon = 'https://chart.googleapis.com/chart?' +
-            'chst=d_map_pin_letter&chld=A|33B6C3|ffffff';
+        //var originIcon = 'https://chart.googleapis.com/chart?' +
+          //  'chst=d_map_pin_letter&chld=A|33B6C3|ffffff';
+		  
+		  var originIcon = 'http://blog.brothercloud.com/podcast/car_icon.png';
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 55.53, lng: 9.4},
           zoom: 10
@@ -790,6 +823,11 @@ td {
 		  //-----------------------------------------------------------------------origins
 		  // first orig is empty
 		  orig = [];
+		  
+		  
+		  
+
+		  
 		  
 		  // now push the entered locations into orig while there are attendees to push
 		  
@@ -906,23 +944,23 @@ td {
 				//alert("seconds of duration for this attendee for this meeting is "+tim); //5030
 	//---1/24 added math round for bigMinutes			  
 				var bigMinutes = Math.round(tim/60); //number of minutes for this trip, not round trip
-				  alert('big minutes is '+bigMinutes);
+				//  alert('big minutes is '+bigMinutes);
 				var bigHours = Math.floor(bigMinutes/60);//number of hours for this trip, not round trip
-				  alert('bigHours is'+bigHours);
+				 // alert('bigHours is'+bigHours);
 				var littleMinutes  = Math.round(bigMinutes-(bigHours*60));//remainder minutes for this trip after subtracting minutes inside hours.
-				  alert('little minutes is '+littleMinutes);
+				//  alert('little minutes is '+littleMinutes);
 				  //alert (bigHours+" hour "+littleMinutes+" min."); // 1 hour 24 min. for this example
 				  //now we have total minutes one way
 	//---1/24 added math round for rtMinutes			  
 				  //round trip
 				  var rtMinutes = Math.round(tim/60)*2; //seconds divided by 60 * two for round trip minutes
-				  alert ('round trip minutes'+rtMinutes);
+				  //alert ('round trip minutes'+rtMinutes);
 				  
 				  var rtHours = Math.floor(rtMinutes/60);//gives round trip hours
-				  alert('round trip hours'+rtHours);
+				  //alert('round trip hours'+rtHours);
 				  
 				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));// remainder round trip minutes for this trip after subtracting minutes inside hours. 
-				  alert('round trip little minutes '+rtLittleMinutes)
+				  //alert('round trip little minutes '+rtLittleMinutes)
 				  //rtTimeEach is the round trip time for each attendee
 				  var rtTimeEach = rtHours+" hrs. "+rtLittleMinutes;
 				 //alert("round trip time  is "+rtTimeEach);
@@ -943,7 +981,7 @@ td {
 				  //currently total round trip minutes for all attendees
 				  //get hours
 				  var meetingHours = Math.floor(totMeetRTtime/60);
-				  alert ('aggregate meeting hours is '+meetingHours);
+				  //alert ('aggregate meeting hours is '+meetingHours);
 				  //get minutes
 				  var meetingMinutes = Math.round(totMeetRTtime-(meetingHours*60));
 				  //----------------------------------------------------------------------start here on thursday do the units seperately as spans
