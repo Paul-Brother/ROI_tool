@@ -3,7 +3,7 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script>
-	
+
 // 12/05/16 production design    2 hours
 // 12/06/16 production design    3 hours
 // 12/07/16 production design    2.5 hrs
@@ -17,25 +17,25 @@
 //	12/20/16 instructions, ready to share for input
 //	total hrs: 17.25
 //	12/21/16 production design   1hr
-//	12/22/16 production corrections  3 hrs also figured out how to get a previous version when successive commits are damaged. 
-//---you can find it using the online repositiory and copying an assembled previous version 
-//	1/5/17---changed the way the total time is displayed, to hours and minutes rather than hours and percentages of an hour. 
-//	also I modify the style of the generated table data depending on how many attendees there are. 
-//	if more than three, the font gets smaller. However you can, with a little maneuvering, save the pdf in a larger size- 
+//	12/22/16 production corrections  3 hrs also figured out how to get a previous version when successive commits are damaged.
+//---you can find it using the online repositiory and copying an assembled previous version
+//	1/5/17---changed the way the total time is displayed, to hours and minutes rather than hours and percentages of an hour.
+//	also I modify the style of the generated table data depending on how many attendees there are.
+//	if more than three, the font gets smaller. However you can, with a little maneuvering, save the pdf in a larger size-
 //	like tabloid- and simply crop the result to an atractive shape
 //	1.5 hrs
 //  1/6/17 corrected an error in reporting where cost incurred was incrementing meeting totals incorrectly	1 hr.
 // 	total 23.5 hrs
-
 // 01/18/17 ovequery is still an issue. this guy says wait a little between queries: http://stackoverflow.com/questions/2419219/how-do-i-geocode-20-addresses-without-receiving-an-over-query-limit-response with a timeout function so to spread them outy. also here, kind of the same idea, a delay between the queries: https://www.sitepoint.com/community/t/google-maps-api-v3-limits/38322/5
 	//01/20/17  added an alert which seems to pause, to some degree the speed of the query. the overquery still shows up but I am able to display 12 results in a single request now. a new issue seems to be some sort of rounding error at higher numbers of attendees/greater frequency of meetings.
 //03/10/17 added a new field for cloud type and added a fillable span for the type of business under the map. still to do: change the value of the icon for the attendees, per Shayne's request. 45 minutes
 //03/16 added cloud time setter into calculateDistance function. previously it was only set on updating the drop down list
-	
+//03/17 some additional cleaning of code and trying out the atom editor
+
 	var totalCost=0;
 	var meetingMultiplier=1;
 	var attNum = 1;
-	totalAttendees = 10;
+	var totalAttendees = 10;
 	var orig = [];
 	var dest = [];
 	var destinationA;
@@ -44,26 +44,22 @@
 	var indie;
 	var cloudType="private";
 	var frequency = 12;
-	
   var description='<strong><span class="client"></span></strong> is a <span class="indus"></span> with <span id="officeNum">000</span> offices in New Jersey. The bank has monthly branch manager meetings at the corporate office. All branches are within 45 minutes of the corporate office in  Bridgewater, NJ';
-	
-	
-	
+
 $(function() {
 	//$('#displayPart').css('visibility','visible');
 	$('#displayPart').hide();
-	
+
 	//---iterate the attendee number--------------
 function getAttNum(){
 	attNum = attNum + 1;
 	 };
-	
-	
+
 	$('#addAttendee').click(function(){
-	
+
 	getAttNum();
 	var minus= attNum-1;
-	
+
 	if(attNum<totalAttendees){
 		//alert('less than ten');
 $( "#attendeeDiv").append("<div><label>Attendee "
@@ -73,91 +69,63 @@ $( "#attendeeDiv").append("<div><label>Attendee "
         +"' type= 'text' value='enter location' width='150'></div>");
 	}
 });
-	
+
 	//clear field on focus and remove red color--------------
 $("body").on("focus",".newAtt", function(){
 	$(this).removeClass( "red" );
  	this.value = '';
 });
-	
-	
-	
-	
+
 	var rsms=[['Shayne Boelter','shayne.boelter@brother.com','858-395-2416'],['Barbara Hill','barbara.hill@brother.com','908.210.0210'],['Doug Carter','doug.carter@brother.com','951-212-0042'],['Gary Sibley','gary.sibley@brother.com','000-000-0000'],['Laura Bergamini','laura.bergamini@brother.com','000-000-0000'],['Leo Perez','leo.perez@brother.com','858.637.3405']];
-	
 	var industry="regional bank";
-	
-	//clientName = 
-	
+
+	//clientName =
+
 	$('.indus').text(industry);
-	
+
 	$('.client').text(clientName);
-	
+
 	$('#rsmName').text(rsms[1][0]);
-	
+
 	$('#rsmPhone').text(rsms[1][2]);
-	
+
 	$('#rsmEmail').html('<a href="mailto:'+rsms[1][1]+'">'+rsms[1][1]+'</a>');
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	
-
-	
 	$("#OJ_logo").click(function() {
   $("#controls").slideDown();
 		$('#displayPart').hide("slow")
-		
+
 });
-	//hostName
+
 	$("#update").click(function() {
-		//alert('clicked the update button');
 		$('#controls').slideUp("slow");
 		$('#displayPart').show("slow")
 		calculateDistance();
-  		
+
 });
-	
-	
+
+
 	$( "#salsa" ).change(function() {
-		
+
   salesDetail();
 });
-	
-	
-	
+
+
+	//cloud type selection
 	$("#cloudy").change(function(){
-		//alert("#cloudy").val();
 		cloudType = $("#cloudy").val();
-		//alert(cloudType);
 		$("#sortOfCloud").html(cloudType);
 	})
-	
-	
-	
+
+
 	$( "#meets" ).change(function() {
  		meetingMultiplier = $("#meets").val();
 		$('#meetnums').html(meetingMultiplier);
 		meetingMultiplier=parseInt(meetingMultiplier);
-		//alert("meeting multiplier = "+meetingMultiplier);
 });
-	
+
 	//---pick a sales person
-		var salesPer;
+	var salesPer;
 	var salesEml;
 	var salesPhn;
 	function salesDetail(){
@@ -194,145 +162,115 @@ $("body").on("focus",".newAtt", function(){
 		salesPhn=rsms[0][2];
 		break;
 		}
-		//---do this 
+		//--set the rms name, phone and email
 		$("#rsmName").text(salesPer);
 		$("#rsmPhone").text(salesPhn);
 		$('#rsmEmail').html('<a href="mailto:'+salesEml+'">'+salesEml+'</a>');
-		
+
 }
-	
-	
-	
-});//end of docready
-	//----------------calculate distance-----------------------------------------------------------------------------------------------------------------
+
+
+
+});
+
+
+//end of docready
+
+//---calculate distance
+
 function resizeMe(){
-	//---------------------------------------------------------------------------------------------------------------------------
-				//alert($('#meets').val());
-				//change the default style of the table if there are too many attendees
 				if(attNum>3){
-				//	alert('too many attendees for one page!');
-					$("#table1 .child").css({ fontSize: 9 }); 
-					
+				//	reduce the size of the attendees in the table
+					$("#table1 .child").css({ fontSize: 9 });
 				}
 }
-	
+
 	function calculateDistance(){
-		
-		
-	//---------------------set me back to zero baby, else you will get some unexpected results
+// set me back to zero baby,
+// null me out to zed
+// empty all the numbers
+//  that are ringing in my head
+// do this now! or possibly
+// the values that are left
+// will load your fields with dross & shite
+// and leave you all bereft.
+//************
 	dest = [];
-		
-		
-		
-		//first make sure all the fields are filled in properly;
-		
+//************
+
+// make sure all the fields are filled in properly;
+
 		if($('#cliName').val()==""||$('#hostName').val()=="client name"){
 			alert('Enter client name');
 			return;
 		}
 		else
-		
+
 		if($('#hostName').val()=="Host name"||$('#hostName').val()==""){
 			alert('Enter Host name');
 			return;
 		}else{
-			//alert($('#hostName').val())
 			if($('#host').val()=="Destination"){
 				alert('Enter destination');
 				return;
 			}else{
 				destinationA = $('#host').val();
-				//host name is filled in properly
-				
+
 				//type of cloud goes into sortOfCloud
 				cloudType = $("#cloudy").val();
-				alert(cloudType);
 				$("#sortOfCloud").html(cloudType);
-				
 				contName = $('#hostName').val();
-				
 				$('#contactName').html(contName);
-			
 				clientName = $('#cliName').val();
-				//alert(clientName);//ok
-				//alert($('#hostlogo_url').val());
-				// put this in the url getter for the logo image
 				$('#clilog').attr('src',$('#hostlogo_url').val());
-				
 				$('.desc').html($("#descriptionText").val());
 				$('.desc').prepend(clientName);
-				
-				
-				//----------------------------------------------host industry
-				
-				
 				indie = $('#hostIndus').val();
-				//alert ('indie value is '+indie);
 				$('#indus').html(indie);
-			
+
 				// unfill the table
-				
 				$('#table1').html('<table id="table1"><tbody><tr><th style="white-space: nowrap;">Attendee<br/>Location</th><th>Time<br><span class= "rt">Round<br/>Trip</span></th><th>Distance<br/><span class="rt">Round<br/>Trip</span></th><th>Cost*<br><span class="rt">Round<br/>Trip</span></th></tr></tbody></table>');
-				
+
 				//get meetingMultiplier value
 				meetingMultiplier = $("#meets").val();
-				
-				//put the meeting multiplier into #meetnums 
+
+				//put the meeting multiplier into #meetnums
 				$('#meetnums').html(meetingMultiplier);
-				//alert("meeting multiplier = "+meetingMultiplier);
-				//then parse the value to a number for multiplying attendee values with
+
 				meetingMultiplier=parseInt(meetingMultiplier);
-				//plural meets
+				//plural meets gets an ess here
 				if(meetingMultiplier>1){$('#pluralMeets').html('s');}
-				
+
 		$("#numAttendees").html(attNum);
-				
+
 				if(attNum>1){
 					//add esses
 					$(".plural").html('s');
-					//alert('should be showing esses');
 				}
-				
-				
-				
-				//cloudType = $("#cloudy").val();
-				
-					
-	//hide the annual section if theres only one annual meeting
-	//alert("meetingMultiplier is "+meetingMultiplier);
+
+	// hide the annual section if theres only one annual meeting.
+	// this makes a big white space that could be filled wth marketing messaging in the future
+
  if(meetingMultiplier == 1){
 	$(".annual").hide();
  }else{
 	 $(".annual").show();
  }
-				
-				
-				
-				
-				
+
 				$("#controls").hide("slow");
-				
-				
-				
-				
 					initMap()
-								
 			}
-	}	
+	}
 		};
-	
+
 </script>
 <meta charset="utf-8">
 <title>Travel ROI</title>
 <style>
 	#addAttendee{
 		background-color: darkgoldenrod;
-		
 	}
-.annual {
-//background-color:white!important;
- //color:black!important;
-}
+.annual {}
 #leftControl {
 	border: thin red solid;
 }
@@ -341,7 +279,6 @@ function resizeMe(){
 	width: 400px;
 }
 #rightControl {
- //border:thin red solid;
 	float: right;
 	width: 110px;
 }
@@ -351,13 +288,10 @@ function resizeMe(){
 }
 .bigred {
 	display: block;
- //margin:auto;
 	min-width: 150px;
 	background-color: darkred;
- //color:white!important;
 	text-align: center;
 	border-radius: 10px;
- //border: medium red solid;
 }
 .boxlet {
 	width: 118px;
@@ -402,7 +336,7 @@ function resizeMe(){
 		color:darkgray;
 		margin-top:10px;
 		margin-bottom:15px;
-		
+
 	}
 #controls {
 	min-height: 100px;
@@ -438,7 +372,7 @@ function resizeMe(){
 	font-size: 14px;
 	border: thin gray solid;
 }
-	
+
 h4 {
 	font-size: 20pt;
 	margin-top: -10px;
@@ -521,7 +455,7 @@ label {
 	margin-left: 5px;
 	cursor: pointer;
 }
-	
+
 	.run:hover{
 		background-color: darkgray!important;
 	//opacity: 0.8;
@@ -591,21 +525,22 @@ td {
 }
 	#update{background-color: orangered;
 	}
+
 .warning {
 	color: crimson;
 	font-weight: 600;
 }
+
 .white {
 	color: white;
 }
 </style>
-</head>
 
+</head>
 <body>
 <div class="container">
 	<div id="controls"><div id="controlHeader" class="title">Ground Travel ROI Calculator</div>
-    <div id="rightControl"> 
-      <!--<span class="run" id="run">RUN</span>--> 
+    <div id="rightControl">
       <span class="run" id="update">UPDATE</span> <span class="run" id="addAttendee">ADD ATTENDEE</span></div>
     <div id="midControl">
       <h5 style="text-align: center; display:inline-block; width:100%; height:25px;background-color:darkgray;color:white;padding-top:7px; margin-top:-10px; margin-bottom:-10px;">INSTRUCTIONS</h5>
@@ -620,10 +555,10 @@ td {
         <span class="sig">Attendee 1</span> <br>
 		  Please enter your <strong>first meeting attendee</strong> into this field. You can enter a street address, city/town and state, or zip code.  <br>
         <span class="sig">Add Attendee</span><br>
-        
+
 		  To add an attendee, use the <strong>add attendee</strong> button in the top right. You can enter a street address, city/town and state, or zip code. <br>
-       
-        <span class="sig">Description</span> <br>Please customize the default text as appropriate. 
+
+        <span class="sig">Description</span> <br>Please customize the default text as appropriate.
         <br>
         <span class="sig">Meetings/yr</span> <br>
        Please enter how many meetings your prospect has at the host location each year. The default is 1 but you can choose up to 12.  <br>
@@ -694,7 +629,7 @@ td {
             <option value="Shane">Shane</option>
           </select>
         </div>
-        
+
          <div id="cloud">
           <label class="sig">Cloud Type</label>
           <select id="cloudy">
@@ -703,11 +638,11 @@ td {
             <option value="Private">Private</option>
           </select>
         </div>
-        
-        
+
+
       </div>
       <div class="clearBoth" style="padding-top: 10px;">
-        
+
       </div>
     </div>
   </div><div id="displayPart">
@@ -796,72 +731,42 @@ td {
 	</div>
 	</div>
 <script>
-	
-	 
-	 
-	 
+
+
       function initMap() {
-		 //alert(meetingMultiplier+" inside initMap")
-		  
         var bounds = new google.maps.LatLngBounds;
         var markersArray = [];
-		var mileMultiplier = 0.54;
-		var cost = 0;
-		  
-		 
-		  
-		  
-        //var destinationIcon = 'https://chart.googleapis.com/chart?' +
-          //  'chst=d_map_pin_letter&chld=D|FE9D2C|000000';
-		var destinationIcon = 'http://blog.brothercloud.com/podcast/map_icon.png';
-		  
-        //var originIcon = 'https://chart.googleapis.com/chart?' +
-          //  'chst=d_map_pin_letter&chld=A|33B6C3|ffffff';
-		  
-		  var originIcon = 'http://blog.brothercloud.com/podcast/car_icon.png';
+				var mileMultiplier = 0.54;
+				var cost = 0;
+				var destinationIcon = 'http://blog.brothercloud.com/podcast/map_icon.png';
+		  	var originIcon = 'http://blog.brothercloud.com/podcast/car_icon.png';
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 55.53, lng: 9.4},
           zoom: 10
         });
         var geocoder = new google.maps.Geocoder;
-		  
-		  
-		  //-----------------------------------------------------------------------origins
+
 		  // first orig is empty
 		  orig = [];
-		  
-		  
-		  
+ 			// now push the entered locations into orig while there are attendees to push
 
-		  
-		  
-		  // now push the entered locations into orig while there are attendees to push
-		  
 		  	for (x=1; x<totalAttendees; x++){
-		if ($('#attendee'+x).length!=0){
-			if($('#attendee'+x).val()!='enter location'){
+					if ($('#attendee'+x).length!=0){
+						if($('#attendee'+x).val()!='enter location'){
 			orig.push($('#attendee'+x).val());
-			
+
 			}else
 			{alert('Missing an attendee location');
 			return;}
 			}
 		}
-		  
+
 	// now i have an array of attendee addresses
-		 
-		 // orig=['dunellen nj','bridgewater nj', 'middlesex, nj','edison nj','metuchen, nj','monroe township nj',"trenton, nj","allentown, pa","easton, pa","princeton, nj","livingston,nj","bedminster, nj"];
-		  
-		  //attNum = 12;
         var service = new google.maps.DistanceMatrixService;
-		  
-		  
-		  
-		  
 		  //this currenly has all the addresses in the orig array
         service.getDistanceMatrix({
-			
-		
+
+
           origins: orig,
           destinations: [destinationA],
           travelMode: 'DRIVING',
@@ -872,11 +777,11 @@ td {
           if (status !== 'OK') {
             alert('Error was: ' + status);
           } else {
-			  
+
 			  if(orig.length>5){alert(orig)};
             var originList = response.originAddresses;
             var destinationList = response.destinationAddresses;
-    
+
             deleteMarkers(markersArray);
             var showGeocodedAddressOnMap = function(asDestination) {
               var icon = asDestination ? destinationIcon : originIcon;
@@ -893,9 +798,9 @@ td {
                 }
               };
             };
-          
-			  
-			  
+
+
+
 			  totalCost=0;
               var totalDist=0;
 			  var meetingTotalDist=0;
@@ -904,7 +809,7 @@ td {
               var roundTrip;
 			  var totalTime=0;
 			  var totMeetRTtime=0;
-			  
+
             for (var i = 0; i < originList.length; i++) {
               var results = response.rows[i].elements;
               geocoder.geocode({'address': originList[i]},
@@ -912,43 +817,43 @@ td {
               for (var j = 0; j < results.length; j++) {
                 geocoder.geocode({'address': destinationList[j]},
                     showGeocodedAddressOnMap(true));
-				  
+
 	//--------------distance for each attendee round trip
 	//---------------------------------------------------
 				  //------------------------------------------------------------------changed text for value
-				  
+
                   num=results[j].distance.value;//this number is meters
 				  //  alert('distance for this attendee is'+ num)
                  // num=parseFloat(num.replace('mi',''));
                   num=Number(num*2);//round trip for this location only in meters
 				  num = num/1609.34 //divide by meters per mile to get miles and fractions of a mile
-				  
+
 				  totalDist = totalDist+=num;
-				 
+
 				  //define total cost here?
 				  //moved from 850
-				  
+
 				  //alert('num is '+ num +"and mileMultiplier is "+mileMultiplier);
-				  
+
 				  cost = mileMultiplier*num;
 				  cost=cost.toFixed(2);
 				  totalCost+=Number(cost);
-				  
-				  
-				  
-				  
-				  
-				 //alert('the total round-trip distance for this attendee for this meeting is '+totalDist+' miles.');// 159.6 
-				  
-				  
-				  
-				  
-	//-----------------------time for each attendee round trip 
+
+
+
+
+
+				 //alert('the total round-trip distance for this attendee for this meeting is '+totalDist+' miles.');// 159.6
+
+
+
+
+	//-----------------------time for each attendee round trip
 				//alert(results[j].duration.text);  //ok
 				tim=results[j].duration.value;
 				//"value" gives seconds and "text" gives the text alternative
 				//alert("seconds of duration for this attendee for this meeting is "+tim); //5030
-	//---1/24 added math round for bigMinutes			  
+	//---1/24 added math round for bigMinutes
 				var bigMinutes = Math.round(tim/60); //number of minutes for this trip, not round trip
 				//  alert('big minutes is '+bigMinutes);
 				var bigHours = Math.floor(bigMinutes/60);//number of hours for this trip, not round trip
@@ -957,33 +862,33 @@ td {
 				//  alert('little minutes is '+littleMinutes);
 				  //alert (bigHours+" hour "+littleMinutes+" min."); // 1 hour 24 min. for this example
 				  //now we have total minutes one way
-	//---1/24 added math round for rtMinutes			  
+	//---1/24 added math round for rtMinutes
 				  //round trip
 				  var rtMinutes = Math.round(tim/60)*2; //seconds divided by 60 * two for round trip minutes
 				  //alert ('round trip minutes'+rtMinutes);
-				  
+
 				  var rtHours = Math.floor(rtMinutes/60);//gives round trip hours
 				  //alert('round trip hours'+rtHours);
-				  
-				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));// remainder round trip minutes for this trip after subtracting minutes inside hours. 
+
+				  var rtLittleMinutes = Math.round(rtMinutes-(rtHours*60));// remainder round trip minutes for this trip after subtracting minutes inside hours.
 				  //alert('round trip little minutes '+rtLittleMinutes)
 				  //rtTimeEach is the round trip time for each attendee
 				  var rtTimeEach = rtHours+" hrs. "+rtLittleMinutes;
 				 //alert("round trip time  is "+rtTimeEach);
-				  
-				  
+
+
 				 //tim=parseFloat(tim.replace('mins',''));
 				  //tim = tim*2; //each attendee round trip
 				  totMeetRTtime += (bigMinutes*2) ;// roundtrip minutes aggregated. this starts with 0 at inception and is incremented by each attendee.
 				  alert('total meeting minutes for each attendee, aggregated is '+totMeetRTtime);
 				  //this number is not rounded here.
 			//	  alert("total meeting round trip time for this meeting is "+totMeetRTtime+ "minutes.");
-				  
-				  
-				  
-				
+
+
+
+
 				 //---------------------------------------------------------------------------------------------------------------------------------totTim
-				  
+
 				  //currently total round trip minutes for all attendees
 				  //get hours
 				  var meetingHours = Math.floor(totMeetRTtime/60);
@@ -991,87 +896,87 @@ td {
 				  //get minutes
 				  var meetingMinutes = Math.round(totMeetRTtime-(meetingHours*60));
 				  //----------------------------------------------------------------------start here on thursday do the units seperately as spans
-				  
+
 				  var time1= "<span style='font-size:24px;'>"+meetingHours+"</span><span style='font-size:10px;'>hrs.<span> <span style='font-size:24px;'>"+meetingMinutes+"</span> <span style='font-size:10px;'>min.<span> ";
-				  
-				  
+
+
 				  $('#totTim').html(time1);
 				  //currently minutes
-				  
-				 
+
+
 				  //total time is currently hours and percentage of hours
 				  //alert("total meeting hours for all attendees multiplied by the meeting multiplier is "+(totMeetRTtime*parseInt(meetingMultiplier))/60);
-				  
+
 				  var hourPercent= (totMeetRTtime*parseInt(meetingMultiplier))/60;
 				  //alert(math.floor(hourPercent));
-				 
+
 				  //alert(hourPercent);//ok 2.794444444443
 				 // alert(Math.floor(hourPercent));//2 this is hours correctly
-				  
+
 				  var justHours=Math.floor(hourPercent);
-				  
+
 				  //alert(justHours);
-				  
+
 				  var justMinutes=Math.round(totMeetRTtime*parseInt(meetingMultiplier)-(justHours*60));//minutes
-				  
-				  
+
+
 				  //alert(("total meeting hours for all attendees multiplied by the meeting multiplier is "+hourPercent);
-				  
+
 				  //alert("total meeting hours"+math.floor((totMeetRTtime*parseInt(meetingMultiplier))/60));
-				  
+
 				  //$('.totTim2').html((totMeetRTtime*parseInt(meetingMultiplier)/60).toFixed(2));
-				  
+
 				  //added a new class span for minutes
-				  
+
 				  $('.totTim2').html(justHours);
-				  
+
 				  $('.totTim3').html(justMinutes);
-				  
+
 				  $('#rtDistance').html(totalDist.toFixed(0));
-				 
+
 				  // alert(totalDist+' = totalDist');
-				  
-				  $('.miTotal').html((totalDist*parseInt(meetingMultiplier)).toFixed(2));    
-				  
-				  
+
+				  $('.miTotal').html((totalDist*parseInt(meetingMultiplier)).toFixed(2));
+
+
      // alert(totalDist);
                   roundTrip=totalDist*2;
-				  
+
                   roundTrip=roundTrip.toFixed(2);
-				  
-				  
-				  
-				  
+
+
+
+
 	//---------------------------------------------------------cost
-				  
+
 				//  cost = mileMultiplier*num;
 				//  cost=cost.toFixed(2);
 				//  totalCost+=Number(cost);
-				  
+
 				  $('#driveCost').html(totalCost.toFixed(2));//wrong - needs to the aggregate of each of the round trip costs above.
-				  
+
 				  $('#annualCost').html((totalCost*parseInt(meetingMultiplier)).toFixed(0));
 				  $("#rt_distance").html(totalDist.toFixed(0));
-				  
-				  
-	//-----------------------------------------------------------------adding the new attendee 
-				  
+
+
+	//-----------------------------------------------------------------adding the new attendee
+
 				  resizeMe();//check if you are too many. run this before and after to get the last one
-				  
-				  
+
+
      $('#table1 tbody').append('<tr class="child"><td class="child">'+originList[i]+'</td><td class="child">'+rtTimeEach+'</td><td class="child">'+num.toFixed(2)+' mi.</td><td class="child"> $'+cost+'</td></tr>');
 				  //check if too big
 				  resizeMe();
-				  
+
 				  $("#destination").html(destinationA);
-				  
-              }	
+
+              }
             }
-          }	
+          }
         }); //end of service.getDistanceMatrix
-		
+
       }
-		
+
       function deleteMarkers(markersArray) {
         for (var i = 0; i < markersArray.length; i++) {
           markersArray[i].setMap(null);
@@ -1079,12 +984,12 @@ td {
         markersArray = [];
       }
         //added the geometry library
-		
-				
-				
+
+
+
 	//diz.innerHTML=div.innerHTML+'Total round trip distance travelled for all attendees is '+roundTrip+'miles.');
 	 //removed &libraries=geometry&callback=initMap from the call below
-    </script> 
+    </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW9mvJDoxvAY0fUPLCl6IkXjxMMcAqKf0">
     </script>
